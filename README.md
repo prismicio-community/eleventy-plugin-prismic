@@ -38,7 +38,7 @@ const pluginPrismic = require("eleventy-plugin-prismic");
 
 module.exports = function (eleventyConfig) {
 	/**
-	 * @type {import("eleventy-plugin-prismic/types").PrismicPluginOptions}
+	 * @type {import("eleventy-plugin-prismic/src/types").PrismicPluginOptions}
 	 */
 	const prismicPluginOptions = {
 		client: "https://your-repo-name.cdn.prismic.io/api/v2"
