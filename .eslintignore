@@ -1,0 +1,40 @@
+# .gitignore copy
+
+# custom
+playground/_site
+
+# os
+.DS_Store
+._*
+
+# node
+logs
+*.log
+node_modules
+
+# yarn
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.yarn-integrity
+
+# npm
+npm-debug.log*
+package-lock.json
+
+# tests
+lib-cov
+coverage
+*.lcov
+.eslintcache
+
+# .env
+.env
+.env.test
+.env*.local
+
+# vscode
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace

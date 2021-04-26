@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ⁉ Need help about Prismic itself?
+    url: https://community.prismic.io
+    about: |
+      Please use Prismic community forum for issues or questions directly related to Prismic.

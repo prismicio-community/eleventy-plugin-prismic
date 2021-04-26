@@ -1,0 +1,28 @@
+# asserts everything is text
+* text eol=lf
+
+# treats lock files as binaries to prevent merge headache
+package-lock.json -diff
+yarn.lock -diff
+
+# treats assets as binaries
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mov binary
+*.mp4 binary
+*.mp3 binary
+*.flv binary
+*.fla binary
+*.swf binary
+*.gz binary
+*.zip binary
+*.7z binary
+*.ttf binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.pyc binary
+*.pdf binary

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<li>
+					<a href="/">index</a>
+				</li>
+				<li>
+					shortcodes
+					<ul>
+						<li>
+							<a href="/shortcodes/image">image</a>
+						</li>
+						<li>
+							<a href="/shortcodes/embed">embed</a>
+						</li>
+						<li>
+							<a href="/shortcodes/link">link</a>
+						</li>
+						<li>
+							<a href="/shortcodes/richtext">richtext</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+		<hr />
+		{{ content | safe }}
+	</body>
+</html>

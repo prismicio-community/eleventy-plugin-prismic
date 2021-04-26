@@ -1,0 +1,68 @@
+{
+	"name": "eleventy-plugin-prismic",
+	"version": "0.0.0",
+	"description": "Easily connect your Eleventy application to your content hosted on Prismic",
+	"keywords": [
+		"eleventy",
+		"eleventy-plugin",
+		"11ty",
+		"11ty-plugin",
+		"prismic"
+	],
+	"repository": {
+		"type": "git",
+		"url": "ssh://git@github.com/prismicio-community/eleventy-plugin-prismic.git"
+	},
+	"license": "MIT",
+	"author": "Lucie Haberer <hello@lihbr.com> (https://lihbr.com)",
+	"main": "src/index.js",
+	"types": "src/types/index.d.s",
+	"files": [
+		"src"
+	],
+	"scripts": {
+		"dev": "cd playground && eleventy --serve",
+		"dev:debug": "cd playground && cross-env DEBUG=Eleventy:Prismic* eleventy --serve",
+		"generate": "cd playground && eleventy",
+		"generate:debug": "cd playground && cross-env DEBUG=Eleventy:Prismic* eleventy",
+		"release": "yarn test && standard-version --release-as patch && git push --follow-tags && npm publish",
+		"release:dry": "standard-version --release-as patch --dry-run",
+		"lint": "eslint --ext .js,.ts .",
+		"test": "yarn lint"
+	},
+	"engines": {
+		"node": ">=12.0.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "yarn lint",
+			"commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
+		}
+	},
+	"dependencies": {
+		"@prismicio/client": "^4.0.0",
+		"dayjs": "1.10.4",
+		"debug": "^4.3.1",
+		"defu": "^4.0.1",
+		"prismic-dom": "^2.2.5"
+	},
+	"devDependencies": {
+		"@11ty/eleventy": "1.0.0-canary.15",
+		"@commitlint/cli": "12.1.1",
+		"@commitlint/config-conventional": "12.1.1",
+		"@typescript-eslint/eslint-plugin": "4.22.0",
+		"@typescript-eslint/parser": "4.22.0",
+		"cross-env": "7.0.3",
+		"dotenv": "8.2.0",
+		"eslint": "7.25.0",
+		"eslint-config-prettier": "8.3.0",
+		"eslint-plugin-prettier": "3.4.0",
+		"husky": "4.3.8",
+		"prettier": "2.2.1",
+		"standard-version": "9.2.0",
+		"typescript": "4.2.4"
+	}
+}

@@ -1,0 +1,33 @@
+---
+layout: default
+---
+
+{% prismic_asLink mocks.link.simple %}
+{% prismic_link page, mocks.link.simple %}
+  {% prismic_asLink mocks.link.simple %}
+{% endprismic_link %}
+{% prismic_link page, mocks.link.simple, "block p-5" %}
+  {% prismic_asLink mocks.link.simple %}
+{% endprismic_link %}
+
+<br />
+<br />
+
+{% prismic_asLink mocks.link.blank %}
+{% prismic_link page, mocks.link.blank %}
+  {% prismic_asLink mocks.link.blank %}
+{% endprismic_link %}
+{% prismic_link page, mocks.link.blank, "block p-5" %}
+  {% prismic_asLink mocks.link.blank %}
+{% endprismic_link %}
+
+<br />
+<br />
+
+{% prismic_asLink mocks.link.internal %}
+{% prismic_link page, mocks.link.internal %}
+  {% prismic_asLink mocks.link.internal %}
+{% endprismic_link %}
+{% prismic_link page, mocks.link.internal, "block p-5" %}
+  {% prismic_asLink mocks.link.internal %}
+{% endprismic_link %}
