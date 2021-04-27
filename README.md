@@ -332,7 +332,7 @@ interface PrismicPluginOptions {
 }
 ```
 
-> 💡 See [src/types/index.d.ts](./src/type/index.d.ts#L117) for comprehensive definition, don't be afraid to check it! You don't actually need TypeScript knowledge to understand it~
+> 💡 See [src/types/index.d.ts](./src/types/index.d.ts#L117) for comprehensive definition, don't be afraid to check it! You don't actually need TypeScript knowledge to understand it~
 
 ### Defaults
 
