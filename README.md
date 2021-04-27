@@ -185,23 +185,23 @@ Display a link field with the right attributes and accessibility options:
 ```njk
 {% prismic_link page, document.data.link %}
   Example
-{% endprismic_link}
+{% endprismic_link %}
 
 {% prismic_link page, document.data.targetBlankLink %}
   Blank target
-{% endprismic_link}
+{% endprismic_link %}
 
 {% prismic_link page, document %}
   Current page
-{% endprismic_link}
+{% endprismic_link %}
 
 {% prismic_link page, document.data.link, "no-underline" %}
   Width class
-{% endprismic_link}
+{% endprismic_link %}
 
 {% prismic_link page, document.data.link, "class", "no-underline", "data-foo", "bar" %}
   With any attribute
-{% endprismic_link}
+{% endprismic_link %}
 ```
 
 > Always provide Eleventy's `page` object for the plugin to known if provided link is the current page or not!
