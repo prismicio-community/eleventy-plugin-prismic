@@ -1,4 +1,6 @@
-# eleventy-plugin-prismic [![Conventional Commits][conventional-commits-src]][conventional-commits-href] [![npm version][npm-version-src]][npm-version-href] [![npm downloads][npm-downloads-src]][npm-downloads-href] [![License][license-src]][license-href]
+# eleventy-plugin-prismic
+
+[![Conventional Commits][conventional-commits-src]][conventional-commits-href] [![npm version][npm-version-src]][npm-version-href] [![npm downloads][npm-downloads-src]][npm-downloads-href] [![License][license-src]][license-href]
 
 > Easily connect your [Eleventy](https://11ty.dev) application to your content hosted on [Prismic](https://prismic.io)
 
