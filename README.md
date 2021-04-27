@@ -21,7 +21,8 @@
 > To use it make sure you upgrade Eleventy to the latest canary version:
 >
 > - With yarn: `yarn add --dev @11ty/eleventy@canary`;
-> - Or npm: `npm install --save-dev @11ty/eleventy@canary`.
+> - npm: `npm install --save-dev @11ty/eleventy@canary`;
+> - Or npx: `npx @11ty/eleventy@canary`.
 
 Add `eleventy-plugin-prismic` dependency to your project:
 
@@ -291,7 +292,7 @@ Like Eleventy, this plugin makes use of the [debug](https://www.npmjs.com/packag
 # Installed globally
 DEBUG=Eleventy* eleventy
 # Installed locally
-DEBUG=Eleventy* npx @11ty/eleventy
+DEBUG=Eleventy* npx @11ty/eleventy@canary # until 1.0.0 is released on latest
 ```
 
 Or get just Prismic related logs:
@@ -300,7 +301,7 @@ Or get just Prismic related logs:
 # Installed globally
 DEBUG=Eleventy:Prismic* eleventy
 # Installed locally
-DEBUG=Eleventy:Prismic* npx @11ty/eleventy
+DEBUG=Eleventy:Prismic* npx @11ty/eleventy@canary # until 1.0.0 is released on latest
 ```
 
 ## Configuration References
