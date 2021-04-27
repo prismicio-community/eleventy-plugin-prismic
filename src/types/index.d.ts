@@ -1,11 +1,10 @@
 import type { ApiOptions } from "@prismicio/client/types/Api";
-
-type DeepPartial<T> = {
-	[P in keyof T]?: DeepPartial<T[P]>;
-};
+import type { DeepRequired } from "ts-essentials";
 
 /**
  * Client SDK options
+ *
+ * @see Prismic documentation: {@link https://github.com/prismicio/prismic-javascript#instantiate-the-prismic-client}
  *
  * @example
  * Just a repository endpoint
@@ -24,140 +23,206 @@ type DeepPartial<T> = {
  */
 type ClientOptions = string | [string] | [string, ApiOptions];
 
-type EleventyShortcodeFunction = (
-	name: string,
-	handler: (...value: unknown) => string
-) => string;
-type EleventyPairedShortcodeFunction = (
-	name: string,
-	handler: (slort: string, ...value: unknown) => string
-) => string;
-
 /**
  * Shortcodes SDK options
+ *
+ * @example
+ * Make shortcodes only available in Nunjucks
+ * ```
+ * {
+ *   injector: eleventyConfig.addNunjucksShortcode,
+ *   pairedInjector: eleventyConfig.addPairedNunjucksShortcode
+ * }
+ * ```
+ *
+ * @example
+ * Use another `rel` attribute on links with `target="_blank"`
+ * ```
+ * {
+ *   link: {
+ *     blankTargetRelAttribute: "noreferrer"
+ *   }
+ * }
+ * ```
  */
 interface ShortcodesOptions {
 	/**
 	 * Function from EleventyConfig to use for injecting shortcodes
+	 *
+	 * @see Eleventy documentation: {@link https://www.11ty.dev/docs/shortcodes/#shortcodes}
+	 *
+	 * @defaultValue `eleventyConfig.addShortcode`
 	 */
 	injector?: EleventyShortcodeFunction;
+
 	/**
 	 * Function from EleventyConfig to use for injecting paired shortcodes
+	 *
+	 * @see Eleventy documentation: {@link https://www.11ty.dev/docs/shortcodes/#paired-shortcodes}
+	 *
+	 * @defaultValue `eleventyConfig.addPairedShortcode`
 	 */
 	pairedInjector?: EleventyPairedShortcodeFunction;
+
 	/**
 	 * Namespace to apply on injected shortcode, can be an empty string
 	 * for no namespace
+	 *
+	 * @defaultValue `"prismic"`
 	 */
 	namespace?: string;
+
 	/**
 	 * Options for `link` shortcode
+	 *
+	 * @defaultValue
+	 * ```
+	 * {
+	 *   blankTargetRelAttribute: "noopener"
+	 * }
+	 * ```
 	 */
-	link: {
+	link?: {
 		/**
 		 * Value of the `rel` attribute on links with `target="_blank"`
+		 *
+		 * @defaultValue `"noopener"`
 		 */
-		blankTargetRelAttribute: string;
+		blankTargetRelAttribute?: string;
 	};
 }
 
 /**
  * Plugin options object
+ *
+ * @defaultValue
+ * ```
+ * {
+ *  client: false,
+ *  shortcodes: {
+ *  injector: eleventyConfig.addShortcode,
+ *  pairedInjector: eleventyConfig.addPairedShortcode,
+ *  namespace: "prismic",
+ *   link: {
+ *     blankTargetRelAttribute: "noopener"
+ *     }
+ *   },
+ *
+ *   singletons: [],
+ *   linkResolver: () => "/",
+ *   htmlSerializer: () => null
+ * }
+ * ```
  */
 interface PrismicPluginOptions {
 	/**
+	 * Cient SDK options
+	 *
+	 * @see Prismic documentation: {@link https://github.com/prismicio/prismic-javascript#instantiate-the-prismic-client}
+	 *
 	 * @see ClientOptions
-	 * Use `false` to disable
+	 *
+	 * @example
+	 * Just a repository endpoint
+	 * ```
+	 * "https://your-repo-name.cdn.prismic.io/api/v2"
+	 * ```
+	 *
+	 * @example
+	 * Private repository
+	 * ```
+	 * [
+	 *   "https://your-repo-name.cdn.prismic.io/api/v2",
+	 *   { accessToken: "abc" }
+	 * ]
+	 * ```
+	 *
+	 * @example
+	 * Disabling client
+	 * ```
+	 * false
+	 * ```
+	 *
+	 * @defaultValue `false`
 	 */
 	client?: false | ClientOptions;
+
 	/**
+	 * Shortcodes SDK options
+	 *
 	 * @see ShortcodesOptions
-	 * Use `false` to disable
+	 *
+	 * @example
+	 * Make shortcodes only available in Nunjucks
+	 * ```
+	 * {
+	 *   injector: eleventyConfig.addNunjucksShortcode,
+	 *   pairedInjector: eleventyConfig.addPairedNunjucksShortcode
+	 * }
+	 * ```
+	 *
+	 * @example
+	 * Use another `rel` attribute on links with `target="_blank"`
+	 * ```
+	 * {
+	 *   link: {
+	 *     blankTargetRelAttribute: "noreferrer"
+	 *   }
+	 * }
+	 * ```
+	 *
+	 * @example
+	 * Disabling shortcodes
+	 * ```
+	 * false
+	 * ```
+	 *
+	 * @defaultValue
+	 * ```
+	 * {
+	 *   injector: eleventyConfig.addShortcode,
+	 *   pairedInjector: eleventyConfig.addPairedShortcode,
+	 *   namespace: "prismic",
+	 *   link: {
+	 *     blankTargetRelAttribute: "noopener"
+	 *   }
+	 * }
+	 * ```
 	 */
-	shortcodes?: false | DeepPartial<ShortcodesOptions>;
+	shortcodes?: false | ShortcodesOptions;
 
 	/**
 	 * Singletons custom types from Prismic to avoid unnecessary array
 	 * nesting on the `prismic` global data object
+	 *
+	 * @defaultValue `[]`
 	 */
 	singletons?: string[];
+
 	/**
 	 * A custom link resolver function to use
-	 * Documentation: {@link https://prismic.io/docs/technologies/link-resolver-javascript}
+	 *
+	 * @see Prismic documentation: {@link https://prismic.io/docs/technologies/link-resolver-javascript}
+	 *
+	 * @defaultValue `() => "/"`
 	 */
 	linkResolver?: LinkResolver;
+
 	/**
 	 * A custom HTML serializer function to use
-	 * Documentation: {@link https://prismic.io/docs/technologies/html-serializer-javascript}
+	 *
+	 * @see Prismic documentation: {@link https://prismic.io/docs/technologies/html-serializer-javascript}
+	 *
+	 * @defaultValue `() => null`
 	 */
 	htmlSerializer?: HtmlSerializer<string>;
 }
 
+/**
+ * Resolved Prismic plugin options
+ *
+ * @internal
+ */
 interface ResolvedPrismicPluginOptions extends Required<PrismicPluginOptions> {
-	/** {@inheritDoc PrismicPluginOptions.shortcodes} */
-	shortcodes: false | Required<ShortcodesOptions>;
+	shortcodes: false | DeepRequired<ShortcodesOptions>;
 }
-
-// Fields
-type RichTextField = RichTextBlock[];
-
-interface LinkFieldRaw extends Partial<LinkResolverDoc> {
-	url?: string;
-}
-
-interface LinkField extends LinkFieldRaw {
-	link_type?: string;
-	_linkType?: string;
-	linkType?: string;
-	value?: { document: LinkFieldRaw; isBroken?: boolean };
-	target?: string;
-}
-
-export interface ImageField {
-	url: string;
-	alt?: string;
-	copyright?: string;
-}
-
-export interface EmbedField {
-	html: string;
-	embed_url?: string;
-	type?: string;
-	provider_name?: string;
-}
-
-// Missing types from underlying kits
-type EleventyConfig = { [key: string]: unknown };
-
-interface LinkResolverDoc {
-	id: string;
-	uid: string;
-	type: string;
-	tags: string[];
-	lang: string;
-	slug?: string;
-	isBroken?: boolean;
-}
-
-type LinkResolver = (doc: LinkResolverDoc) => string;
-
-interface RichTextSpan {
-	start: number;
-	end: number;
-	type: string;
-	text: string;
-}
-
-interface RichTextBlock {
-	type: string;
-	text: string;
-	spans: RichTextSpan[];
-}
-
-type HtmlSerializer<T> = (
-	type: string,
-	element: RichTextBlock | RichTextSpan,
-	text: string | null,
-	children: T[],
-	index: number
-) => T | null;

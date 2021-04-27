@@ -6,7 +6,7 @@ const { Client, Shortcodes } = require("./sdk");
 
 /**
  * Eleventy Prismic Plugin
- * @param {import("./types").EleventyConfig} eleventyConfig
+ * @param {EleventyConfig} eleventyConfig
  * @param {import("./types").PrismicPluginOptions} pluginOptions
  */
 module.exports = (eleventyConfig, pluginOptions = {}) => {
@@ -20,7 +20,6 @@ module.exports = (eleventyConfig, pluginOptions = {}) => {
 	 */
 	const DEFAULTS = {
 		client: false,
-		singletons: [],
 		shortcodes: {
 			injector: eleventyConfig.addShortcode,
 			pairedInjector: eleventyConfig.addPairedShortcode,
@@ -29,6 +28,8 @@ module.exports = (eleventyConfig, pluginOptions = {}) => {
 				blankTargetRelAttribute: "noopener"
 			}
 		},
+
+		singletons: [],
 		linkResolver: () => "/",
 		htmlSerializer: () => null
 	};

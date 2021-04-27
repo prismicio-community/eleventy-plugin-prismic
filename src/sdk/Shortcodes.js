@@ -56,7 +56,7 @@ class Shortcodes {
 
 	/**
 	 * @constructor
-	 * @param {import("../types").EleventyConfig} eleventyConfig
+	 * @param {EleventyConfig} eleventyConfig
 	 * @param {import("../types").ResolvedPrismicPluginOptions} options
 	 *
 	 * @throws {ArgumentError}
@@ -101,7 +101,7 @@ class Shortcodes {
 
 	/**
 	 * Serializes a rich text field into a plain text string
-	 * @param {import("../types").RichTextField} richTextField - rich text field to serialize
+	 * @param {RichTextField} richTextField - rich text field to serialize
 	 * @return {string} - Serialized plain text string
 	 */
 	asText = richTextField => {
@@ -110,7 +110,7 @@ class Shortcodes {
 
 	/**
 	 * Serializes a rich text field into an HTML string
-	 * @param {import("../types").RichTextField} richTextField - rich text field to serialize
+	 * @param {RichTextField} richTextField - rich text field to serialize
 	 * @return {string} - Serialized HTML string
 	 */
 	asHtml = richTextField => {
@@ -123,7 +123,7 @@ class Shortcodes {
 
 	/**
 	 * Resolve a link field into an `href` value
-	 * @param {import("../types").LinkField} linkField - link field to resolve
+	 * @param {LinkField} linkField - link field to resolve
 	 * @return {string} - resolved link
 	 */
 	asLink = linkField => {
@@ -158,7 +158,7 @@ class Shortcodes {
 	 * Display a link field
 	 * @param {string} slot - HTML slot string
 	 * @param {Object<string, string>} page - Eleventy page object
-	 * @param {import("../types").LinkField} linkField - link field to display
+	 * @param {LinkField} linkField - link field to display
 	 * @param {...string} [classOrAttributes] - additional classes or attributes to add
 	 * @return {string} - a link tag
 	 */
@@ -185,7 +185,7 @@ class Shortcodes {
 
 	/**
 	 * Display an image field
-	 * @param {import("../types").ImageField} imageField - image field to display
+	 * @param {ImageField} imageField - image field to display
 	 * @param {...string} [classOrAttributes] - additional classes or attributes to add
 	 * @return {string} - an image tag
 	 */
@@ -201,7 +201,7 @@ class Shortcodes {
 
 	/**
 	 * Display an embed field
-	 * @param {import("../types").EmbedField} embedField - embed field to display
+	 * @param {EmbedField} embedField - embed field to display
 	 * @param {string} [wrapper] - wrapper tag to use, defaults to a div tag
 	 * @param {...string} [classOrAttributes] - additional classes or attributes to add
 	 * @return {string} - an image tag

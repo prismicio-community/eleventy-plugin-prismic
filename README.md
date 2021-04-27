@@ -16,7 +16,7 @@
 
 ## Installation
 
-> ⚠ This plugin relies on the new `eleventyConfig.addGlobalData` method that comes with Eleventy 1.0.0, [see documentation](https://www.11ty.dev/docs/data-global-custom) for more.
+> ⚠ This plugin relies on the new `eleventyConfig.addGlobalData` method that comes with Eleventy 1.0.0, [see documentation](https://www.11ty.dev/docs/data-global-custom/) for more.
 >
 > To use it make sure you upgrade Eleventy to the latest canary version:
 >
@@ -71,6 +71,7 @@ All data are injected under the `prismic` global data object when launching Elev
 
 Pagination example:
 
+<!-- prettier-ignore-start -->
 ```nunjucks
 {# ./blog/slug.njk #}
 
@@ -89,6 +90,7 @@ permalink: "blog/{{ post.uid }}/"
 
 ...
 ```
+<!-- prettier-ignore-end -->
 
 ### Using Shortcodes
 
@@ -308,94 +310,35 @@ DEBUG=Eleventy:Prismic* npx @11ty/eleventy@canary # until 1.0.0 is released on l
 
 ### Interface
 
-````typescript
-/**
- * Client SDK options
- *
- * @example
- * Just a repository endpoint
- * ```
- * "https://your-repo-name.cdn.prismic.io/api/v2"
- * ```
- *
- * @example
- * Private repository
- * ```
- * [
- *   "https://your-repo-name.cdn.prismic.io/api/v2",
- *   { accessToken: "abc" }
- * ]
- * ```
- */
+```typescript
 type ClientOptions = string | [string] | [string, ApiOptions];
 
-/**
- * Shortcodes SDK options
- */
 interface ShortcodesOptions {
-	/**
-	 * Function from EleventyConfig to use for injecting shortcodes
-	 */
 	injector?: EleventyShortcodeFunction;
-	/**
-	 * Function from EleventyConfig to use for injecting paired shortcodes
-	 */
 	pairedInjector?: EleventyPairedShortcodeFunction;
-	/**
-	 * Namespace to apply on injected shortcode, can be an empty string
-	 * for no namespace
-	 */
-	namespace?: string;
-	/**
-	 * Options for `link` shortcode
-	 */
-	link: {
-		/**
-		 * Value of the `rel` attribute on links with `target="_blank"`
-		 */
-		blankTargetRelAttribute: string;
+	namespace?: String;
+	link?: {
+		blankTargetRelAttribute?: string;
 	};
 }
 
-/**
- * Plugin options object
- */
 interface PrismicPluginOptions {
-	/**
-	 * @see ClientOptions
-	 * Use `false` to disable
-	 */
 	client?: false | ClientOptions;
-	/**
-	 * @see ShortcodesOptions
-	 * Use `false` to disable
-	 */
-	shortcodes?: false | DeepPartial<ShortcodesOptions>;
+	shortcodes?: false | ShortcodesOptions;
 
-	/**
-	 * Singletons custom types from Prismic to avoid unnecessary array
-	 * nesting on the `prismic` global data object
-	 */
 	singletons?: string[];
-	/**
-	 * A custom link resolver function to use
-	 * Documentation: {@link https://prismic.io/docs/technologies/link-resolver-javascript}
-	 */
 	linkResolver?: LinkResolver;
-	/**
-	 * A custom HTML serializer function to use
-	 * Documentation: {@link https://prismic.io/docs/technologies/html-serializer-javascript}
-	 */
 	htmlSerializer?: HtmlSerializer<string>;
 }
-````
+```
+
+> 💡 See [src/types/index.d.ts](./src/type/index.d.ts#L117) for comprehensive definition, don't be afraid to check it! You don't actually need TypeScript knowledge to understand it~
 
 ### Defaults
 
 ```javascript
 {
 	client: false,
-	singletons: [],
 	shortcodes: {
 		injector: eleventyConfig.addShortcode,
 		pairedInjector: eleventyConfig.addPairedShortcode,
@@ -404,6 +347,8 @@ interface PrismicPluginOptions {
 			blankTargetRelAttribute: "noopener"
 		}
 	},
+
+	singletons: [],
 	linkResolver: () => "/",
 	htmlSerializer: () => null
 }

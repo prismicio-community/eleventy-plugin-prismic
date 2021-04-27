@@ -6,7 +6,7 @@ class ArgumentError extends Error {}
 class Client {
 	/**
 	 * @constructor
-	 * @param {import("../types").EleventyConfig} eleventyConfig
+	 * @param {EleventyConfig} eleventyConfig
 	 * @param {import("../types").ResolvedPrismicPluginOptions} options
 	 *
 	 * @throws {ArgumentError}

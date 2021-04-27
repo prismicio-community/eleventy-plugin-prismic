@@ -1,3 +1,66 @@
+// Fields
+type RichTextField = RichTextBlock[];
+
+interface LinkFieldRaw extends Partial<LinkResolverDoc> {
+	url?: string;
+}
+
+interface LinkField extends LinkFieldRaw {
+	link_type?: string;
+	_linkType?: string;
+	linkType?: string;
+	value?: { document: LinkFieldRaw; isBroken?: boolean };
+	target?: string;
+}
+
+interface ImageField {
+	url: string;
+	alt?: string;
+	copyright?: string;
+}
+
+interface EmbedField {
+	html: string;
+	embed_url?: string;
+	type?: string;
+	provider_name?: string;
+}
+
+// DOM
+interface LinkResolverDoc {
+	id: string;
+	uid: string;
+	type: string;
+	tags: string[];
+	lang: string;
+	slug?: string;
+	isBroken?: boolean;
+}
+
+type LinkResolver = (doc: LinkResolverDoc) => string;
+
+interface RichTextSpan {
+	start: number;
+	end: number;
+	type: string;
+	text: string;
+}
+
+interface RichTextBlock {
+	type: string;
+	text: string;
+	spans: RichTextSpan[];
+}
+
+type HtmlSerializer<T> = (
+	type: string,
+	element: RichTextBlock | RichTextSpan,
+	text: string | null,
+	children: T[],
+	index: number
+) => T | null;
+
+// Prismic DOM
 declare module "prismic-dom" {
 	type LinkResolver = import("../types").LinkResolver;
 	type RichTextBlock = import("../types").RichTextBlock;
