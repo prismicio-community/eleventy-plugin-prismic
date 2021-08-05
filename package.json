@@ -1,6 +1,6 @@
 {
 	"name": "eleventy-plugin-prismic",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"description": "Easily connect your Eleventy application to your content hosted on Prismic",
 	"keywords": [
 		"eleventy",
