@@ -1,2 +1,2 @@
 exports.Client = require("./Client").Client;
-exports.Shortcodes = require("./ShortCodes").Shortcodes;
+exports.Shortcodes = require("./Shortcodes").Shortcodes;
