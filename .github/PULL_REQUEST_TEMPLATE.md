@@ -20,7 +20,7 @@
 <!--- Put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
-- [ ] My change requires an update to the official documentation.
+- [ ] My change requires an update to the documentation.
 - [ ] All [TSDoc](https://tsdoc.org) comments are up-to-date and new ones have been added where necessary.
 - [ ] All new and existing tests are passing.
 
