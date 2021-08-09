@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.0-alpha.0...v0.1.0) (2021-08-09)
+
+
+### Documentation
+
+* typo ([3e4687a](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/3e4687abf10ef9353690e15c38c3b29b5faddf88))
+* update docs ([2a7278b](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/2a7278bfc4cf556115565d778b27ce0a46658cfd))
+
+
+### Chore
+
+* eleventyConfig own shortcodes are always here ([d906c16](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/d906c16a6a3527584e6a467a922b3d98e0bfcac1))
+* maintain package.json ([c3c24a3](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/c3c24a3a7e2d2f436dab20fabee07cd6f6f4a87e))
+* update templates ([539e99d](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/539e99dc80cbb8f49a6018e6086d9a90784293b7))
+
 ## [0.1.0-alpha.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.0.3...v0.1.0-alpha.0) (2021-08-09)
 
 
