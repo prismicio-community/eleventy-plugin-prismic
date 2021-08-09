@@ -377,7 +377,7 @@ Plugin options have changed from `0.0.x` to `0.1.x`, to migrate you need to upda
 +	endpoint: "https://your-repo-name.cdn.prismic.io/api/v2",
 
 	// Optional additional configuration provided to your client
-+ clientConfig: { /* ... */ }
++	clientConfig: { /* ... */ }
 
 	// `singletons` stays the same
 	singletons: ["settings"],
@@ -402,7 +402,7 @@ Plugin options have changed from `0.0.x` to `0.1.x`, to migrate you need to upda
 +	injectShortcodes: false,
 
 	// Shortcodes are now unprefixed by default, specify `"prismic"` here if you were using the default prefixed version from `0.0.x`
-+ shortcodesNamespace: "foo",
++	shortcodesNamespace: "foo",
 
 	// Injectors have been moved top level
 +	shortcodesInjector: eleventyConfig.addShortcode,
