@@ -7,17 +7,11 @@
 [![Conventional Commits][conventional-commits-src]][conventional-commits-href]
 [![License][license-src]][license-href]
 
-Eleventy plugin and shortcodes to fetch and present [Prismic][prismic] content.
+[Eleventy][eleventy] plugin and shortcodes to fetch and present [Prismic][prismic] content.
 
-<!--
-
-TODO: Create a small list of package features:
-
-- 🤔 &nbsp;A useful feature;
-- 🥴 &nbsp;Another useful feature;
-- 🙃 &nbsp;A final useful feature.
-
--->
+- 🎣 &nbsp;Inject Prismic content into Eleventy data;
+- 🧰 &nbsp;Display content Prismic with provided shortcodes;
+- 📦 &nbsp;Batteries included, no need for extra Prismic dependencies.
 
 ## Install
 
@@ -27,7 +21,7 @@ npm install eleventy-plugin-prismic
 
 ## Documentation
 
-To discover what's new on this package check out [the changelog][changelog]. For full documentation, check out the [dedicated document][docs].
+To discover what's new on this package check out [the changelog][changelog]. For full documentation, check out the [dedicated document][documentation] (GitHub).
 
 ## Contributing
 
@@ -48,10 +42,11 @@ Whether you're helping us fix bugs, improve the docs, or spread the word, we'd l
 <!-- Links -->
 
 [prismic]: https://prismic.io
+[eleventy]: https://11ty.dev
 
 <!-- TODO: Replace link with a more useful one if available -->
 
-[docs]: ./docs/0.1.x.md
+[documentation]: ./DOCUMENTATION.md
 [changelog]: ./CHANGELOG.md
 [license]: ./LICENSE
 
