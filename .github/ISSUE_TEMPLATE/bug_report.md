@@ -1,15 +1,15 @@
 ---
 name: 🚨 Bug report
-about: Report a bug report to help us improve the plugin.
+about: Report a bug report to help improve the package.
 title: ""
 labels: "bug"
 assignees: ""
 ---
 
-<!-- 💙 Thanks for your time to make this plugin better with your feedback 💙
+<!-- 💙 Thanks for your time to make this package better with your feedback 💙
 
 **IMPORTANT** Before reporting a bug please make sure that you have read through the documentation:
-- https://github.com/prismicio-community/eleventy-plugin-prismic#readme
+- https://github.com/prismicio-community/blob/master/DOCUMENTATION.md#readme
 
 👍 A properly detailed bug report can save a LOT of time and help fixing issues as soon as possible.
 -->
@@ -22,16 +22,16 @@ assignees: ""
 
 ### Reproduction
 
-<!-- Link to a minimal test case, without a reproduction, it is so hard to address problem :( -->
+<!-- If possible link to a minimal test case, without a reproduction, it is so hard to address problems :( -->
 
 <details open>
 <summary>Additional Details</summary>
 <br>
-<!-- Attaching `.eleventy.js`, dependencies, logs or code snippets would help to find the issue -->
+<!-- Attaching `package.json`, dependencies, logs or code snippets would help to find the issue -->
 </details>
 
 ### Steps to reproduce
 
-### What is Expected?
+### What is expected?
 
 ### What is actually happening?

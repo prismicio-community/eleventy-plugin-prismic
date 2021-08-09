@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0-alpha.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.0.3...v0.1.0-alpha.0) (2021-08-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* revamp API and use new kits
+
+### Refactor
+
+* revamp API and use new kits ([b0eacd8](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/b0eacd89fed72434b39439497a5acebab246ac5c))
+
 ### [0.0.3](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.0.2...v0.0.3) (2021-08-05)
 
 

@@ -1,24 +1,20 @@
-const pluginPrismic = require("../src");
+const { pluginPrismic } = require("../dist/index.cjs");
 
 module.exports = function (eleventyConfig) {
 	/**
-	 * @type {import("../src/types").PrismicPluginOptions}
+	 * @type {import("../dist").PrismicPluginOptions}
 	 */
 	const prismicPluginOptions = {
-		client: ["https://200629-sms-hoy.cdn.prismic.io/api/v2"],
-		shortcodes: {
-			link: {
-				blankTargetRelAttribute: "noreferrer"
-			}
-		},
+		endpoint: "200629-sms-hoy",
 		singletons: ["motd", "partials", "settings"],
-		linkResolver: doc => {
+		linkResolver: (doc) => {
 			if (doc.type === "post__blog") {
 				return `/blog/${doc.uid}`;
 			}
 
 			return "/";
-		}
+		},
+		shortcodesNamespace: "prismic",
 	};
 	eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
 };
