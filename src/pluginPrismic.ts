@@ -86,14 +86,14 @@ export const pluginPrismic = (
 		// Injects basic shortcodes
 		injectShortcodes(
 			options.shortcodesInjector?.bind(eleventyConfig) ||
-				eleventyConfig.addShortcode?.bind(eleventyConfig),
+				eleventyConfig.addShortcode.bind(eleventyConfig),
 			options,
 		);
 
 		// Injects paired shortcodes
 		injectPairedShortcodes(
 			options.shortcodesPairedInjector?.bind(eleventyConfig) ||
-				eleventyConfig.addPairedShortcode?.bind(eleventyConfig),
+				eleventyConfig.addPairedShortcode.bind(eleventyConfig),
 			options,
 		);
 	} else {
