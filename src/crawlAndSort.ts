@@ -37,7 +37,8 @@ export const crawlAndSort = async (
 
 			if (
 				"singletons" in options &&
-				options.singletons?.includes(current.type) &&
+				Array.isArray(options.singletons) &&
+				options.singletons.includes(current.type) &&
 				!(current.type in collections)
 			) {
 				collections[current.type] = current;
