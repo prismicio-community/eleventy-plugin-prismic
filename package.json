@@ -1,7 +1,7 @@
 {
 	"name": "eleventy-plugin-prismic",
 	"version": "0.0.3",
-	"description": "Easily connect your Eleventy application to your content hosted on Prismic",
+	"description": "Eleventy plugin and shortcodes to fetch and present Prismic content",
 	"keywords": [
 		"eleventy",
 		"eleventy-plugin",
@@ -15,55 +15,74 @@
 	},
 	"license": "MIT",
 	"author": "Lucie Haberer <hello@lihbr.com> (https://lihbr.com)",
-	"main": "src/index.js",
-	"types": "src/types/index.d.s",
+	"type": "module",
+	"exports": {
+		".": {
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.mjs"
+		},
+		"./package.json": "./package.json"
+	},
+	"main": "dist/index.cjs",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
 	"files": [
+		"dist",
 		"src"
 	],
 	"scripts": {
-		"dev": "cd playground && eleventy --serve",
-		"dev:debug": "cd playground && cross-env DEBUG=Eleventy:Prismic* eleventy --serve",
-		"generate": "cd playground && eleventy",
-		"generate:debug": "cd playground && cross-env DEBUG=Eleventy:Prismic* eleventy",
-		"release": "yarn test && standard-version --release-as patch && git push --follow-tags && npm publish",
-		"release:dry": "standard-version --release-as patch --dry-run",
+		"build": "siroc build",
+		"dev": "siroc build --watch",
+		"playground:build": "cd playground && cross-env DEBUG=Eleventy:Prismic* eleventy",
+		"playground:dev": "cd playground && cross-env DEBUG=Eleventy:Prismic* eleventy --serve",
+		"format": "prettier --write .",
+		"prepare": "npm run build",
+		"release": "npm run build && npm run test && standard-version && git push --follow-tags && npm run build && npm publish",
+		"release:dry": "standard-version --dry-run",
+		"release:alpha": "npm run build && npm run test && standard-version --release-as major --prerelease alpha && git push --follow-tags && npm run build && npm publish --tag alpha",
+		"release:alpha:dry": "standard-version --release-as major --prerelease alpha --dry-run",
 		"lint": "eslint --ext .js,.ts .",
-		"test": "yarn lint"
+		"unit": "nyc --reporter=lcovonly --reporter=text --exclude-after-remap=false --cache=false ava",
+		"test": "npm run lint && npm run unit"
+	},
+	"dependencies": {
+		"@prismicio/client": "alpha",
+		"@prismicio/helpers": "alpha",
+		"@prismicio/types": "0.1.5",
+		"dayjs": "^1.10.6",
+		"debug": "^4.3.2",
+		"node-fetch": "2.6.1"
+	},
+	"devDependencies": {
+		"@11ty/eleventy": "^1.0.0 || ^1.0.0-canary",
+		"@types/debug": "^4.1.7",
+		"@types/node-fetch": "2.5.12",
+		"@types/sinon": "10.0.2",
+		"@typescript-eslint/eslint-plugin": "^4.29.0",
+		"@typescript-eslint/parser": "^4.29.0",
+		"ava": "^3.15.0",
+		"cross-env": "^7.0.3",
+		"dotenv": "^10.0.0",
+		"eslint": "^7.32.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.0",
+		"msw": "^0.34.0",
+		"nyc": "^15.1.0",
+		"prettier": "^2.3.2",
+		"sinon": "^11.1.2",
+		"siroc": "^0.15.0",
+		"standard-version": "^9.3.1",
+		"ts-eager": "^2.0.2",
+		"type-fest": "^2.0.0",
+		"typescript": "^4.3.5"
+	},
+	"peerDependencies": {
+		"@11ty/eleventy": "^1.0.0 || ^1.0.0-canary"
 	},
 	"engines": {
-		"node": ">=12.0.0"
+		"node": ">=12.7.0"
 	},
 	"publishConfig": {
 		"access": "public"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "yarn lint",
-			"commit-msg": "commitlint --env HUSKY_GIT_PARAMS"
-		}
-	},
-	"dependencies": {
-		"@prismicio/client": "^4.0.0",
-		"dayjs": "1.10.4",
-		"debug": "^4.3.1",
-		"defu": "^4.0.1",
-		"prismic-dom": "^2.2.5"
-	},
-	"devDependencies": {
-		"@11ty/eleventy": "1.0.0-canary.15",
-		"@commitlint/cli": "12.1.1",
-		"@commitlint/config-conventional": "12.1.1",
-		"@typescript-eslint/eslint-plugin": "4.22.0",
-		"@typescript-eslint/parser": "4.22.0",
-		"cross-env": "7.0.3",
-		"dotenv": "8.2.0",
-		"eslint": "7.25.0",
-		"eslint-config-prettier": "8.3.0",
-		"eslint-plugin-prettier": "3.4.0",
-		"husky": "4.3.8",
-		"prettier": "2.2.1",
-		"standard-version": "9.2.0",
-		"ts-essentials": "7.0.1",
-		"typescript": "4.2.4"
 	}
 }
