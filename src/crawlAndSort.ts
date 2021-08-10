@@ -11,7 +11,7 @@ import { dPrismicClient } from "./lib/debug";
  * @param client - A Prismic client instance
  * @param options - Options of the plugin
  *
- * @return A promise resolving to a map of sorted documents
+ * @returns A promise resolving to a map of sorted documents
  *
  * @internal
  */

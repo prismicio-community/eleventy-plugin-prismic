@@ -6,7 +6,7 @@ import { dPrismicShortcodes } from "./debug";
  * @param classOrAttributes - attributes array
  * @param attributes - attributes map
  *
- * @return Truthy attributes as an HTML string
+ * @returns Truthy attributes as an HTML string
  */
 export const attributesToHtml = (
 	classOrAttributes: string[],

@@ -13,10 +13,10 @@ const defaultBlankTargetRelAttribute = "noopener noreferrer";
 /**
  * Paired `link` shortcode factory
  *
- * @param [linkResolver] - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
- * @param [linkBlankTargetRelAttribute] - Value of the `rel` attribute on links with `target="_blank"` rendered by shortcodes, defaults to `"noopener noreferrer"`
+ * @param linkResolver - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
+ * @param linkBlankTargetRelAttribute - Value of the `rel` attribute on links with `target="_blank"` rendered by shortcodes, defaults to `"noopener noreferrer"`
  *
- * @return `link` paired shortcode ready to be injected
+ * @returns `link` paired shortcode ready to be injected
  *
  * @see Link resolver documentation {@link https://prismic.io/docs/core-concepts/link-resolver-route-resolver#link-resolver}
  *

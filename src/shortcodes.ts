@@ -17,7 +17,7 @@ import { EleventyShortcodeFunction, PrismicPluginOptions } from "./types";
 /**
  * `asText` shortcode factory
  *
- * @return `asText` shortcode ready to be injected
+ * @returns `asText` shortcode ready to be injected
  *
  * @internal
  */
@@ -26,10 +26,10 @@ export const asText = (): typeof prismicH.asText => prismicH.asText;
 /**
  * `asHTML` shortcode factory
  *
- * @param [linkResolver] - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
- * @param [htmlSerializer] - An optional HTML serializer to customize the way rich text fields are rendered
+ * @param linkResolver - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
+ * @param htmlSerializer - An optional HTML serializer to customize the way rich text fields are rendered
  *
- * @return `asHTML` shortcode ready to be injected
+ * @returns `asHTML` shortcode ready to be injected
  *
  * @see Link resolver documentation {@link https://prismic.io/docs/core-concepts/link-resolver-route-resolver#link-resolver}
  * @see HTML serializer documentation {@link https://prismic.io/docs/core-concepts/html-serializer}
@@ -47,9 +47,9 @@ export const asHTML = (
 /**
  * `asLink` shortcode factory
  *
- * @param [linkResolver] - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
+ * @param linkResolver - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
  *
- * @return `asLink` shortcode ready to be injected
+ * @returns `asLink` shortcode ready to be injected
  *
  * @see Link resolver documentation {@link https://prismic.io/docs/core-concepts/link-resolver-route-resolver#link-resolver}
  *
@@ -73,7 +73,7 @@ const defaultDateFormat = "MM/DD/YYYY";
 /**
  * `asDate` shortcode factory
  *
- * @return `asDate` shortcode ready to be injected
+ * @returns `asDate` shortcode ready to be injected
  *
  * @internal
  */
@@ -92,7 +92,7 @@ export const asDate = () => {
 /**
  * `image` shortcode factory
  *
- * @return `image` shortcode ready to be injected
+ * @returns `image` shortcode ready to be injected
  *
  * @internal
  */
@@ -116,7 +116,7 @@ const defaultEmbedWrapper = "div";
 /**
  * `embed` shortcode factory
  *
- * @return `embed` shortcode ready to be injected
+ * @returns `embed` shortcode ready to be injected
  *
  * @internal
  */
