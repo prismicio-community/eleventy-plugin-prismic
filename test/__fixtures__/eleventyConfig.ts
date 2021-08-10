@@ -1,7 +1,7 @@
 import { EleventyConfig } from "../../src/types";
 
 export const eleventyConfig: EleventyConfig = {
-	/** @private */
+	/** @internal */
 	globalData: {},
 
 	addGlobalData(name, data) {
