@@ -117,12 +117,12 @@ Lorem ipsum dolor sit amet.
 ```
 <!-- prettier-ignore-end -->
 
-#### asHtml
+#### asHTML
 
 Serializes a rich text field into an HTML string:
 
 ```njk
-{% asHtml document.data.richtext %}
+{% asHTML document.data.richtext %}
 ```
 
 Renders to:
@@ -418,4 +418,11 @@ Plugin options have also changed, to migrate you need to update the plugin confi
 	// `rel` attribute value has been moved to top level
 +	linkBlankTargetRelAttribute: "noopener noreferrer",
 }
+```
+
+Finally the case of the `asHTML` shortcodes has changed from `asHtml` to `asHTML`:
+
+```diff
+- {% asHtml document.data.richtext %}
++ {% asHTML document.data.richtext %}
 ```
