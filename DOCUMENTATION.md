@@ -4,7 +4,7 @@
 - [🛠 &nbsp;Usage](#usage)
 - [📚 &nbsp;Configuration References](#configuration-references)
 - [📚 &nbsp;Configuration References](#configuration-references)
-- [🛶 &nbsp;Migration From `0.0.x`](#migration-from-00x)
+- [🛶 &nbsp;Migrating From `0.0.x`](#migrating-from-00x)
 
 ## Installation
 
@@ -366,9 +366,16 @@ type PrismicPluginOptions = {
 }
 ```
 
-## Migration From `0.0.x`
+## Migrating From `0.0.x`
 
-Plugin options have changed from `0.0.x` to `0.1.x`, to migrate you need to update the plugin configuration:
+Package exports have changed from `0.0.x` to `0.1.x`, `pluginPrismic` is not longer default exported:
+
+```diff
+- const pluginPrismic = require("eleventy-plugin-prismic");
++ const { pluginPrismic } = require("eleventy-plugin-prismic");
+```
+
+Plugin options have also changed, to migrate you need to update the plugin configuration as follows:
 
 ```diff
 {
