@@ -30,30 +30,30 @@ test("get documents and sort them", async (t) => {
 	const result = await crawlAndSort(client);
 
 	t.true(Array.isArray(result.foo));
-	Array.isArray(result.foo) && t.is(2, result.foo.length);
+	Array.isArray(result.foo) && t.is(result.foo.length, 2);
 
 	t.true(Array.isArray(result.bar));
-	Array.isArray(result.bar) && t.is(1, result.bar.length);
+	Array.isArray(result.bar) && t.is(result.bar.length, 1);
 });
 
 test("does not wrap singletons", async (t) => {
 	const result = await crawlAndSort(client, { client, singletons: ["bar"] });
 
 	t.true(Array.isArray(result.foo));
-	Array.isArray(result.foo) && t.is(2, result.foo.length);
+	Array.isArray(result.foo) && t.is(result.foo.length, 2);
 
 	t.true(!Array.isArray(result.bar));
-	!Array.isArray(result.bar) && t.is("object", typeof result.bar);
+	!Array.isArray(result.bar) && t.is(typeof result.bar, "object");
 });
 
 test("unwraps singletons that obviously are not", async (t) => {
 	const result = await crawlAndSort(client, { client, singletons: ["foo"] });
 
 	t.true(Array.isArray(result.foo));
-	Array.isArray(result.foo) && t.is(2, result.foo.length);
+	Array.isArray(result.foo) && t.is(result.foo.length, 2);
 
 	t.true(Array.isArray(result.bar));
-	Array.isArray(result.bar) && t.is(1, result.bar.length);
+	Array.isArray(result.bar) && t.is(result.bar.length, 1);
 });
 
 test("resolves document URL when a link resolver is provided", async (t) => {
@@ -64,9 +64,9 @@ test("resolves document URL when a link resolver is provided", async (t) => {
 
 	t.true(Array.isArray(result.foo));
 	Array.isArray(result.foo) &&
-		t.is("/foo1", result.foo[0].url) &&
-		t.is("/foo2", result.foo[1].url);
+		t.is(result.foo[0].url, "/foo1") &&
+		t.is(result.foo[1].url, "/foo2");
 
 	t.true(Array.isArray(result.bar));
-	Array.isArray(result.bar) && t.is("/bar1", result.bar[0].url);
+	Array.isArray(result.bar) && t.is(result.bar[0].url, "/bar1");
 });

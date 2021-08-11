@@ -6,7 +6,6 @@ import { embed } from "../src";
 
 test("returns a valid embed component", (t) => {
 	t.is(
-		`<div data-oembed="foo" data-oembed-type="${EmbedType.Rich}" data-oembed-provider="bar">baz</div>`,
 		embed()({
 			url: "foo",
 			embed_url: "foo",
@@ -22,5 +21,6 @@ test("returns a valid embed component", (t) => {
 			thumbnail_height: null,
 			html: "baz",
 		}),
+		`<div data-oembed="foo" data-oembed-type="${EmbedType.Rich}" data-oembed-provider="bar">baz</div>`,
 	);
 });
