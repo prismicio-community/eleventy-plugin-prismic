@@ -3,7 +3,6 @@ import { createClient, getEndpoint } from "@prismicio/client";
 
 import { name as pkgName, version as pkgVersion } from "../package.json";
 import { dPrismic, dPrismicClient, dPrismicShortcodes } from "./lib/debug";
-import { isExternal } from "./lib/isExternal";
 import { EleventyConfig, PrismicPluginOptions } from "./types";
 import { crawlAndSort } from "./crawlAndSort";
 import { injectShortcodes } from "./shortcodes";
@@ -51,7 +50,8 @@ export const pluginPrismic = (
 			"client" in options
 				? options.client
 				: createClient(
-						isExternal(options.endpoint)
+						/** @see Regex101 expression: {@link https://regex101.com/r/GT2cl7/1} */
+						/^(https?:)?\/\//gim.test(options.endpoint)
 							? options.endpoint
 							: getEndpoint(options.endpoint),
 						{
