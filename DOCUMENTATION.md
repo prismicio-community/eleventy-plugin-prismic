@@ -3,7 +3,6 @@
 - [🚀 &nbsp;Installation](#installation)
 - [🛠 &nbsp;Usage](#usage)
 - [📚 &nbsp;Configuration References](#configuration-references)
-- [📚 &nbsp;Configuration References](#configuration-references)
 - [🛶 &nbsp;Migrating From `0.0.x`](#migrating-from-00x)
 
 ## Installation
