@@ -1,3 +1,13 @@
+<!--
+
+Replace all on all files (README.md, CONTRIBUTING.md, bug_report.md, package.json):
+- eleventy-plugin-prismic
+- Eleventy plugin and shortcodes to fetch and present Prismic content
+- prismicio-community/eleventy-plugin-prismic
+- eleventy-plugin-prismic
+
+-->
+
 # eleventy-plugin-prismic
 
 [![npm version][npm-version-src]][npm-version-href]
@@ -33,7 +43,9 @@ Whether you're helping us fix bugs, improve the docs, or spread the word, we'd l
 
 **Suggesting an improvement**: [Open an issue][repo-feature-request] explaining your improvement or feature so we can discuss and learn more.
 
-**Submitting code changes**: For small fixes, feel free to [open a PR][repo-pull-requests] with a description of your changes. For large changes, please first [open an issue][repo-feature-request] so we can discuss if and how the changes should be implemented.
+**Submitting code changes**: For small fixes, feel free to [open a pull request][repo-pull-requests] with a description of your changes. For large changes, please first [open an issue][repo-feature-request] so we can discuss if and how the changes should be implemented.
+
+For more clarity on this project and its structure you can also check out the detailed [CONTRIBUTING.md][contributing] document.
 
 ## License
 
@@ -48,6 +60,7 @@ Whether you're helping us fix bugs, improve the docs, or spread the word, we'd l
 
 [documentation]: ./DOCUMENTATION.md
 [changelog]: ./CHANGELOG.md
+[contributing]: ./CONTRIBUTING.md
 [license]: ./LICENSE
 
 <!-- TODO: Replace link with a more useful one if available -->
