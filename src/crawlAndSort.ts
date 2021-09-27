@@ -1,5 +1,5 @@
 import { Client } from "@prismicio/client";
-import { documentAsLink } from "@prismicio/helpers";
+import { asLink } from "@prismicio/helpers";
 import { PrismicDocument } from "@prismicio/types";
 
 import { PrismicPluginOptions } from "./types";
@@ -32,7 +32,7 @@ export const crawlAndSort = async (
 				typeof options.linkResolver === "function" &&
 				!("url" in current)
 			) {
-				current.url = documentAsLink(current, options.linkResolver);
+				current.url = asLink(current, options.linkResolver);
 			}
 
 			if (

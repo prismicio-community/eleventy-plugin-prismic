@@ -18,7 +18,7 @@ test("returns link field resolved anchor tag", (t) => {
 	);
 });
 
-test("returns link field resolved blank anchor tag", (t) => {
+test("returns link field resolved targetted anchor tag", (t) => {
 	t.is(
 		link()(...args, {
 			link_type: "Web",
@@ -26,6 +26,15 @@ test("returns link field resolved blank anchor tag", (t) => {
 			target: "_blank",
 		}),
 		`<a href="https://google.com" target="_blank" rel="noopener noreferrer">${args[0]}</a>`,
+	);
+
+	t.is(
+		link()(...args, {
+			link_type: "Web",
+			url: "https://google.com",
+			target: "something",
+		}),
+		`<a href="https://google.com" target="something">${args[0]}</a>`,
 	);
 });
 

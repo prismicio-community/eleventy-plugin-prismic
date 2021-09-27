@@ -56,13 +56,8 @@ export const asHTML = (
  * @internal
  */
 export const asLink = (linkResolver?: prismicH.LinkResolverFunction) => {
-	return (linkFieldOrDocument: LinkField | PrismicDocument): string => {
-		if ("data" in linkFieldOrDocument && linkFieldOrDocument.data) {
-			return prismicH.documentAsLink(linkFieldOrDocument, linkResolver) ?? "";
-		} else {
-			return prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
-		}
-	};
+	return (linkFieldOrDocument: LinkField | PrismicDocument): string =>
+		prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
 };
 
 /**

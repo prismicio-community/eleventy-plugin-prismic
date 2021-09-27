@@ -2,7 +2,6 @@ import test from "ava";
 import * as mswNode from "msw/node";
 
 import { createClient, getEndpoint } from "@prismicio/client";
-import nodeFetch from "node-fetch";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
 import { createMockRepositoryHandler } from "./__testutils__/createMockRepositoryHandler";
@@ -24,7 +23,10 @@ const server = mswNode.setupServer(
 test.before(() => server.listen({ onUnhandledRequest: "error" }));
 test.after(() => server.close());
 
-const client = createClient(getEndpoint(repositoryName), { fetch: nodeFetch });
+const client = createClient(getEndpoint(repositoryName), {
+	fetch: (...args) =>
+		import("node-fetch").then(({ default: fetch }) => fetch(...args)),
+});
 
 test("get documents and sort them", async (t) => {
 	const result = await crawlAndSort(client);

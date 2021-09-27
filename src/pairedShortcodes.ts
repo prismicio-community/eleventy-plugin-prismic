@@ -32,16 +32,16 @@ export const link = (
 		linkFieldOrDocument: LinkField | PrismicDocument,
 		...classOrAttributes: string[]
 	): string => {
-		let href: string | null = null;
+		const href: string | null = prismicH.asLink(
+			linkFieldOrDocument,
+			linkResolver,
+		);
 		let target: string | null = null;
 		let rel: string | null = null;
 
-		if ("data" in linkFieldOrDocument && linkFieldOrDocument.data) {
-			href = prismicH.documentAsLink(linkFieldOrDocument, linkResolver);
-		} else {
-			href = prismicH.asLink(linkFieldOrDocument);
-			if ("target" in linkFieldOrDocument && linkFieldOrDocument.target) {
-				target = linkFieldOrDocument.target;
+		if ("target" in linkFieldOrDocument && linkFieldOrDocument.target) {
+			target = linkFieldOrDocument.target;
+			if (target === "_blank") {
 				rel = linkBlankTargetRelAttribute || defaultBlankTargetRelAttribute;
 			}
 		}

@@ -1,10 +1,10 @@
-import { Repository } from "@prismicio/client";
+import * as prismicT from "@prismicio/types";
 
 import { createRef } from "./createRef";
 
 export const createRepositoryResponse = (
-	overrides?: Partial<Repository>,
-): Repository => {
+	overrides?: Partial<prismicT.Repository>,
+): prismicT.Repository => {
 	return {
 		refs: [createRef(true)],
 		bookmarks: {
@@ -93,6 +93,7 @@ export const createRepositoryResponse = (
 		oauth_initiate: "oauth_initiate",
 		oauth_token: "oauth_token",
 		version: "version",
+		integrationFieldsRef: null,
 		license: "All Rights Reserved",
 		...overrides,
 	};
