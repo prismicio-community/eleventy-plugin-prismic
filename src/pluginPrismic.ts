@@ -1,3 +1,4 @@
+import nodeFetch from "node-fetch";
 import { createClient, getEndpoint } from "@prismicio/client";
 
 import { name as pkgName, version as pkgVersion } from "../package.json";
@@ -54,10 +55,7 @@ export const pluginPrismic = (
 							? options.endpoint
 							: getEndpoint(options.endpoint),
 						{
-							fetch: (...args) =>
-								import("node-fetch").then(({ default: fetch }) =>
-									fetch(...args),
-								),
+							fetch: nodeFetch,
 							...options.clientConfig,
 						},
 				  );

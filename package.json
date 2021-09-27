@@ -52,12 +52,12 @@
 		"@prismicio/types": "^0.1.13",
 		"dayjs": "^1.10.7",
 		"debug": "^4.3.2",
-		"node-fetch": "^3.0.0"
+		"node-fetch": "^2.6.5"
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "^1.0.0 || ^1.0.0-canary",
 		"@types/debug": "^4.1.7",
-		"@types/node-fetch": "^3.0.3",
+		"@types/node-fetch": "^2.5.12",
 		"@types/sinon": "^10.0.4",
 		"@typescript-eslint/eslint-plugin": "^4.31.2",
 		"@typescript-eslint/parser": "^4.31.2",

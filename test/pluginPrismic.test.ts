@@ -2,6 +2,7 @@ import test from "ava";
 import * as mswNode from "msw/node";
 import * as sinon from "sinon";
 
+import nodeFetch from "node-fetch";
 import { createClient, getEndpoint } from "@prismicio/client";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
@@ -46,8 +47,7 @@ test.serial("injects documents from API endpoint", (t) => {
 
 test.serial("injects documents from client instance", async (t) => {
 	const client = createClient(getEndpoint(repositoryName), {
-		fetch: (...args) =>
-			import("node-fetch").then(({ default: fetch }) => fetch(...args)),
+		fetch: nodeFetch,
 	});
 	const spiedClient = sinon.spy(client);
 
