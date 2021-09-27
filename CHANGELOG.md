@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.0...v0.1.1) (2021-09-27)
+
+
+### Refactor
+
+* remove isExternal ([cc1f1bd](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/cc1f1bdc3f75639e52904d3889d33a4c71e1a167))
+
+
+### Documentation
+
+* asHTML case change ([3795510](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/3795510850903dfc1b18e9b31a8e135aa8619506))
+* fix fixture tsdoc ([070ab09](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/070ab091ae3777331cbb0d2494ff7dc1b1398e76))
+* imrpove migration guide ([25c39b9](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/25c39b9ec59fc283af73abbb3e7211d8e4c8ad32))
+* typo in doc ([170fcca](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/170fccaf5ddf15134350bd845cf233d9897a1f99))
+
+
+### Chore
+
+* **config:** add tsdoc lint to eslint ([21426fa](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/21426fa4c0fbf7d6897047dffcd40cd4536deead))
+* **deps:** maintain dependencies ([d02e0c2](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/d02e0c208a73af36dd3e1cd509412ebf0b39dd35))
+* fix documentation link ([c41b572](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/c41b572d0ef25cf6f34e33ebafc4769e83e08fa7))
+* update template config ([5af8adf](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/5af8adf988cb01b19ee321a40d3ea7bc473a1188))
+
 ## [0.1.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.0-alpha.0...v0.1.0) (2021-08-09)
 
 
