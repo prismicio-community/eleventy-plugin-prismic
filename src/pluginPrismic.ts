@@ -15,9 +15,10 @@ import { injectPairedShortcodes } from "./pairedShortcodes";
  * Basic usage
  *
  * ```
- * const prismicPluginOptions = {
+ * const prismicPluginOptions = definePrismicPluginOptions({
  *   endpoint: "my-repo",
- * };
+ * });
+ *
  * eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
  * ```
  *
@@ -25,10 +26,11 @@ import { injectPairedShortcodes } from "./pairedShortcodes";
  * With shortcodes deactivated
  *
  * ```
- * const prismicPluginOptions = {
+ * const prismicPluginOptions = definePrismicPluginOptions({
  *   endpoint: "my-repo",
  *   injectShortcodes: false,
- * };
+ * });
+ *
  * eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
  * ```
  */

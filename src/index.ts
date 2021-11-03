@@ -1,4 +1,5 @@
 export { pluginPrismic } from "./pluginPrismic";
+export { definePrismicPluginOptions } from "./definePrismicPluginOptions";
 
 export { crawlAndSort } from "./crawlAndSort";
 

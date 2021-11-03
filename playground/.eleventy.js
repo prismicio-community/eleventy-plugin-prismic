@@ -1,10 +1,10 @@
-const { pluginPrismic } = require("../dist/index.cjs");
+const {
+	pluginPrismic,
+	definePrismicPluginOptions,
+} = require("eleventy-plugin-prismic");
 
 module.exports = function (eleventyConfig) {
-	/**
-	 * @type {import("../dist").PrismicPluginOptions}
-	 */
-	const prismicPluginOptions = {
+	const prismicPluginOptions = definePrismicPluginOptions({
 		endpoint: "200629-sms-hoy",
 		singletons: ["motd", "partials", "settings"],
 		linkResolver: (doc) => {
@@ -15,6 +15,6 @@ module.exports = function (eleventyConfig) {
 			return "/";
 		},
 		shortcodesNamespace: "prismic",
-	};
+	});
 	eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
 };

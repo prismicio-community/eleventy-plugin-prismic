@@ -26,13 +26,15 @@ $ yarn add --dev eleventy-plugin-prismic
 Then open up your Eleventy config file (probably `.eleventy.js`) and use the `addPlugin` method:
 
 ```javascript
-const { pluginPrismic } = require("eleventy-plugin-prismic");
+const {
+	pluginPrismic,
+	definePrismicPluginOptions,
+} = require("eleventy-plugin-prismic");
 
 module.exports = function (eleventyConfig) {
-	/**
-	 * @type {import("eleventy-plugin-prismic").PrismicPluginOptions}
-	 */
-	const prismicPluginOptions = {
+	// This is a sugar function that gives you intellisense and
+	// documentation in your IDE while defining plugin options.
+	const prismicPluginOptions = definePrismicPluginOptions({
 		endpoint: "your-repo-name",
 
 		// Optional, additional parameters to pass to the client
@@ -41,7 +43,7 @@ module.exports = function (eleventyConfig) {
 		},
 
 		/* see configuration references for more */
-	};
+	});
 
 	eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
 };
@@ -96,7 +98,7 @@ Many shortcodes and paired shortcodes are made available inside your templates t
 
 By default shortcodes are unprefixed. You can provide a namespace when registering the Prismic plugin inside your `.eleventy.js` config file using the `shortcodesNamespace` options. Shortcodes will then be injected under the provided namespace like so: `${NAMESPACE}_${SHORTCODE_NAME}`
 
-#### asText
+#### `asText`
 
 Serializes a rich text field into a plain text string:
 
@@ -116,7 +118,7 @@ Lorem ipsum dolor sit amet.
 ```
 <!-- prettier-ignore-end -->
 
-#### asHTML
+#### `asHTML`
 
 Serializes a rich text field into an HTML string:
 
@@ -136,7 +138,7 @@ Renders to:
 ```
 <!-- prettier-ignore-end -->
 
-#### asLink
+#### `asLink`
 
 Resolves a link field or document into an `href` value:
 
@@ -156,7 +158,7 @@ https://example.com
 ```
 <!-- prettier-ignore-end -->
 
-#### asDate
+#### `asDate`
 
 Formats a date or timestamp field with given format:
 
@@ -178,7 +180,7 @@ April 2021
 
 > Under the hood the plugin makes use of day.js, [check their documentation](https://day.js.org/docs/en/display/format) for more format!
 
-#### link (paired shortcode)
+#### `link` (paired shortcode)
 
 Displays a link field or document as link with the right attributes and accessibility options:
 
@@ -232,7 +234,7 @@ Renders to:
 ```
 <!-- prettier-ignore-end -->
 
-#### image
+#### `image`
 
 Displays an image field:
 
@@ -256,7 +258,7 @@ Renders to:
 ```
 <!-- prettier-ignore-end -->
 
-#### embed
+#### `embed`
 
 Displays an embed field:
 

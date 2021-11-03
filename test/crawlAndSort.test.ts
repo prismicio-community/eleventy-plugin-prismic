@@ -28,7 +28,7 @@ const client = createClient(getEndpoint(repositoryName), {
 	fetch: nodeFetch,
 });
 
-test("get documents and sort them", async (t) => {
+test("gets documents and sort them", async (t) => {
 	const result = await crawlAndSort(client);
 
 	t.true(Array.isArray(result.foo));
