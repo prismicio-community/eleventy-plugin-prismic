@@ -2,5 +2,8 @@
 	"name": "eleventy-plugin-prismic.playground",
 	"version": "0.0.0",
 	"private": true,
-	"type": "commonjs"
+	"type": "commonjs",
+	"devDpendencies": {
+		"eleventy-plugin-prismic": "^0.1.2"
+	}
 }
