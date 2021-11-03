@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.1...v0.1.2) (2021-11-03)
+
+
+### Features
+
+* add definePrismicPluginOptions ([8ca407c](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/8ca407c9a4c2471ad247722f2dde07d9ed2cae80))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([ef6a062](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/ef6a062affb932790fb4cf47caf48001e1456df7))
+
 ### [0.1.1](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.0...v0.1.1) (2021-09-27)
 
 
