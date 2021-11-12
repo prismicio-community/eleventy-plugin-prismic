@@ -19,7 +19,7 @@ export const crawlAndSort = async (
 	client: Client,
 	options: PrismicPluginOptions = {},
 ): Promise<Record<string, PrismicDocument | PrismicDocument[]>> => {
-	const docs = await client.getAll();
+	const docs = await client.dangerouslyGetAll();
 
 	const sortedDocs = docs.reduce(
 		(

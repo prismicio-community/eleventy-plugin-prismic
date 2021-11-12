@@ -57,7 +57,7 @@ test.serial("injects documents from client instance", async (t) => {
 
 	await new Promise((res) => {
 		setTimeout(() => {
-			t.true(spiedClient.getAll.calledOnce);
+			t.true(spiedClient.dangerouslyGetAll.calledOnce);
 			t.true(spiedEleventyConfig.addGlobalData.calledOnce);
 			res(null);
 		}, 200);
