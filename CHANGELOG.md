@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.3](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.2...v0.1.3) (2021-11-12)
+
+
+### Features
+
+* update helpers package ([39ac48d](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/39ac48d2306560b77589dfbe47f76d1028db1e20))
+
+
+### Bug Fixes
+
+* client getAll breaking change (internal) [#4](https://github.com/prismicio-community/eleventy-plugin-prismic/issues/4), [#5](https://github.com/prismicio-community/eleventy-plugin-prismic/issues/5) ([fe7980a](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/fe7980a1575260189b4df306e2670451c8afba33))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([30619d6](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/30619d638c7f5cd6432502776ac0c3b388dbf1c3))
+
 ### [0.1.2](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.1...v0.1.2) (2021-11-03)
 
 
