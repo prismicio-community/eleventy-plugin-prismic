@@ -23,5 +23,8 @@ test("returns document resolved URL", (t) => {
 });
 
 test("returns document resolved URL using link resolver", (t) => {
-	t.is(asLink(linkResolver)(createDocument({ url: "/foo" })), "/foo");
+	t.is(
+		asLink(linkResolver)(createDocument({ uid: "foo", url: "/bar" })),
+		"/foo",
+	);
 });

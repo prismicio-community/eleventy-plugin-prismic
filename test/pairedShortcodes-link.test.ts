@@ -47,7 +47,7 @@ test("returns document resolved anchor tag", (t) => {
 
 test("returns document resolved anchor tag using link resolver", (t) => {
 	t.is(
-		link(linkResolver)(...args, createDocument({ url: "/foo" })),
+		link(linkResolver)(...args, createDocument({ uid: "foo", url: "/bar" })),
 		`<a href="/foo">${args[0]}</a>`,
 	);
 });
