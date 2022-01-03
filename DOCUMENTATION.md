@@ -68,7 +68,7 @@ const prismicPluginOptions = definePrismicPluginOptions({
 	/* ... */
 
 	i18n: {
-		"en-us": "en", // `en-us` documents will be indexed through `en` instead
+		"en-us": "en", // `en-us` documents will be indexed at the `en` key instead
 		"fr-fr": "fr",
 	},
 });
