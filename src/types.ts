@@ -40,6 +40,17 @@ type PrismicPluginOptionsBase = {
 	singletons?: string[];
 
 	/**
+	 * @experimental
+	 *
+	 * Indicates to the 11ty plugin that the site is a multi-language site, when used, the plugin will nest documents under their language code (`prismic.settings.data` becomes `prismic.settings["en-us"].data`)
+	 *
+	 * For convenience a map of language codes to language shortcuts can be provided, e.g. `{ "en-us": "en", "fr-fr": "fr" }`, documents will then be nested under the shortut matching their language code if available
+	 *
+	 * @defaultValue `false`
+	 */
+	i18n?: boolean | Record<string, string>;
+
+	/**
 	 * An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
 	 *
 	 * @see Link resolver documentation {@link https://prismic.io/docs/core-concepts/link-resolver-route-resolver#link-resolver}

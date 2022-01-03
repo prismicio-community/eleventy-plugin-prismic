@@ -5,6 +5,11 @@ import { PrismicDocument } from "@prismicio/types";
 import { PrismicPluginOptions } from "./types";
 import { dPrismicClient } from "./lib/debug";
 
+type SimpleDocuments = PrismicDocument | PrismicDocument[];
+type I18nDocuments =
+	| ({ __all: PrismicDocument[] } & Record<string, PrismicDocument>)
+	| ({ __all: PrismicDocument[] } & Record<string, PrismicDocument[]>);
+
 /**
  * Get all documents from given client and sort them
  *
@@ -18,12 +23,17 @@ import { dPrismicClient } from "./lib/debug";
 export const crawlAndSort = async (
 	client: Client,
 	options: PrismicPluginOptions = {},
-): Promise<Record<string, PrismicDocument | PrismicDocument[]>> => {
-	const docs = await client.dangerouslyGetAll();
+): Promise<Record<string, SimpleDocuments> | Record<string, I18nDocuments>> => {
+	const docs = await client.dangerouslyGetAll({
+		// If the website is i18n, fetch for all languages
+		lang: options.i18n ? "*" : undefined,
+	});
 
 	const sortedDocs = docs.reduce(
 		(
-			collections: Record<string, PrismicDocument | PrismicDocument[]>,
+			collections:
+				| Record<string, SimpleDocuments>
+				| Record<string, I18nDocuments>,
 			current,
 		) => {
 			// Resolve document URL if using a link resolver
@@ -35,27 +45,73 @@ export const crawlAndSort = async (
 				current.url = asLink(current, options.linkResolver);
 			}
 
+			let key: string | null = null;
+
+			// If we're on a i18n site...
+			if (options.i18n) {
+				// ...set key to the language of the document
+				key =
+					typeof options.i18n === "object" && current.lang in options.i18n
+						? options.i18n[current.lang]
+						: current.lang;
+
+				// If the collection is not yet defined
+				if (!collections[current.type]) {
+					collections[current.type] = {
+						__all: [],
+					};
+				}
+			}
+
+			// Get current collection
+			const get = () =>
+				key
+					? (collections[current.type] as I18nDocuments)[key]
+					: collections[current.type];
+			// Set current collection
+			const set = (value: PrismicDocument | PrismicDocument[]) => {
+				if (key) {
+					(collections[current.type] as I18nDocuments)[key] = value;
+					(collections[current.type] as I18nDocuments).__all.push(
+						...(Array.isArray(value) ? value : [value]),
+					);
+				} else {
+					collections[current.type] = value;
+				}
+			};
+			// Push to current collection
+			const push = (value: PrismicDocument) => {
+				(get() as PrismicDocument[]).push(value);
+				if (key) {
+					(collections[current.type] as I18nDocuments).__all.push(value);
+				}
+			};
+
 			if (
 				"singletons" in options &&
 				Array.isArray(options.singletons) &&
 				options.singletons.includes(current.type) &&
-				!(current.type in collections)
+				!get()
 			) {
-				collections[current.type] = current;
+				set(current);
 			} else {
-				if (!collections[current.type]) {
-					collections[current.type] = [];
-				} else if (!Array.isArray(collections[current.type])) {
+				if (!get()) {
+					set([]);
+				} else if (!Array.isArray(get())) {
 					dPrismicClient(
 						"Document type %o was declared as a singleton but is not, converting to array gracefully",
 						current.type,
 					);
-					collections[current.type] = [
-						collections[current.type] as PrismicDocument,
-					];
+					if (key) {
+						(collections[current.type] as I18nDocuments)[key] = [
+							get() as PrismicDocument,
+						];
+					} else {
+						collections[current.type] = [get() as PrismicDocument];
+					}
 				}
 
-				(collections[current.type] as PrismicDocument[]).push(current);
+				push(current);
 			}
 
 			return collections;
@@ -63,15 +119,55 @@ export const crawlAndSort = async (
 		{},
 	);
 
+	// Give a pretty console overview of available documents
+	const longestType =
+		Math.max(...Object.keys(sortedDocs).map((type) => type.length), 8) + 2;
 	dPrismicClient(
-		"Documents sorted, available types: %o",
-		Object.entries(sortedDocs).map(([key, value]) => {
-			if (Array.isArray(value)) {
-				return `${key} (${value.length})`;
-			} else {
-				return `${key} (singleton)`;
-			}
-		}),
+		[
+			"Documents sorted, available types:",
+			`  type${" ".repeat(longestType - 4)}   singleton   entries`,
+			Object.entries(sortedDocs)
+				.map(([type, documentsOrDocumentMap]) => {
+					let line = `  %o${" ".repeat(longestType - type.length)}`;
+
+					if (
+						!(
+							(options.i18n &&
+								Object.values(documentsOrDocumentMap).every((v) =>
+									Array.isArray(v),
+								)) ||
+							Array.isArray(documentsOrDocumentMap)
+						)
+					) {
+						line = `${line} *${" ".repeat("singleton".length + 1)}`;
+					} else {
+						line = `${line} ${" ".repeat("singleton".length + 2)}`;
+					}
+
+					if (options.i18n) {
+						line = `${line} ${Object.entries(documentsOrDocumentMap)
+							.sort((a, b) => (a[0] > b[0] ? 1 : -1))
+							.map(
+								([locale, documents]) =>
+									`${locale}:${
+										Array.isArray(documents) ? documents.length : 1
+									}`,
+							)
+							.join(", ")}`;
+					} else {
+						line = `${line} ${
+							Array.isArray(documentsOrDocumentMap)
+								? documentsOrDocumentMap.length
+								: 1
+						}`;
+					}
+
+					return line;
+				})
+				.join("\n"),
+			"",
+		].join("\n\n"),
+		...Object.keys(sortedDocs),
 	);
 
 	return sortedDocs;

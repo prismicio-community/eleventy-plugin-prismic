@@ -7,6 +7,7 @@ module.exports = function (eleventyConfig) {
 	const prismicPluginOptions = definePrismicPluginOptions({
 		endpoint: "200629-sms-hoy",
 		singletons: ["motd", "partials", "settings"],
+		i18n: { "en-us": "en" },
 		linkResolver: (doc) => {
 			if (doc.type === "post__blog") {
 				return `/blog/${doc.uid}`;
