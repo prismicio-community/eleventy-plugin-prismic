@@ -49,7 +49,30 @@ module.exports = function (eleventyConfig) {
 };
 ```
 
-> 🈂 In the above snippet we use a [JSDoc](https://jsdoc.app) declaration to get proper intellisense on the different plugin options! You're free to remove it~
+### i18n _(experimental)_
+
+By default the plugin only loads documents from the [master locale](https://prismic.io/docs/core-concepts/languages-locales#set-the-master-locale) defined on your Prismic repository. If you want to load documents from other locales you have to enable the `i18n` option when defining the plugin options. This option will tell the plugin to load documents from all available locales:
+
+```javascript
+const prismicPluginOptions = definePrismicPluginOptions({
+	/* ... */
+
+	i18n: true,
+});
+```
+
+To later ease the templating process, you can also enable this options by providing a map of your locale codes to more convenient shortcuts (think of this alternative as a way to avoid the verbose `prismic.post["en-us"]` accessor in your templates):
+
+```javascript
+const prismicPluginOptions = definePrismicPluginOptions({
+	/* ... */
+
+	i18n: {
+		"en-us": "en", // `en-us` documents will be indexed through `en` instead
+		"fr-fr": "fr",
+	},
+});
+```
 
 ## Usage
 
@@ -81,6 +104,45 @@ pagination:
   alias: post
 	addAllPagesToCollections: true
 permalink: "blog/{{ post.uid }}/"
+---
+
+<h1>{% asText post.data.title %}</h1>
+
+{# Use the built-in `log` filter to explore available data #}
+{{ post.data | log }}
+
+...
+```
+<!-- prettier-ignore-end -->
+
+#### With the `i18n` option _(experimental)_
+
+If you're using the `i18n` option, each documents get nested under their locale code, an additional `__all` key is also made to ease pagination:
+
+```nunjucks
+{# ./index.njk #}
+
+<h1>{% asText prismic.home["en-us"].data.title %}</h1>
+
+{# Use the built-in `log` filter to explore available data #}
+{{ prismic.home["en-us"].data | log }}
+
+...
+```
+
+Pagination example:
+
+<!-- prettier-ignore-start -->
+```nunjucks
+{# ./blog/slug.njk #}
+
+---
+pagination:
+  data: prismic.post.__all
+  size: 1
+  alias: post
+	addAllPagesToCollections: true
+permalink: "blog/{{post.lang}}/{{ post.uid }}/"
 ---
 
 <h1>{% asText post.data.title %}</h1>
@@ -330,6 +392,9 @@ type PrismicPluginOptions = {
 	// Optional list of custom types defined as singletons
 	singletons?: string[];
 
+	// Indicates that the website will handle multiple locales, see the `i18n` section above
+	i18n?: boolean | Record<string, string>;
+
 	// See https://prismic.io/docs/core-concepts/link-resolver-route-resolver#link-resolver
 	linkResolver?: LinkResolverFunction;
 
@@ -359,6 +424,7 @@ type PrismicPluginOptions = {
 
 ```javascript
 {
+	i18n: false,
 	injectShortcodes: true,
 	shortcodesNamespace: "",
 	shortcodesInjector: eleventyConfig.addShortcode,
