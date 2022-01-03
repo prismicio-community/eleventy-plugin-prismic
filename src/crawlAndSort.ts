@@ -137,8 +137,10 @@ export const crawlAndSort = async (
 			`  type${" ".repeat(longestType - 4)}   singleton   entries`,
 			Object.entries(sortedDocs)
 				.map(([type, documentsOrDocumentMap]) => {
+					// Type
 					let line = `  %o${" ".repeat(longestType - type.length)}`;
 
+					// Singleton
 					if (
 						!(
 							(options.i18n &&
@@ -153,8 +155,10 @@ export const crawlAndSort = async (
 						line = `${line} ${" ".repeat("singleton".length + 2)}`;
 					}
 
+					// Entries
 					if (options.i18n) {
 						line = `${line} ${Object.entries(documentsOrDocumentMap)
+							.filter(([key]) => key !== "__all")
 							.sort((a, b) => (a[0] > b[0] ? 1 : -1))
 							.map(
 								([locale, documents]) =>
