@@ -117,7 +117,7 @@ permalink: "blog/{{ post.uid }}/"
 
 #### With the `i18n` option _(experimental)_
 
-If you're using the `i18n` option, each documents get nested under their locale code, an additional `__all` key is also made to ease pagination:
+If you're using the `i18n` option, each documents get nested under their locale code, an additional `__all` key is also made available to ease pagination:
 
 ```nunjucks
 {# ./index.njk #}
