@@ -108,9 +108,6 @@ export const crawlAndSort = async (
 					fakeSingletons.push(current.type);
 
 					if (key) {
-						(collections[current.type] as I18nDocuments)[key] =
-							get() as PrismicDocument;
-
 						Object.entries(collections[current.type] as I18nDocuments)
 							.filter(([key]) => key !== "__all")
 							.forEach(([locale, document]) => {
