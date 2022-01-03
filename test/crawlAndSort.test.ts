@@ -20,6 +20,7 @@ const server = mswNode.setupServer(
 		createDocument({ type: "foo", uid: "foo1", lang: "en-us" }),
 		createDocument({ type: "foo", uid: "foo2", lang: "en-us" }),
 		createDocument({ type: "foo", uid: "foo3", lang: "fr-fr" }),
+		createDocument({ type: "foo", uid: "foo4", lang: "fr-fr" }),
 		// order's on purpose
 		createDocument({ type: "bar", uid: "bar2", lang: "fr-fr" }),
 		createDocument({ type: "bar", uid: "bar1", lang: "en-us" }),
@@ -62,7 +63,7 @@ test("creates a special `__all` collection when i18n is enabled", async (t) => {
 	>;
 
 	t.true(Array.isArray(result.foo.__all));
-	Array.isArray(result.foo.__all) && t.is(result.foo.__all.length, 3);
+	Array.isArray(result.foo.__all) && t.is(result.foo.__all.length, 4);
 
 	t.true(Array.isArray(result.bar.__all));
 	Array.isArray(result.bar.__all) && t.is(result.bar.__all.length, 2);
@@ -112,8 +113,10 @@ test("unwraps singletons that obviously are not with i18n enabled", async (t) =>
 
 	t.true(Array.isArray(result.foo["en-us"]));
 	Array.isArray(result.foo["en-us"]) && t.is(result.foo["en-us"].length, 2);
+	t.true(Array.isArray(result.foo["fr-fr"]));
+	Array.isArray(result.foo["fr-fr"]) && t.is(result.foo["fr-fr"].length, 2);
 	t.true(Array.isArray(result.foo.__all));
-	Array.isArray(result.foo.__all) && t.is(result.foo.__all.length, 3);
+	Array.isArray(result.foo.__all) && t.is(result.foo.__all.length, 4);
 
 	t.true(Array.isArray(result.bar["en-us"]));
 	Array.isArray(result.bar["en-us"]) && t.is(result.bar["en-us"].length, 1);

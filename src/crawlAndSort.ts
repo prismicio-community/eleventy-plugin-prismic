@@ -29,6 +29,7 @@ export const crawlAndSort = async (
 		lang: options.i18n ? "*" : undefined,
 	});
 
+	const fakeSingletons: string[] = [];
 	const sortedDocs = docs.reduce(
 		(
 			collections:
@@ -91,6 +92,7 @@ export const crawlAndSort = async (
 				"singletons" in options &&
 				Array.isArray(options.singletons) &&
 				options.singletons.includes(current.type) &&
+				!fakeSingletons.includes(current.type) &&
 				!get()
 			) {
 				set(current);
@@ -102,10 +104,20 @@ export const crawlAndSort = async (
 						"Document type %o was declared as a singleton but is not, converting to array gracefully",
 						current.type,
 					);
+
+					fakeSingletons.push(current.type);
+
 					if (key) {
-						(collections[current.type] as I18nDocuments)[key] = [
-							get() as PrismicDocument,
-						];
+						(collections[current.type] as I18nDocuments)[key] =
+							get() as PrismicDocument;
+
+						Object.entries(collections[current.type] as I18nDocuments)
+							.filter(([key]) => key !== "__all")
+							.forEach(([locale, document]) => {
+								(collections[current.type] as I18nDocuments)[locale] = [
+									document as PrismicDocument,
+								];
+							});
 					} else {
 						collections[current.type] = [get() as PrismicDocument];
 					}
