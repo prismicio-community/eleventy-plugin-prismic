@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.4...v0.1.5) (2022-01-03)
+
+
+### Features
+
+* add i18n support [#6](https://github.com/prismicio-community/eleventy-plugin-prismic/issues/6) ([d6b7041](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/d6b7041ced8fa6a932a2222e9c0ab703b0acb01e))
+
+
+### Bug Fixes
+
+* correctly unwrap singletons with i18n mode ([baebb59](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/baebb59b5692de9525478af9e50f067b10c3bdf6))
+* correctly unwrap singletons with i18n mode ([5c2196f](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/5c2196f430bc5dd66cb8d4f502bd691cb0bd22ba))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([732ed76](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/732ed76c3d81ea3f85c866b4b191bc8501f6c463))
+
+
+### Documentation
+
+* add i18n doc ([ce1d4f5](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/ce1d4f51f5bafb2900fb770c6ec7bf90cd9a2e27))
+
 ### [0.1.4](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.3...v0.1.4) (2021-11-30)
 
 
