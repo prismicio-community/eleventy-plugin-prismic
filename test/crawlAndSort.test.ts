@@ -34,7 +34,7 @@ const client = createClient(getEndpoint(repositoryName), {
 });
 
 test("gets documents and sort them", async (t) => {
-	const result = await crawlAndSort(client);
+	const result = await crawlAndSort(client, { client });
 
 	t.true(Array.isArray(result.foo));
 	Array.isArray(result.foo) && t.is(result.foo.length, 2);

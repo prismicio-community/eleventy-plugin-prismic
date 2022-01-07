@@ -2,6 +2,8 @@
 dist
 examples/**/package-lock.json
 playground/_site
+playground/netlify/functions/preview/**
+!playground/netlify/functions/preview/index.js
 
 # os
 .DS_Store
