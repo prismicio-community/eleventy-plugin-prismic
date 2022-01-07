@@ -2,7 +2,10 @@ import { Client } from "@prismicio/client";
 import { asLink } from "@prismicio/helpers";
 import { PrismicDocument } from "@prismicio/types";
 
-import { PrismicPluginOptions } from "./types";
+import {
+	PrismicPluginOptionsWithClient,
+	PrismicPluginOptionsWithEndpoint,
+} from "./types";
 import { dPrismicClient } from "./lib/debug";
 
 type SimpleDocuments = PrismicDocument | PrismicDocument[];
@@ -22,7 +25,7 @@ type I18nDocuments =
  */
 export const crawlAndSort = async (
 	client: Client,
-	options: PrismicPluginOptions = {},
+	options: PrismicPluginOptionsWithClient | PrismicPluginOptionsWithEndpoint,
 ): Promise<Record<string, SimpleDocuments> | Record<string, I18nDocuments>> => {
 	const docs = await client.dangerouslyGetAll({
 		// If the website is i18n, fetch for all languages

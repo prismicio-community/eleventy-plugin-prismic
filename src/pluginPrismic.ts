@@ -1,12 +1,20 @@
-import nodeFetch from "node-fetch";
-import { createClient, getEndpoint } from "@prismicio/client";
+// @ts-expect-error - 11ty does not provide any sort of type definition
+import { EleventyServerlessBundlerPlugin } from "@11ty/eleventy";
 
 import { name as pkgName, version as pkgVersion } from "../package.json";
-import { dPrismic, dPrismicClient, dPrismicShortcodes } from "./lib/debug";
+import {
+	dPrismic,
+	dPrismicClient,
+	dPrismicPreview,
+	dPrismicShortcodes,
+} from "./lib/debug";
 import { EleventyConfig, PrismicPluginOptions } from "./types";
 import { crawlAndSort } from "./crawlAndSort";
 import { injectShortcodes } from "./shortcodes";
 import { injectPairedShortcodes } from "./pairedShortcodes";
+import { hasClientInOptions } from "./hasClientInOptions";
+import { createClientFromOptions } from "./createClientFromOptions";
+import { hasPreviewInOptions } from "./hasPreviewInOptions";
 
 /**
  * Prismic plugin for Eleventy, injects Prismic documents into Eleventy global data and provides useful shortcodes
@@ -41,26 +49,11 @@ export const pluginPrismic = (
 	dPrismic("Plugin init process started");
 	dPrismic("Running with %o", `${pkgName}@${pkgVersion}`);
 
-	// Client
-	if (
-		("endpoint" in options && typeof options.endpoint === "string") ||
-		("client" in options && typeof options.client === "object")
-	) {
+	// Client & preview
+	if (hasClientInOptions(options)) {
 		dPrismicClient("Creating client");
 
-		const client =
-			"client" in options
-				? options.client
-				: createClient(
-						/** @see Regex101 expression: {@link https://regex101.com/r/GT2cl7/1} */
-						/^(https?:)?\/\//gim.test(options.endpoint)
-							? options.endpoint
-							: getEndpoint(options.endpoint),
-						{
-							fetch: nodeFetch,
-							...options.clientConfig,
-						},
-				  );
+		const client = createClientFromOptions(options);
 
 		dPrismicClient("Client created, starting to fetch documents");
 
@@ -70,8 +63,15 @@ export const pluginPrismic = (
 		eleventyConfig.addGlobalData("prismic", () => documents);
 	} else {
 		dPrismicClient(
-			"`client` nor `endpoint` were provided through the plugin options, documents won't be fetched",
+			"`client` nor `endpoint` were provided through the plugin options, documents won't be fetched and preview features won't be enabled",
 		);
+	}
+
+	// Preview
+	if (hasPreviewInOptions(options)) {
+		dPrismicPreview("Enabling Prismic preview");
+
+		eleventyConfig.addPlugin(EleventyServerlessBundlerPlugin, options.preview);
 	}
 
 	// Shortcodes

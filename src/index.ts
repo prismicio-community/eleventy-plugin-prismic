@@ -1,6 +1,11 @@
 export { pluginPrismic } from "./pluginPrismic";
 export { definePrismicPluginOptions } from "./definePrismicPluginOptions";
 
+export * as prismicPreview from "./prismicPreview";
+
+export { hasPreviewInOptions } from "./hasPreviewInOptions";
+export { hasClientInOptions } from "./hasClientInOptions";
+export { createClientFromOptions } from "./createClientFromOptions";
 export { crawlAndSort } from "./crawlAndSort";
 
 export {
@@ -10,6 +15,7 @@ export {
 	asDate,
 	image,
 	embed,
+	toolbar,
 	injectShortcodes,
 } from "./shortcodes";
 

@@ -20,6 +20,10 @@ export type EleventyPairedShortcodeFunction = (
 ) => void;
 
 export type EleventyConfig = {
+	addPlugin: <TOptions = unknown>(
+		plugin: (eleventyConfig: EleventyConfig, options?: TOptions) => void,
+		options?: TOptions,
+	) => void;
 	addGlobalData: (
 		name: string,
 		data: () => Promise<unknown> | unknown,
@@ -29,27 +33,28 @@ export type EleventyConfig = {
 	[key: string]: unknown;
 };
 
+export type EleventyServerlessBundlerPluginOptions = {
+	name: string;
+	functionsDir?: string;
+
+	copy?: (string | { from: string; to: string })[];
+	copyOptions?: Record<string, unknown>;
+	copyEnabled?: boolean;
+
+	redirects?:
+		| ((name: string, outputMap: Record<string, string>) => void)
+		| "netlify-toml"
+		| "netlify-toml-functions"
+		| "netlify-toml-builders";
+
+	excludeDependencies?: string[];
+
+	[key: string]: unknown;
+};
+
 // Eleventy plugin Prismic types
 
-type PrismicPluginOptionsBase = {
-	/**
-	 * An optional list of IDs of custom types defined as singletons within Prismic
-	 *
-	 * Used to avoid unnecessary array nesting on the `prismic` global data object
-	 */
-	singletons?: string[];
-
-	/**
-	 * @experimental
-	 *
-	 * Indicates to the 11ty plugin that the site is a multi-language site, when used, the plugin will nest documents under their language code (`prismic.settings.data` becomes `prismic.settings["en-us"].data`)
-	 *
-	 * For convenience a map of language codes to language shortcuts can be provided, e.g. `{ "en-us": "en", "fr-fr": "fr" }`, documents will then be nested under the shortut matching their language code if available
-	 *
-	 * @defaultValue `false`
-	 */
-	i18n?: boolean | Record<string, string>;
-
+export type PrismicPluginOptionsBase = {
 	/**
 	 * An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
 	 *
@@ -98,74 +103,99 @@ type PrismicPluginOptionsBase = {
 	linkBlankTargetRelAttribute?: string;
 };
 
-type PrismicPluginOptionsWithClient = PrismicPluginOptionsBase & {
-	/**
-	 * A Prismic client instance
-	 *
-	 * @see Prismic client documentation {@link https://prismic.io/docs/technologies/javascript}
-	 */
-	client: Client;
-};
+export type PrismicPluginOptionsWithClientOrEndpointBase =
+	PrismicPluginOptionsBase & {
+		/**
+		 * An optional list of IDs of custom types defined as singletons within Prismic
+		 *
+		 * Used to avoid unnecessary array nesting on the `prismic` global data object
+		 */
+		singletons?: string[];
 
-type PrismicPluginOptionsWithEndpoint = PrismicPluginOptionsBase & {
-	/**
-	 * A Prismic repository endpoint
-	 *
-	 * @see Prismic client documentation {@link https://prismic.io/docs/technologies/javascript}
-	 *
-	 * @example
-	 * A repository ID
-	 *
-	 * ```
-	 * "my-repo"
-	 * ```
-	 *
-	 * @example
-	 * A full repository endpoint
-	 *
-	 * ```
-	 * "https://my-repo.cdn.prismic.io/api/v2"
-	 * ```
-	 */
-	endpoint: string;
+		/**
+		 * @experimental
+		 *
+		 * Indicates to the 11ty plugin that the site is a multi-language site, when used, the plugin will nest documents under their language code (`prismic.settings.data` becomes `prismic.settings["en-us"].data`)
+		 *
+		 * For convenience a map of language codes to language shortcuts can be provided, e.g. `{ "en-us": "en", "fr-fr": "fr" }`, documents will then be nested under the shortut matching their language code if available
+		 *
+		 * @defaultValue `false`
+		 */
+		i18n?: boolean | Record<string, string>;
 
-	/**
-	 * An optional object to configure `@prismicio/client` instance
-	 *
-	 * @see Prismic client documentation {@link https://prismic.io/docs/technologies/javascript}
-	 * @see Route resolver documentation {@link https://prismic.io/docs/core-concepts/link-resolver-route-resolver#route-resolver}
-	 *
-	 * @example
-	 * Accessing a private private repository
-	 *
-	 * ```
-	 * {
-	 *   accessToken: "abc",
-	 * }
-	 * ```
-	 *
-	 * @example
-	 * Using a route resolver
-	 *
-	 * ```
-	 * {
-	 *   defaultParams: {
-	 *     routes: [
-	 *       {
-	 *         type: "page",
-	 *         path: "/:uid"
-	 *       },
-	 *       {
-	 *         type: "post",
-	 *         path: "/blog/:uid"
-	 *       }
-	 *     ]
-	 *   }
-	 * }
-	 * ```
-	 */
-	clientConfig?: ClientConfig;
-};
+		preview?: EleventyServerlessBundlerPluginOptions;
+	};
+
+export type PrismicPluginOptionsWithClient =
+	PrismicPluginOptionsWithClientOrEndpointBase & {
+		/**
+		 * A Prismic client instance
+		 *
+		 * @see Prismic client documentation {@link https://prismic.io/docs/technologies/javascript}
+		 */
+		client: Client;
+	};
+
+export type PrismicPluginOptionsWithEndpoint =
+	PrismicPluginOptionsWithClientOrEndpointBase & {
+		/**
+		 * A Prismic repository endpoint
+		 *
+		 * @see Prismic client documentation {@link https://prismic.io/docs/technologies/javascript}
+		 *
+		 * @example
+		 * A repository ID
+		 *
+		 * ```
+		 * "my-repo"
+		 * ```
+		 *
+		 * @example
+		 * A full repository endpoint
+		 *
+		 * ```
+		 * "https://my-repo.cdn.prismic.io/api/v2"
+		 * ```
+		 */
+		endpoint: string;
+
+		/**
+		 * An optional object to configure `@prismicio/client` instance
+		 *
+		 * @see Prismic client documentation {@link https://prismic.io/docs/technologies/javascript}
+		 * @see Route resolver documentation {@link https://prismic.io/docs/core-concepts/link-resolver-route-resolver#route-resolver}
+		 *
+		 * @example
+		 * Accessing a private private repository
+		 *
+		 * ```
+		 * {
+		 *   accessToken: "abc",
+		 * }
+		 * ```
+		 *
+		 * @example
+		 * Using a route resolver
+		 *
+		 * ```
+		 * {
+		 *   defaultParams: {
+		 *     routes: [
+		 *       {
+		 *         type: "page",
+		 *         path: "/:uid"
+		 *       },
+		 *       {
+		 *         type: "post",
+		 *         path: "/blog/:uid"
+		 *       }
+		 *     ]
+		 *   }
+		 * }
+		 * ```
+		 */
+		clientConfig?: ClientConfig;
+	};
 
 /**
  * `eleventy-prismic-plugin` options
@@ -174,6 +204,13 @@ type PrismicPluginOptionsWithEndpoint = PrismicPluginOptionsBase & {
  */
 export type PrismicPluginOptions =
 	// `singletons` is only relevant when a client is configured
-	| Omit<PrismicPluginOptionsBase, "singletons">
+	| PrismicPluginOptionsBase
 	| PrismicPluginOptionsWithClient
 	| PrismicPluginOptionsWithEndpoint;
+
+export type PrismicPluginOptionsWithPreview = (
+	| PrismicPluginOptionsWithClient
+	| PrismicPluginOptionsWithEndpoint
+) & {
+	preview: Required<PrismicPluginOptionsWithClientOrEndpointBase>["preview"];
+};

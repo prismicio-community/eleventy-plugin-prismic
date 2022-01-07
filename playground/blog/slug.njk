@@ -1,0 +1,18 @@
+---
+layout: default
+pagination:
+  data: prismic.post
+  size: 1
+  alias: post
+  addAllPagesToCollections: true
+	serverless: eleventy.serverless.path.slug
+permalink:
+  build: "/blog/{{ post.uid }}/"
+  preview: "/preview/blog/:slug"
+---
+
+{{ prismicPreview }}
+
+<h1>{% prismic_asText post.data.title %}</h1>
+
+{% prismic_asHTML post.data.body %}

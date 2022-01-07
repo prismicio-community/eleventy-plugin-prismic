@@ -59,7 +59,7 @@
 		"node-fetch": "^2.6.6"
 	},
 	"devDependencies": {
-		"@11ty/eleventy": "^1.0.0 || ^1.0.0-beta || ^1.0.0-canary",
+		"@11ty/eleventy": "^1.0.0 || ^1.0.0-beta <1.0.0-canary",
 		"@types/debug": "^4.1.7",
 		"@types/node-fetch": "^2.5.12",
 		"@types/sinon": "^10.0.6",
@@ -83,7 +83,7 @@
 		"typescript": "^4.5.4"
 	},
 	"peerDependencies": {
-		"@11ty/eleventy": "^1.0.0 || ^1.0.0-beta || ^1.0.0-canary"
+		"@11ty/eleventy": "^1.0.0 || ^1.0.0-beta <1.0.0-canary"
 	},
 	"engines": {
 		"node": ">=12.7.0"

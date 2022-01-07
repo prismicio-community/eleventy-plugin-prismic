@@ -9,6 +9,8 @@ import {
 	TimestampField,
 } from "@prismicio/types";
 import dayjs from "dayjs";
+import { createClientFromOptions } from "./createClientFromOptions";
+import { hasClientInOptions } from "./hasClientInOptions";
 import { attributesToHtml } from "./lib/attributesToHTML";
 
 import { dPrismicShortcodes } from "./lib/debug";
@@ -134,6 +136,14 @@ export const embed = () => {
 	};
 };
 
+export const toolbar = (repository: string) => {
+	return (): string => {
+		return process.env.ELEVENTY_SERVERLESS
+			? `<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${repository}"></script>`
+			: "";
+	};
+};
+
 /**
  * Injects all shortcodes with given injector
  *
@@ -173,6 +183,19 @@ export const injectShortcodes = (
 
 	shortcodes.push(`${prefix}embed`);
 	injector(`${prefix}embed`, embed());
+
+	if (hasClientInOptions(options)) {
+		shortcodes.push(`${prefix}toolbar`);
+		injector(
+			`${prefix}toolbar`,
+			toolbar(
+				new URL(createClientFromOptions(options).endpoint).host.replace(
+					/\.cdn/i,
+					"",
+				),
+			),
+		);
+	}
 
 	dPrismicShortcodes("Shortcodes %o injected", shortcodes);
 };
