@@ -67,7 +67,7 @@ export const link = (
  * Injects all paired shortcodes with given injector
  *
  * @param injector - Injector function to use from `eleventyConfig`
- * @param options - Options of the plugin
+ * @param options - Prismic plugin options
  *
  * @internal
  */

@@ -1,21 +1,26 @@
 // @ts-expect-error - 11ty does not provide any sort of type definition
 import { EleventyServerless } from "@11ty/eleventy";
+import { HandlerResponse } from "@netlify/functions";
 import { cookie } from "@prismicio/client";
 
 import { createClientFromOptions } from "./createClientFromOptions";
-import { hasPreviewInOptions } from "./hasPreviewInOptions";
+import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
 import { PrismicPluginOptions, PrismicPluginOptionsWithPreview } from "./types";
 
-type ServerlessResponse = {
-	statusCode: number;
-	body?: string;
-	headers?: Record<string, string>;
-};
-
+/**
+ * Revolves a Prismic preview session if any
+ *
+ * @param query - Query string parameters
+ * @param options - Prismic plugin options
+ *
+ * @returns Resolved session if any
+ *
+ * @internal
+ */
 export const resolve = async (
 	query: Record<string, string>,
 	options: PrismicPluginOptionsWithPreview,
-): Promise<ServerlessResponse | null> => {
+): Promise<HandlerResponse | null> => {
 	const { token: previewToken, documentId: documentID } = query;
 
 	if (!previewToken || !documentID) {
@@ -47,12 +52,24 @@ export const resolve = async (
 	};
 };
 
+/**
+ * Get a previewed page from current Prismic preview session
+ *
+ * @param path - Previewed path
+ * @param query - Query string parameters
+ * @param headers - Request headers
+ * @param options - Prismic plugin options
+ *
+ * @returns - Previewed page
+ *
+ * @internal
+ */
 export const get = async (
 	path: string,
 	query: Record<string, string>,
 	headers: Record<string, string> | undefined,
 	options: PrismicPluginOptionsWithPreview,
-): Promise<ServerlessResponse> => {
+): Promise<HandlerResponse> => {
 	globalThis.document = globalThis.document || {};
 	globalThis.document.cookie = headers?.cookie ?? "";
 
@@ -69,7 +86,7 @@ export const get = async (
 		path.includes(o.url.replace(/^\/|\/(index(\.html)?)?$/gim, "")),
 	);
 
-	let response: ServerlessResponse;
+	let response: HandlerResponse;
 	if (!page) {
 		response = {
 			statusCode: 404,
@@ -115,13 +132,23 @@ export const get = async (
 	};
 };
 
+/**
+ * 11ty Serverless handler for Prismic preview
+ *
+ * @param path - Previewed path
+ * @param query - Query string parameters
+ * @param headers - Request headers
+ * @param options - Prismic plugin options
+ *
+ * @returns - Handler response
+ */
 export const handle = async (
 	path: string,
 	query: Record<string, string>,
 	headers: Record<string, string> | undefined,
 	options: PrismicPluginOptions,
-): Promise<ServerlessResponse> => {
-	if (!hasPreviewInOptions(options)) {
+): Promise<HandlerResponse> => {
+	if (!canCreatePreviewFromOptions(options)) {
 		return {
 			statusCode: 500,
 			body: JSON.stringify({
@@ -130,7 +157,7 @@ export const handle = async (
 		};
 	}
 
-	let response: ServerlessResponse;
+	let response: HandlerResponse;
 
 	try {
 		response =

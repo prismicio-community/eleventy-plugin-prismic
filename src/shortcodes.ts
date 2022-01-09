@@ -9,10 +9,10 @@ import {
 	TimestampField,
 } from "@prismicio/types";
 import dayjs from "dayjs";
+import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
+import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
 import { createClientFromOptions } from "./createClientFromOptions";
-import { hasClientInOptions } from "./hasClientInOptions";
 import { attributesToHtml } from "./lib/attributesToHTML";
-
 import { dPrismicShortcodes } from "./lib/debug";
 import { EleventyShortcodeFunction, PrismicPluginOptions } from "./types";
 
@@ -50,6 +50,7 @@ export const asHTML = (
  * `asLink` shortcode factory
  *
  * @param linkResolver - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
+ * @param prefix - An optional prefix to be prepended to the URL (used with preview)
  *
  * @returns `asLink` shortcode ready to be injected
  *
@@ -57,9 +58,12 @@ export const asHTML = (
  *
  * @internal
  */
-export const asLink = (linkResolver?: prismicH.LinkResolverFunction) => {
+export const asLink = (
+	linkResolver?: prismicH.LinkResolverFunction,
+	prefix = "",
+) => {
 	return (linkFieldOrDocument: LinkField | PrismicDocument): string =>
-		prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
+		`${prefix}${prismicH.asLink(linkFieldOrDocument, linkResolver) ?? ""}`;
 };
 
 /**
@@ -136,19 +140,26 @@ export const embed = () => {
 	};
 };
 
+/**
+ * `toolbar` shortcode factory
+ *
+ * @returns `toolbar` shortcode ready to be injected
+ *
+ * @internal
+ */
 export const toolbar = (repository: string) => {
-	return (): string => {
-		return process.env.ELEVENTY_SERVERLESS
-			? `<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${repository}"></script>`
-			: "";
-	};
+	const script = process.env.ELEVENTY_SERVERLESS
+		? `<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${repository}"></script>`
+		: "";
+
+	return (): string => script;
 };
 
 /**
  * Injects all shortcodes with given injector
  *
  * @param injector - Injector function to use from `eleventyConfig`
- * @param options - Options of the plugin
+ * @param options - Prismic plugin options
  *
  * @internal
  */
@@ -173,7 +184,17 @@ export const injectShortcodes = (
 	);
 
 	shortcodes.push(`${prefix}asLink`);
-	injector(`${prefix}asLink`, asLink(options.linkResolver));
+	injector(
+		`${prefix}asLink`,
+		asLink(
+			options.linkResolver,
+			process.env.ELEVENTY_SERVERLESS &&
+				canCreateClientFromOptions(options) &&
+				canCreatePreviewFromOptions(options)
+				? `/${options.preview.name}`
+				: "",
+		),
+	);
 
 	shortcodes.push(`${prefix}asDate`);
 	injector(`${prefix}asDate`, asDate());
@@ -184,7 +205,7 @@ export const injectShortcodes = (
 	shortcodes.push(`${prefix}embed`);
 	injector(`${prefix}embed`, embed());
 
-	if (hasClientInOptions(options)) {
+	if (canCreateClientFromOptions(options)) {
 		shortcodes.push(`${prefix}toolbar`);
 		injector(
 			`${prefix}toolbar`,

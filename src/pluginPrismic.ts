@@ -9,12 +9,12 @@ import {
 	dPrismicShortcodes,
 } from "./lib/debug";
 import { EleventyConfig, PrismicPluginOptions } from "./types";
+import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
+import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
+import { createClientFromOptions } from "./createClientFromOptions";
 import { crawlAndSort } from "./crawlAndSort";
 import { injectShortcodes } from "./shortcodes";
 import { injectPairedShortcodes } from "./pairedShortcodes";
-import { hasClientInOptions } from "./hasClientInOptions";
-import { createClientFromOptions } from "./createClientFromOptions";
-import { hasPreviewInOptions } from "./hasPreviewInOptions";
 
 /**
  * Prismic plugin for Eleventy, injects Prismic documents into Eleventy global data and provides useful shortcodes
@@ -50,7 +50,7 @@ export const pluginPrismic = (
 	dPrismic("Running with %o", `${pkgName}@${pkgVersion}`);
 
 	// Client & preview
-	if (hasClientInOptions(options)) {
+	if (canCreateClientFromOptions(options)) {
 		dPrismicClient("Creating client");
 
 		const client = createClientFromOptions(options);
@@ -61,17 +61,20 @@ export const pluginPrismic = (
 		const documents = crawlAndSort(client, options);
 
 		eleventyConfig.addGlobalData("prismic", () => documents);
+
+		// Preview
+		if (canCreatePreviewFromOptions(options)) {
+			dPrismicPreview("Enabling Prismic preview at %o", options.preview.name);
+
+			eleventyConfig.addPlugin(
+				EleventyServerlessBundlerPlugin,
+				options.preview,
+			);
+		}
 	} else {
 		dPrismicClient(
 			"`client` nor `endpoint` were provided through the plugin options, documents won't be fetched and preview features won't be enabled",
 		);
-	}
-
-	// Preview
-	if (hasPreviewInOptions(options)) {
-		dPrismicPreview("Enabling Prismic preview");
-
-		eleventyConfig.addPlugin(EleventyServerlessBundlerPlugin, options.preview);
 	}
 
 	// Shortcodes

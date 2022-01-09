@@ -3,8 +3,9 @@ export { definePrismicPluginOptions } from "./definePrismicPluginOptions";
 
 export * as prismicPreview from "./prismicPreview";
 
-export { hasPreviewInOptions } from "./hasPreviewInOptions";
-export { hasClientInOptions } from "./hasClientInOptions";
+// Internal helpers
+export { canCreateClientFromOptions } from "./canCreateClientFromOptions";
+export { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
 export { createClientFromOptions } from "./createClientFromOptions";
 export { crawlAndSort } from "./crawlAndSort";
 

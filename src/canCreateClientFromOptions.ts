@@ -4,7 +4,16 @@ import {
 	PrismicPluginOptionsWithEndpoint,
 } from "./types";
 
-export const hasClientInOptions = (
+/**
+ * Checks if options are capable of creating a client
+ *
+ * @param options - Plugin options
+ *
+ * @returns `true` when options are capable of creating a client, `false` otherwise
+ *
+ * @internal
+ */
+export const canCreateClientFromOptions = (
 	options: PrismicPluginOptions,
 ): options is
 	| PrismicPluginOptionsWithClient

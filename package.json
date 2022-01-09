@@ -51,6 +51,7 @@
 		"unit": "nyc --reporter=lcovonly --reporter=text --exclude-after-remap=false ava"
 	},
 	"dependencies": {
+		"@netlify/functions": "^0.10.0",
 		"@prismicio/client": "^6.0.0",
 		"@prismicio/helpers": "^2.0.0",
 		"@prismicio/types": "^0.1.21",

@@ -36,19 +36,15 @@ export type EleventyConfig = {
 export type EleventyServerlessBundlerPluginOptions = {
 	name: string;
 	functionsDir?: string;
-
 	copy?: (string | { from: string; to: string })[];
 	copyOptions?: Record<string, unknown>;
 	copyEnabled?: boolean;
-
 	redirects?:
 		| ((name: string, outputMap: Record<string, string>) => void)
 		| "netlify-toml"
 		| "netlify-toml-functions"
 		| "netlify-toml-builders";
-
 	excludeDependencies?: string[];
-
 	[key: string]: unknown;
 };
 
@@ -123,6 +119,13 @@ export type PrismicPluginOptionsWithClientOrEndpointBase =
 		 */
 		i18n?: boolean | Record<string, string>;
 
+		/**
+		 * @experimental
+		 *
+		 * Enables Prismic previews by providing an 11ty Serverless Bundler Plugin configuration object
+		 *
+		 * @see 11ty Serverless Bundler Plugin documentation {@link https://www.11ty.dev/docs/plugins/serverless/#step-1-add-the-bundler-plugin}
+		 */
 		preview?: EleventyServerlessBundlerPluginOptions;
 	};
 
@@ -208,6 +211,9 @@ export type PrismicPluginOptions =
 	| PrismicPluginOptionsWithClient
 	| PrismicPluginOptionsWithEndpoint;
 
+/**
+ * `eleventy-prismic-plugin` options with preview enabled
+ */
 export type PrismicPluginOptionsWithPreview = (
 	| PrismicPluginOptionsWithClient
 	| PrismicPluginOptionsWithEndpoint

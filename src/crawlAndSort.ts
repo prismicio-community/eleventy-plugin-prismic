@@ -8,6 +8,7 @@ import {
 } from "./types";
 import { dPrismicClient } from "./lib/debug";
 
+// Helper types
 type SimpleDocuments = PrismicDocument | PrismicDocument[];
 type I18nDocuments =
 	| ({ __all: PrismicDocument[] } & Record<string, PrismicDocument>)
