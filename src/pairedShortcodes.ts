@@ -1,8 +1,11 @@
 import * as prismicH from "@prismicio/helpers";
 
 import { LinkField, PrismicDocument } from "@prismicio/types";
+import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
+import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
 import { attributesToHtml } from "./lib/attributesToHTML";
 import { dPrismicShortcodes } from "./lib/debug";
+import { isInternalURL } from "./lib/isInternalURL";
 import { EleventyPairedShortcodeFunction, PrismicPluginOptions } from "./types";
 
 /**
@@ -15,6 +18,7 @@ const defaultBlankTargetRelAttribute = "noopener noreferrer";
  *
  * @param linkResolver - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
  * @param linkBlankTargetRelAttribute - Value of the `rel` attribute on links with `target="_blank"` rendered by shortcodes, defaults to `"noopener noreferrer"`
+ * @param internalPrefix - An optional prefix to be prepended to internal URL (used with preview)
  *
  * @returns `link` paired shortcode ready to be injected
  *
@@ -25,6 +29,7 @@ const defaultBlankTargetRelAttribute = "noopener noreferrer";
 export const link = (
 	linkResolver?: prismicH.LinkResolverFunction,
 	linkBlankTargetRelAttribute?: string,
+	internalPrefix = "",
 ) => {
 	return (
 		slot: string,
@@ -32,10 +37,10 @@ export const link = (
 		linkFieldOrDocument: LinkField | PrismicDocument,
 		...classOrAttributes: string[]
 	): string => {
-		const href: string | null = prismicH.asLink(
-			linkFieldOrDocument,
-			linkResolver,
-		);
+		let href: string = prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
+		if (isInternalURL(href)) {
+			href = `${internalPrefix}${href}`;
+		}
 		let target: string | null = null;
 		let rel: string | null = null;
 
@@ -50,7 +55,7 @@ export const link = (
 		const ariaCurrent =
 			page &&
 			page.url &&
-			href?.replace(/\/$/, "") === page.url.replace(/\/$/, "")
+			href.replace(/\/$/, "") === page.url.replace(/\/$/, "")
 				? "page"
 				: null;
 
@@ -85,7 +90,15 @@ export const injectPairedShortcodes = (
 	pairedShortcodes.push(`${prefix}link`);
 	injector(
 		`${prefix}link`,
-		link(options.linkResolver, options.linkBlankTargetRelAttribute),
+		link(
+			options.linkResolver,
+			options.linkBlankTargetRelAttribute,
+			process.env.ELEVENTY_SERVERLESS &&
+				canCreateClientFromOptions(options) &&
+				canCreatePreviewFromOptions(options)
+				? `/${options.preview.name}`
+				: "",
+		),
 	);
 
 	dPrismicShortcodes("Paired shortcodes %o injected", pairedShortcodes);

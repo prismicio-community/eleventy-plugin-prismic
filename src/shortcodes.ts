@@ -14,6 +14,7 @@ import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
 import { createClientFromOptions } from "./createClientFromOptions";
 import { attributesToHtml } from "./lib/attributesToHTML";
 import { dPrismicShortcodes } from "./lib/debug";
+import { isInternalURL } from "./lib/isInternalURL";
 import { EleventyShortcodeFunction, PrismicPluginOptions } from "./types";
 
 /**
@@ -50,7 +51,7 @@ export const asHTML = (
  * `asLink` shortcode factory
  *
  * @param linkResolver - An optional link resolver function used to resolve links to Prismic documents when not using the route resolver parameter with the client
- * @param prefix - An optional prefix to be prepended to the URL (used with preview)
+ * @param internalPrefix - An optional prefix to be prepended to internal URL (used with preview)
  *
  * @returns `asLink` shortcode ready to be injected
  *
@@ -60,10 +61,14 @@ export const asHTML = (
  */
 export const asLink = (
 	linkResolver?: prismicH.LinkResolverFunction,
-	prefix = "",
+	internalPrefix = "",
 ) => {
-	return (linkFieldOrDocument: LinkField | PrismicDocument): string =>
-		`${prefix}${prismicH.asLink(linkFieldOrDocument, linkResolver) ?? ""}`;
+	return (linkFieldOrDocument: LinkField | PrismicDocument): string => {
+		const href: string =
+			prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
+
+		return `${isInternalURL(href) ? internalPrefix : ""}${href}`;
+	};
 };
 
 /**
