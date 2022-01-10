@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.5...v0.2.0) (2022-01-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** update to 11ty 1.0 and maintain dependencies
+
+### Features
+
+* support Prismic preview ([e84cbce](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/e84cbceee20a0eebd17f29268898790ed704bb29))
+* update shortcodes to handle preview url ([bc54d4e](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/bc54d4e1a4d2513bdea507d3ff17c68bc2904923))
+
+
+### Chore
+
+* **deps:** stay on AVA 3 until snapshots get fixed ([429e384](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/429e384eb1dcbdd89d93c9304c9a31f9ea790844))
+* **deps:** update to 11ty 1.0 and maintain dependencies ([1259891](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/1259891ff7e254a5560eb307596f544c5fb1cb90))
+* improve preview edge cases handling ([337d9ce](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/337d9ce6748a7ae680a731daaff5e468b564023d))
+* mark preview feature as experimental ([2857ca7](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/2857ca775ad558be4a4e7a70e19bee577576e75f))
+* typo ([531fb17](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/531fb173c916b7e38a0a580c6d9e5b94eb95f240))
+
+
+### Refactor
+
+* use own environment variable to prevent poluting other 11ty serverless handlers ([ded41a4](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/ded41a49b4a96231d0a5cb7fae47120a13dbf685))
+
+
+### Documentation
+
+* document prismic previews ([6b640d9](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/6b640d9cc96ff60e99fbba79d5e36518e3be3432))
+* update tsdoc ([c7a39cd](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/c7a39cdf454b5c311f55a463d818b102ee0d2ba5))
+* wording ([22acf99](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/22acf99ed8b99e3edc4a0b11ffd11de39317d010))
+* wording ([be0317e](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/be0317e32d03cf0a8df354f688f24d4857f6eb2d))
+
 ### [0.1.5](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.4...v0.1.5) (2022-01-03)
 
 
