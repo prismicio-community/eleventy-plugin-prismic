@@ -3,17 +3,18 @@
 - [🚀 &nbsp;Installation](#installation)
 - [🛠 &nbsp;Usage](#usage)
 - [📚 &nbsp;Configuration References](#configuration-references)
+- [⛵ &nbsp;Migrating From `0.1.x`](#migrating-from-01x)
 - [🛶 &nbsp;Migrating From `0.0.x`](#migrating-from-00x)
 
 ## Installation
 
-> ⚠ This plugin relies on the new `eleventyConfig.addGlobalData` method that comes with Eleventy 1.0.0, [see documentation](https://www.11ty.dev/docs/data-global-custom) for more.
+> ⚠ This plugin relies on the new `eleventyConfig.addGlobalData` method that comes with Eleventy `1.0.0`, [see documentation](https://www.11ty.dev/docs/data-global-custom) for more.
 >
-> To use it, make sure you upgrade Eleventy to the latest canary version:
+> To use it, make sure you use Eleventy `1.0.0` or above:
 >
-> - With npm: `npm install --save-dev @11ty/eleventy@canary`;
-> - Yarn: `yarn add --dev @11ty/eleventy@canary`;
-> - Or npx: `npx @11ty/eleventy@canary`.
+> - With npm: `npm install --save-dev @11ty/eleventy@^1.0.0`;
+> - Yarn: `yarn add --dev @11ty/eleventy@^1.0.0`;
+> - Or npx: `npx @11ty/eleventy@^1.0.0`.
 
 Add `eleventy-plugin-prismic` dependency to your project:
 
@@ -31,23 +32,131 @@ const {
 	definePrismicPluginOptions,
 } = require("eleventy-plugin-prismic");
 
-module.exports = function (eleventyConfig) {
-	// This is a sugar function that gives you intellisense and
-	// documentation in your IDE while defining plugin options.
-	const prismicPluginOptions = definePrismicPluginOptions({
-		endpoint: "your-repo-name",
+// This is a sugar function that gives you intellisense and
+// documentation in your IDE while defining plugin options.
+const prismicPluginOptions = definePrismicPluginOptions({
+	endpoint: "your-repo-name",
 
-		// Optional, additional parameters to pass to the client
-		clientConfig: {
-			accessToken: "abc",
-		},
+	// Optional, additional parameters to pass to the client
+	clientConfig: {
+		accessToken: "abc",
+	},
 
-		/* see configuration references for more */
-	});
+	/* see configuration references for more */
+});
 
+const config = function (eleventyConfig) {
 	eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
 };
+// This format is important if you want to setup previews
+// with the plugin.
+config.prismicPluginOptions = prismicPluginOptions;
+
+module.exports = config;
 ```
+
+### Previews _(experimental)_
+
+Prismic previews are now available in Eleventy. To set them up, follow this process:
+
+1.  Configure an [11ty Serverless Bundler plugin](https://www.11ty.dev/docs/plugins/serverless/#step-1-add-the-bundler-plugin) instance inside your Prismic plugin options:
+
+    ```javascript
+    const prismicPluginOptions = definePrismicPluginOptions({
+    	/* ... */
+
+    	preview: {
+    		name: "preview",
+    		functionsDir: "./netlify/functions/",
+    		// More at: https://www.11ty.dev/docs/plugins/serverless/#step-1-add-the-bundler-plugin
+    	},
+    });
+    ```
+
+    > ⚠ From now on, because we named our preview `preview` we'll use `/preview` in the following. For example, if you named it `prismic-preview` instead, you'd have to use `/prismic-preview`.
+
+2.  Update the generated serverless handler (in our example: `./netlify/functions/preview/index.js`):
+
+    ```javascript
+    const { prismicPreview } = require("eleventy-plugin-prismic");
+
+    const { prismicPluginOptions } = require("./eleventy.config.js");
+
+    require("./eleventy-bundler-modules.js");
+
+    const handler = async (event) => {
+    	// This function returns a Netlify `HandlerResponse` object feel
+    	// free to alter it to fit your function provider's interface.
+    	return await prismicPreview.handle(
+    		event.path,
+    		event.queryStringParameters,
+    		event.headers,
+    		prismicPluginOptions,
+    	);
+    };
+
+    exports.handler = handler;
+    ```
+
+3.  Add the `toolbar` shortcode at the end of your website layout (e.g. `./_includes/default.njk`):
+
+    ```nunjucks
+    <!doctype html>
+    <html lang="en">
+    	<head><!-- ... --></head>
+    	<body>
+    		{{ content | safe }}
+    		{% toolbar %}
+    	</body>
+    </html>
+    ```
+
+    > This shortcode will inject Prismic toolbar script to your website only when running through 11ty Serverless. No worries, the script won't be injected outside of preview sessions on your website.
+
+4.  Update your permalinks to use your `preview.name` as path prefix for 11ty Serverless:
+
+    Singleton pages:
+
+    ```diff
+    	---
+    	layout: default
+    -	permalink: "/about/"
+    +	permalink:
+    +		build: "/about/"
+    +		preview: "/preview/about/"
+    	---
+
+    	...
+    ```
+
+    Paginated pages:
+
+    ```diff
+    	---
+    	layout: default
+    	pagination:
+    		data: prismic.post
+    		size: 1
+    		alias: post
+    		addAllPagesToCollections: true
+    -	permalink: "/post/{{post.uid}}/"
+    +	permalink:
+    +		build: "/post/{{post.uid}}/"
+    +		preview: "/preview/post/:uid/"
+    	---
+
+    	...
+    ```
+
+5.  Set up previews within your Prismic repository:
+
+    Head to _Settings > Previews > Manage your Previews_ and select _Create a preview_, then fill in the new preview configuration:
+
+        -   Site Name: _Up to you_
+        -   Domain for Your Application: _Your site URL_ (`http://localhost:8888` for [Netlify Dev](https://cli.netlify.com/commands/dev))
+        -   Link Resolver: `/.netlify/functions/preview` (`/preview/` also works assuming you have it setup for your index page)
+
+6.  You're done :tada: Previews should now be working transparently on your website.
 
 ### i18n _(experimental)_
 
@@ -350,9 +459,13 @@ Renders to:
 ```
 <!-- prettier-ignore-end -->
 
-### Previews
+#### `toolbar`
 
-Soon™ with Eleventy serverless 🚀
+Outputs Prismic toolbar script to the page only when running through 11ty Serverless Prismic preview handler. In your layout, before the `body` closing tag:
+
+```njk
+{% toolbar %}
+```
 
 ### Debug
 
@@ -433,13 +546,21 @@ type PrismicPluginOptions = {
 }
 ```
 
+## Migrating From `0.1.x`
+
+Version `0.2.x` now relies on Eleventy `1.0.0` or above, upgrade from Eleventy Beta or Canary to prevent any trouble:
+
+```bash
+$ npm install @11ty/eleventy@^1.0.0
+```
+
 ## Migrating From `0.0.x`
 
 Package exports have changed from `0.0.x` to `0.1.x`, `pluginPrismic` is not longer default exported:
 
 ```diff
-- const pluginPrismic = require("eleventy-plugin-prismic");
-+ const { pluginPrismic } = require("eleventy-plugin-prismic");
+-	const pluginPrismic = require("eleventy-plugin-prismic");
++	const { pluginPrismic } = require("eleventy-plugin-prismic");
 ```
 
 Plugin options have also changed, to migrate you need to update the plugin configuration as follows:
