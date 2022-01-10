@@ -148,13 +148,20 @@ export const embed = () => {
 /**
  * `toolbar` shortcode factory
  *
+ * @param repository - The repository to link the toolbar to
+ * @param previewName - Preview name from plugin options
+ *
  * @returns `toolbar` shortcode ready to be injected
  *
  * @internal
  */
-export const toolbar = (repository: string) => {
+export const toolbar = (repository: string, previewName: string) => {
 	const script = process.env.ELEVENTY_SERVERLESS
-		? `<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${repository}"></script>`
+		? `<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${repository}"></script>
+<script>window.addEventListener("prismicPreviewEnd", (event) => {
+	event.preventDefault();
+	window.location.replace(window.location.pathname.replace(/^\\/${previewName}/g, ""));
+});</script>`
 		: "";
 
 	return (): string => script;
@@ -210,7 +217,10 @@ export const injectShortcodes = (
 	shortcodes.push(`${prefix}embed`);
 	injector(`${prefix}embed`, embed());
 
-	if (canCreateClientFromOptions(options)) {
+	if (
+		canCreateClientFromOptions(options) &&
+		canCreatePreviewFromOptions(options)
+	) {
 		shortcodes.push(`${prefix}toolbar`);
 		injector(
 			`${prefix}toolbar`,
@@ -219,6 +229,7 @@ export const injectShortcodes = (
 					/\.cdn/i,
 					"",
 				),
+				options.preview.name,
 			),
 		);
 	}

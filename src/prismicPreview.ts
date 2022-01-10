@@ -70,57 +70,72 @@ export const get = async (
 	headers: Record<string, string> | undefined,
 	options: PrismicPluginOptionsWithPreview,
 ): Promise<HandlerResponse> => {
-	globalThis.document = globalThis.document || {};
-	globalThis.document.cookie = headers?.cookie ?? "";
+	const cookie = headers?.cookie ?? "";
 
-	const elev = new EleventyServerless(options.preview.name, {
-		path,
-		query,
-		functionsDir: options.preview.functionsDir || "./functions/",
-	});
+	const repository = new URL(
+		createClientFromOptions(options).endpoint,
+	).host.replace(/\.cdn/i, "");
 
-	const output = await elev.getOutput();
-
-	const page = output.find((o: { url: string }) =>
-		/** @see Regex101 expression: {@link https://regex101.com/r/7AKhyO/1} */
-		path.includes(o.url.replace(/^\/|\/(index(\.html)?)?$/gim, "")),
-	);
-
-	let response: HandlerResponse;
-	if (!page) {
-		response = {
-			statusCode: 404,
-			body: `<!DOCTYPE html>
+	let response: HandlerResponse = {
+		statusCode: 404,
+		body: `<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Loading preview...</title>
-	<style>
-		body, h1 {
-			font-family: monospace;
-			font-weight: 400;
-			font-size: 16px;
-		}
-	</style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Not found</title>
+<style>
+	body, h1 {
+		font-family: monospace;
+		font-weight: 400;
+		font-size: 16px;
+	}
+	ul {
+		list-style-type: decimal;
+	}
+</style>
 </head>
 <body>
-	<section>
-		<h1>Not found</h1>
-		<p><a href="/">Get back to home</a></p>
-	</section>
-	<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${new URL(
-		createClientFromOptions(options).endpoint,
-	).host.replace(/\.cdn/i, "")}"></script>
+<section>
+	<h1>404 - Not Found.</h1>
+	<p>This probably means one of the following:</p>
+	<ul>
+		<li>You are entering a preview session and it is still loading. Hang on!</li>
+		<li>You are not in an ongoing preview session or just exited one.</li>
+	</ul>
+	<p><a href="/">Get back to home</a></p>
+</section>
+<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${repository}"></script>
 </body>
-</html>`,
-		};
-	} else {
-		response = {
-			statusCode: 200,
-			body: page.content,
-		};
+</html>
+`,
+	};
+
+	if (cookie.includes(repository)) {
+		globalThis.document = globalThis.document || {};
+		globalThis.document.cookie = cookie;
+
+		const elev = new EleventyServerless(options.preview.name, {
+			path,
+			query,
+			inputDir: options.preview?.inputDir,
+			functionsDir: options.preview?.functionsDir,
+		});
+
+		const output = await elev.getOutput();
+
+		const page = output.find((o: { url: string }) =>
+			/** @see Regex101 expression: {@link https://regex101.com/r/7AKhyO/1} */
+			path.includes(o.url.replace(/^\/|\/(index(\.html)?)?$/gim, "")),
+		);
+
+		if (page) {
+			response = {
+				statusCode: 200,
+				body: page.content,
+			};
+		}
 	}
 
 	return {
@@ -157,14 +172,20 @@ export const handle = async (
 		};
 	}
 
-	let response: HandlerResponse;
-
 	try {
-		response =
+		const response =
 			(await resolve(query, options)) ||
 			(await get(path, query, headers, options));
+
+		return {
+			...response,
+			headers: {
+				...response.headers,
+				"X-Robots-Tag": "noindex, nofollow",
+			},
+		};
 	} catch (error) {
-		response = {
+		return {
 			statusCode:
 				error instanceof Error && "httpStatusCode" in error
 					? (error as Error & { httpStatusCode: number }).httpStatusCode
@@ -174,12 +195,4 @@ export const handle = async (
 			}),
 		};
 	}
-
-	return {
-		...response,
-		headers: {
-			...response.headers,
-			"X-Robots-Tag": "noindex, nofollow",
-		},
-	};
 };

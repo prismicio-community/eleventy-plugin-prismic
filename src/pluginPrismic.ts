@@ -17,7 +17,7 @@ import { injectShortcodes } from "./shortcodes";
 import { injectPairedShortcodes } from "./pairedShortcodes";
 
 /**
- * Prismic plugin for Eleventy, injects Prismic documents into Eleventy global data and provides useful shortcodes
+ * Prismic plugin for Eleventy, injects Prismic documents into Eleventy global data, enable preview, and provides useful shortcodes
  *
  * @example
  * Basic usage

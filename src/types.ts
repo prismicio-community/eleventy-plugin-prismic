@@ -20,7 +20,7 @@ export type EleventyPairedShortcodeFunction = (
 ) => void;
 
 export type EleventyConfig = {
-	addPlugin: <TOptions = unknown>(
+	addPlugin: <TOptions>(
 		plugin: (eleventyConfig: EleventyConfig, options?: TOptions) => void,
 		options?: TOptions,
 	) => void;
@@ -35,6 +35,7 @@ export type EleventyConfig = {
 
 export type EleventyServerlessBundlerPluginOptions = {
 	name: string;
+	inputDir?: string;
 	functionsDir?: string;
 	copy?: (string | { from: string; to: string })[];
 	copyOptions?: Record<string, unknown>;
