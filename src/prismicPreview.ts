@@ -133,14 +133,21 @@ export const get = async (
 			functionsDir: options.preview.functionsDir,
 		});
 
-		const output = await elev.getOutput();
+		const output = (await elev.getOutput()) as {
+			url: string;
+			content: string;
+		}[];
 
 		delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
 
-		const page = output.find((o: { url: string }) =>
-			/** @see Regex101 expression: {@link https://regex101.com/r/7AKhyO/1} */
-			path.includes(o.url.replace(/^\/|\/(index(\.html)?)?$/gim, "")),
-		);
+		const page = output
+			.map((o) => ({
+				...o,
+				/** @see Regex101 expression: {@link https://regex101.com/r/MUUQ5V/1} */
+				url: o.url.replace(/(^\/)|(index\.html$)|(\.html$)/gim, ""),
+			}))
+			.sort((a, b) => (a.url < b.url ? 1 : -1))
+			.find((o) => path.includes(o.url));
 
 		if (page) {
 			response = {
