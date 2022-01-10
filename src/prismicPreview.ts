@@ -29,6 +29,8 @@ export const resolve = async (
 		return null;
 	}
 
+	process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
+
 	const client = createClientFromOptions(options);
 	const href = await client.resolvePreviewURL({
 		documentID,
@@ -36,6 +38,8 @@ export const resolve = async (
 		linkResolver: options.linkResolver,
 		defaultURL: `/${options.preview.name}`,
 	});
+
+	delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
 
 	const previewCookie = {
 		[new URL(client.endpoint).host.replace(/\.cdn/i, "")]: {
