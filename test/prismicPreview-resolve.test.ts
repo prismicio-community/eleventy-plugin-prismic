@@ -38,7 +38,7 @@ test.serial(
 			{
 				statusCode: 302,
 				headers: {
-					location: "/preview/foo",
+					location: "/preview/foo?preview=true",
 					"set-cookie": `${cookie.preview}=${encodeURIComponent(
 						JSON.stringify({
 							[`${options.endpoint}.prismic.io`]: { preview: "foo" },
@@ -63,7 +63,7 @@ test.serial(
 			{
 				statusCode: 302,
 				headers: {
-					location: "/preview/foo",
+					location: "/preview/foo?preview=true",
 					"set-cookie": `${cookie.preview}=${encodeURIComponent(
 						JSON.stringify({
 							[`${options.endpoint}.prismic.io`]: { preview: "foo" },

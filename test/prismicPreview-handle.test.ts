@@ -54,7 +54,7 @@ test("resolves preview when query strings are valid", async (t) => {
 			statusCode: 302,
 			headers: {
 				"X-Robots-Tag": "noindex, nofollow",
-				location: "/preview/foo",
+				location: "/preview/foo?preview=true",
 				"set-cookie": `${cookie.preview}=${encodeURIComponent(
 					JSON.stringify({
 						[`${options.endpoint}.prismic.io`]: { preview: "foo" },
