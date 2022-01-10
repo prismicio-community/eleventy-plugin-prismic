@@ -53,7 +53,8 @@ export const resolve = async (
 			location: `/${options.preview.name}${href}?preview=true`,
 			"set-cookie": `${cookie.preview}=${encodeURIComponent(
 				JSON.stringify(previewCookie),
-			)}; Path=/${process.env.NETLIFY ? "; Secure" : ""}`,
+				// TODO: Need improvement, see: https://github.com/11ty/eleventy/issues/1957
+			)}; Path=/${process.env.AWS_LAMBDA_FUNCTION_NAME ? "; Secure" : ""}`,
 		},
 	};
 };

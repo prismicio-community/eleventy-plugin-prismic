@@ -53,7 +53,7 @@ test.serial(
 test.serial(
 	"returns redirect response when query strings are valid and set secured cookies on Netlify",
 	async (t) => {
-		process.env.NETLIFY = "true";
+		process.env.AWS_LAMBDA_FUNCTION_NAME = "true";
 
 		t.deepEqual(
 			await prismicPreview.resolve(
@@ -73,6 +73,6 @@ test.serial(
 			},
 		);
 
-		delete process.env.NETLIFY;
+		delete process.env.AWS_LAMBDA_FUNCTION_NAME;
 	},
 );
