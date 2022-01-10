@@ -43,10 +43,17 @@ test("returns previewed page when in a preview session", async (t) => {
 });
 
 test("returns fallback page when not in a preview session", async (t) => {
-	const response = await prismicPreview.get("/preview/404", {}, {}, options);
+	const response1 = await prismicPreview.get(
+		"/preview/404",
+		{},
+		undefined,
+		options,
+	);
+	const response2 = await prismicPreview.get("/preview/404", {}, {}, options);
 
-	t.snapshot(response);
-	t.is(response.statusCode, 404);
+	t.deepEqual(response1, response2);
+	t.snapshot(response1);
+	t.is(response1.statusCode, 404);
 });
 
 test("returns fallback page when previewed page is not found", async (t) => {

@@ -123,8 +123,8 @@ export const get = async (
 		const elev = new EleventyServerless(options.preview.name, {
 			path,
 			query,
-			inputDir: options.preview?.inputDir,
-			functionsDir: options.preview?.functionsDir,
+			inputDir: options.preview.inputDir,
+			functionsDir: options.preview.functionsDir,
 		});
 
 		const output = await elev.getOutput();
