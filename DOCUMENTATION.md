@@ -75,7 +75,14 @@ Prismic previews are now available in Eleventy. To set them up, follow this proc
 
     > ⚠ From now on, because we named our preview `preview` we'll use `/preview` in the following. For example, if you named it `prismic-preview` instead, you'd have to use `/prismic-preview`.
 
-2.  Update the generated serverless handler (in our example: `./netlify/functions/preview/index.js`):
+2.  Update your `.gitignore` to reflect your new 11ty Serverless function ([following 11ty documentation](https://www.11ty.dev/docs/plugins/serverless/#step-2-add-to-.gitignore)):
+
+    ```ignore
+    netlify/functions/possum/**
+    !netlify/functions/possum/index.js
+    ```
+
+3.  Update the generated serverless handler (in our example: `./netlify/functions/preview/index.js`):
 
     ```javascript
     const { prismicPreview } = require("eleventy-plugin-prismic");
@@ -98,7 +105,7 @@ Prismic previews are now available in Eleventy. To set them up, follow this proc
     exports.handler = handler;
     ```
 
-3.  Add the `toolbar` shortcode at the end of your website layout (e.g. `./_includes/default.njk`):
+4.  Add the `toolbar` shortcode at the end of your website layout (e.g. `./_includes/default.njk`):
 
     ```nunjucks
     <!doctype html>
@@ -113,7 +120,7 @@ Prismic previews are now available in Eleventy. To set them up, follow this proc
 
     > This shortcode will inject Prismic toolbar script to your website only when running through 11ty Serverless. No worries, the script won't be injected outside of preview sessions on your website.
 
-4.  Update your permalinks to use your `preview.name` as path prefix for 11ty Serverless:
+5.  Update your permalinks to use your `preview.name` as path prefix for 11ty Serverless:
 
     Singleton pages:
 
@@ -148,15 +155,17 @@ Prismic previews are now available in Eleventy. To set them up, follow this proc
     	...
     ```
 
-5.  Set up previews within your Prismic repository:
+6.  Set up previews within your Prismic repository:
 
     Head to _Settings > Previews > Manage your Previews_ and select _Create a preview_, then fill in the new preview configuration:
 
-        -   Site Name: _Up to you_
-        -   Domain for Your Application: _Your site URL_ (`http://localhost:8888` for [Netlify Dev](https://cli.netlify.com/commands/dev))
-        -   Link Resolver: `/.netlify/functions/preview` (`/preview/` also works assuming you have it setup for your index page)
+    - Site Name: _Up to you_
+    - Domain for Your Application: _Your site URL_ (`http://localhost:8888` for [Netlify Dev](https://cli.netlify.com/commands/dev))
+    - Link Resolver: `/.netlify/functions/preview` (`/preview/` also works assuming you have it setup for your index page)
 
-6.  You're done :tada: Previews should now be working transparently on your website.
+7.  You're done 🎉&nbsp;
+
+    Previews should now be working transparently on your website.
 
 ### i18n _(experimental)_
 
