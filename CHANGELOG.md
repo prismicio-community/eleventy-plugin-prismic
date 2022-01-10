@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1-alpha.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.2.0...v0.2.1-alpha.0) (2022-01-10)
+
+
+### Bug Fixes
+
+* improve output page resolving to prevent conflict ([3a34dc2](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/3a34dc29d7f827360f66f74e089d381e9b323128))
+* redirect loop on Netlify ([ff89220](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/ff892203cdf0e02f7e2fcc0464d0f8fbc9d368b7))
+* set up environment variable during preview resolving too ([1418aca](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/1418aca306c6c4d000e85218465f3df8ca28ff00))
+
+
+### Documentation
+
+* document `.gitignore` setup ([c01f62a](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/c01f62a33d7070a5cd16e1787e58e827a341f59b))
+* update 0.1.x migration guide ([c4aacf4](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/c4aacf49c1dc1a555b1c312bba7339f321bd8cb1))
+
 ## [0.2.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.1.5...v0.2.0) (2022-01-10)
 
 
