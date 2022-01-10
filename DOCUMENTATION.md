@@ -554,6 +554,27 @@ Version `0.2.x` now relies on Eleventy `1.0.0` or above, upgrade from Eleventy B
 $ npm install @11ty/eleventy@^1.0.0
 ```
 
+I also recommend updating your `.eleventy.js` configuration file structure to export your `prismicPluginOptions` alongside your Eleventy config function. This helps to ensure setting up [previews](#previews-experimental) will be straightforward should you decide to set them up:
+
+```javascript
+const {
+	pluginPrismic,
+	definePrismicPluginOptions,
+} = require("eleventy-plugin-prismic");
+
+// Now outside of the function
+const prismicPluginOptions = definePrismicPluginOptions(/* ... */);
+
+const config = function (eleventyConfig) {
+	eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
+};
+// Attach your options to the function this way
+config.prismicPluginOptions = prismicPluginOptions;
+
+// Export everything
+module.exports = config;
+```
+
 ## Migrating From `0.0.x`
 
 Package exports have changed from `0.0.x` to `0.1.x`, `pluginPrismic` is not longer default exported:
