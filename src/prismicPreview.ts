@@ -50,7 +50,7 @@ export const resolve = async (
 	return {
 		statusCode: 302,
 		headers: {
-			location: `/${options.preview.name}${href}`,
+			location: `/${options.preview.name}${href}?preview=true`,
 			"set-cookie": `${cookie.preview}=${encodeURIComponent(
 				JSON.stringify(previewCookie),
 			)}; Path=/${process.env.NETLIFY ? "; Secure" : ""}`,
