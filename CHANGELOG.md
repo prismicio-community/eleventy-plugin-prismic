@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.2.1-alpha.0...v0.2.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* actually make cookie secure on production following 11ty way ([6115986](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/6115986165262cd286b559882ca98788caf18555))
+
 ### [0.2.1-alpha.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.2.0...v0.2.1-alpha.0) (2022-01-10)
 
 
