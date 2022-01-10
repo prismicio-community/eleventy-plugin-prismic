@@ -93,7 +93,7 @@ export const injectPairedShortcodes = (
 		link(
 			options.linkResolver,
 			options.linkBlankTargetRelAttribute,
-			process.env.ELEVENTY_SERVERLESS &&
+			process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW &&
 				canCreateClientFromOptions(options) &&
 				canCreatePreviewFromOptions(options)
 				? `/${options.preview.name}`

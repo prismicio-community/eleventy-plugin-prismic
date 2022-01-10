@@ -12,9 +12,9 @@ test.serial(
 );
 
 test.serial("Injects the toolbar when running on 11ty Serverless", (t) => {
-	process.env.ELEVENTY_SERVERLESS = "true";
+	process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
 
 	t.snapshot(toolbar(repositoryName, "preview")());
 
-	delete process.env.ELEVENTY_SERVERLESS;
+	delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
 });

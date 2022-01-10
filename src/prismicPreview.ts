@@ -120,6 +120,8 @@ export const get = async (
 		globalThis.document = globalThis.document || {};
 		globalThis.document.cookie = cookie;
 
+		process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
+
 		const elev = new EleventyServerless(options.preview.name, {
 			path,
 			query,
@@ -128,6 +130,8 @@ export const get = async (
 		});
 
 		const output = await elev.getOutput();
+
+		delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
 
 		const page = output.find((o: { url: string }) =>
 			/** @see Regex101 expression: {@link https://regex101.com/r/7AKhyO/1} */

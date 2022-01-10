@@ -36,7 +36,7 @@ test.serial(
 
 		const injector = sinon.spy();
 
-		process.env.ELEVENTY_SERVERLESS = "true";
+		process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
 
 		injectPairedShortcodes(injector, {
 			endpoint: repositoryName,
@@ -57,6 +57,6 @@ test.serial(
 			}),
 		);
 
-		delete process.env.ELEVENTY_SERVERLESS;
+		delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
 	},
 );

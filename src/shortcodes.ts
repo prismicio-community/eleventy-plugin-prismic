@@ -156,7 +156,7 @@ export const embed = () => {
  * @internal
  */
 export const toolbar = (repository: string, previewName: string) => {
-	const script = process.env.ELEVENTY_SERVERLESS
+	const script = process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW
 		? `<script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=${repository}"></script>
 <script>window.addEventListener("prismicPreviewEnd", (event) => {
 	event.preventDefault();
@@ -200,7 +200,7 @@ export const injectShortcodes = (
 		`${prefix}asLink`,
 		asLink(
 			options.linkResolver,
-			process.env.ELEVENTY_SERVERLESS &&
+			process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW &&
 				canCreateClientFromOptions(options) &&
 				canCreatePreviewFromOptions(options)
 				? `/${options.preview.name}`
@@ -232,6 +232,9 @@ export const injectShortcodes = (
 				options.preview.name,
 			),
 		);
+	} else {
+		shortcodes.push(`${prefix}toolbar (dummy)`);
+		injector(`${prefix}toolbar`, () => "");
 	}
 
 	dPrismicShortcodes("Shortcodes %o injected", shortcodes);
