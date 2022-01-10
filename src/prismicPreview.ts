@@ -16,6 +16,8 @@ import { PrismicPluginOptions, PrismicPluginOptionsWithPreview } from "./types";
  * @returns Resolved session if any
  *
  * @internal
+ *
+ * @experimental
  */
 export const resolve = async (
 	query: Record<string, string>,
@@ -63,6 +65,8 @@ export const resolve = async (
  * @returns - Previewed page
  *
  * @internal
+ *
+ * @experimental
  */
 export const get = async (
 	path: string,
@@ -156,6 +160,8 @@ export const get = async (
  * @param options - Prismic plugin options
  *
  * @returns - Handler response
+ *
+ * @experimental
  */
 export const handle = async (
 	path: string,
