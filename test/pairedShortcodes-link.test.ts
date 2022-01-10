@@ -38,6 +38,17 @@ test("returns link field resolved targetted anchor tag", (t) => {
 	);
 });
 
+test("uses provided blank target rel attribute", (t) => {
+	t.is(
+		link(undefined, "noopener")(...args, {
+			link_type: "Web",
+			url: "https://google.com",
+			target: "_blank",
+		}),
+		`<a href="https://google.com" target="_blank" rel="noopener">${args[0]}</a>`,
+	);
+});
+
 test("returns document resolved anchor tag", (t) => {
 	t.is(
 		link()(...args, createDocument({ url: "/foo" })),
@@ -54,6 +65,31 @@ test("returns document resolved anchor tag using link resolver", (t) => {
 
 test("returns an empty anchor tag when link resolver is required but not provided", (t) => {
 	t.is(link()(...args, createDocument()), `<a>${args[0]}</a>`);
+});
+
+test("uses provided internal prefix for internal links", (t) => {
+	t.is(
+		link(
+			linkResolver,
+			undefined,
+			"/preview",
+		)(...args, createDocument({ uid: "foo", url: "/bar" })),
+		`<a href="/preview/foo">${args[0]}</a>`,
+	);
+});
+
+test("doesn't use provided internal prefix for external links", (t) => {
+	t.is(
+		link(
+			linkResolver,
+			undefined,
+			"/preview",
+		)(...args, {
+			link_type: "Web",
+			url: "https://google.com",
+		}),
+		`<a href="https://google.com">${args[0]}</a>`,
+	);
 });
 
 test("returns document resolved anchor tag for current page", (t) => {

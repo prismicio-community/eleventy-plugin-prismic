@@ -2,6 +2,8 @@ import test from "ava";
 import * as mswNode from "msw/node";
 import * as sinon from "sinon";
 
+// @ts-expect-error - 11ty does not provide any sort of type definition
+import { EleventyServerlessBundlerPlugin } from "@11ty/eleventy";
 import nodeFetch from "node-fetch";
 import { createClient, getEndpoint } from "@prismicio/client";
 
@@ -12,7 +14,7 @@ import { eleventyConfig } from "./__fixtures__/eleventyConfig";
 import { pluginPrismic } from "../src";
 import { EleventyConfig } from "../src/types";
 
-const repositoryName = "pluginPrismic.test.ts";
+const repositoryName = "pluginPrismic-test-ts";
 
 const server = mswNode.setupServer(
 	createMockRepositoryHandler(repositoryName),
@@ -21,9 +23,15 @@ const server = mswNode.setupServer(
 test.before(() => server.listen({ onUnhandledRequest: "error" }));
 test.after(() => server.close());
 
-let spiedEleventyConfig: sinon.SinonSpiedInstance<EleventyConfig>;
+let spiedEleventyConfig: sinon.SinonSpiedInstance<EleventyConfig> & {
+	addPlugin: EleventyConfig["addPlugin"];
+};
 test.beforeEach(() => {
-	spiedEleventyConfig = sinon.spy(eleventyConfig);
+	spiedEleventyConfig = sinon.spy(
+		eleventyConfig,
+	) as sinon.SinonSpiedInstance<EleventyConfig> & {
+		addPlugin: EleventyConfig["addPlugin"];
+	};
 });
 test.afterEach.always(() => {
 	sinon.restore();
@@ -62,6 +70,33 @@ test.serial("injects documents from client instance", async (t) => {
 			res(null);
 		}, 200);
 	});
+});
+
+test.serial("sets up preview when enabled", async (t) => {
+	const options = {
+		endpoint: repositoryName,
+		preview: {
+			name: "preview",
+		},
+	};
+	pluginPrismic(spiedEleventyConfig, options);
+
+	t.true(spiedEleventyConfig.addPlugin.calledOnce);
+	t.true(
+		spiedEleventyConfig.addPlugin.calledWith(
+			EleventyServerlessBundlerPlugin,
+			options.preview,
+		),
+	);
+});
+
+test.serial("doesn't set up preview when not enabled", async (t) => {
+	const options = {
+		endpoint: repositoryName,
+	};
+	pluginPrismic(spiedEleventyConfig, options);
+
+	t.true(spiedEleventyConfig.addPlugin.notCalled);
 });
 
 test.serial("injects shortcodes", (t) => {

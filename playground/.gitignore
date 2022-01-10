@@ -1,0 +1,2 @@
+netlify/functions/preview/**
+!netlify/functions/preview/index.js

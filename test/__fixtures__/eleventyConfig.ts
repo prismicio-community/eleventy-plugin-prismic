@@ -1,6 +1,13 @@
 import { EleventyConfig } from "../../src/types";
 
 export const eleventyConfig: EleventyConfig = {
+	addPlugin<TOptions>(
+		_plugin: (eleventyConfig: EleventyConfig, options?: TOptions) => void,
+		_options?: TOptions,
+	) {
+		return;
+	},
+
 	/** @internal */
 	globalData: {},
 
