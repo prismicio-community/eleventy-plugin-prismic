@@ -97,6 +97,54 @@ export const asDate = () => {
 };
 
 /**
+ * `asImageSrc` shortcode factory
+ *
+ * @returns `asImageSrc` shortcode ready to be injected
+ *
+ * @internal
+ */
+export const asImageSrc = () => {
+	return (
+		imageField: ImageField,
+		params?: Parameters<typeof prismicH.asImageSrc>[1],
+	): string => {
+		return prismicH.asImageSrc(imageField, params) ?? "";
+	};
+};
+
+/**
+ * `asImageWidthSrcSet` shortcode factory
+ *
+ * @returns `asImageWidthSrcSet` shortcode ready to be injected
+ *
+ * @internal
+ */
+export const asImageWidthSrcSet = () => {
+	return (
+		imageField: ImageField,
+		params?: Parameters<typeof prismicH.asImageWidthSrcSet>[1],
+	): string => {
+		return prismicH.asImageWidthSrcSet(imageField, params)?.srcset ?? "";
+	};
+};
+
+/**
+ * `asImagePixelDensitySrcSet` shortcode factory
+ *
+ * @returns `asImagePixelDensitySrcSet` shortcode ready to be injected
+ *
+ * @internal
+ */
+export const asImagePixelDensitySrcSet = () => {
+	return (
+		imageField: ImageField,
+		params?: Parameters<typeof prismicH.asImagePixelDensitySrcSet>[1],
+	): string => {
+		return prismicH.asImagePixelDensitySrcSet(imageField, params)?.srcset ?? "";
+	};
+};
+
+/**
  * `image` shortcode factory
  *
  * @returns `image` shortcode ready to be injected
