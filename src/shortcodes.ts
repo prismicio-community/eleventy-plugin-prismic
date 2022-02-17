@@ -151,15 +151,82 @@ export const asImagePixelDensitySrcSet = () => {
  *
  * @internal
  */
-export const image = () => {
-	return (imageField: ImageField, ...classOrAttributes: string[]): string => {
-		const { url: src, alt, copyright } = imageField;
+export const image = (
+	widthSrcSetDefaults?: number[],
+	pixelDensitySrcSetDefaults?: number[],
+) => {
+	return (
+		imageField: ImageField,
+		options:
+			| ({
+					imgixParams?: Parameters<typeof prismicH.asImageSrc>[1];
+					widths?:
+						| NonNullable<
+								Parameters<typeof prismicH.asImageWidthSrcSet>[1]
+						  >["widths"]
+						| "auto"
+						| "defaults";
+					pixelDensities?:
+						| NonNullable<
+								Parameters<typeof prismicH.asImagePixelDensitySrcSet>[1]
+						  >["pixelDensities"]
+						| "defaults";
+			  } & Record<string, string | number | null | undefined | unknown>)
+			| string = {},
+	): string => {
+		const { alt } = imageField;
+		const { imgixParams, widths, pixelDensities, ...attributes } =
+			typeof options === "string"
+				? {
+						imgixParams: undefined,
+						widths: undefined,
+						pixelDensities: undefined,
+						class: options,
+				  }
+				: options;
 
-		return `<img${attributesToHtml(classOrAttributes, {
-			src,
-			alt,
-			copyright,
-		})} />`;
+		const { src, srcset } = (() => {
+			if (!prismicH.isFilled.imageThumbnail(imageField)) {
+				return { src: null, srcset: null };
+			} else if (widths) {
+				if (pixelDensities) {
+					dPrismicShortcodes(
+						"`widths` and `pixelDensities` props should not be use alongside each others, only `widths` will be applied",
+						{ imageField, attributes, imgixParams, widths, pixelDensities },
+					);
+				}
+
+				if (widths === "auto") {
+					return prismicH.asImageWidthSrcSet(imageField, imgixParams);
+				} else {
+					// Remove potential thumbnails when using manual widths
+					const { url, dimensions, alt, copyright } = imageField;
+
+					return prismicH.asImageWidthSrcSet(
+						{ url, dimensions, alt, copyright },
+						{
+							...imgixParams,
+							widths: widths === "defaults" ? widthSrcSetDefaults : widths,
+						},
+					);
+				}
+			} else if (pixelDensities) {
+				return prismicH.asImagePixelDensitySrcSet(imageField, {
+					...imgixParams,
+					pixelDensities:
+						pixelDensities === "defaults"
+							? pixelDensitySrcSetDefaults
+							: pixelDensities,
+				});
+			} else {
+				return {
+					src: prismicH.asImageSrc(imageField, imgixParams),
+					srcset: null,
+				};
+			}
+		})();
+
+		return `<img${attributesToHTML({ alt, src, srcset, ...attributes })} />`;
 	};
 };
 
@@ -266,8 +333,23 @@ export const injectShortcodes = (
 	shortcodes.push(`${prefix}asDate`);
 	injector(`${prefix}asDate`, asDate());
 
+	shortcodes.push(`${prefix}asImageSrc`);
+	injector(`${prefix}asImageSrc`, asImageSrc());
+
+	shortcodes.push(`${prefix}asImageWidthSrcSet`);
+	injector(`${prefix}asImageWidthSrcSet`, asImageWidthSrcSet());
+
+	shortcodes.push(`${prefix}asImagePixelDensitySrcSet`);
+	injector(`${prefix}asImagePixelDensitySrcSet`, asImagePixelDensitySrcSet());
+
 	shortcodes.push(`${prefix}image`);
-	injector(`${prefix}image`, image());
+	injector(
+		`${prefix}image`,
+		image(
+			options.imageWidthSrcSetDefaults,
+			options.imagePixelDensitySrcSetDefaults,
+		),
+	);
 
 	shortcodes.push(`${prefix}embed`);
 	injector(`${prefix}embed`, embed());
