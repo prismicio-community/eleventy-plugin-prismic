@@ -38,6 +38,34 @@ test("returns link field resolved targetted anchor tag", (t) => {
 	);
 });
 
+test("returns link field resolved anchor tag with class", (t) => {
+	t.is(
+		link()(
+			...args,
+			{
+				link_type: "Web",
+				url: "https://google.com",
+			},
+			"foo",
+		),
+		`<a href="https://google.com" class="foo">${args[0]}</a>`,
+	);
+});
+
+test("returns link field resolved anchor tag with attributes", (t) => {
+	t.is(
+		link()(
+			...args,
+			{
+				link_type: "Web",
+				url: "https://google.com",
+			},
+			{ foo: "bar", baz: "qux" },
+		),
+		`<a href="https://google.com" foo="bar" baz="qux">${args[0]}</a>`,
+	);
+});
+
 test("uses provided blank target rel attribute", (t) => {
 	t.is(
 		link(undefined, "noopener")(...args, {

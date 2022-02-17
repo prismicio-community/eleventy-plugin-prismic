@@ -2,7 +2,7 @@ import test from "ava";
 import * as mswNode from "msw/node";
 
 import nodeFetch from "node-fetch";
-import { createClient, getEndpoint } from "@prismicio/client";
+import { createClient } from "@prismicio/client";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
 import { createMockRepositoryHandler } from "./__testutils__/createMockRepositoryHandler";
@@ -12,7 +12,7 @@ import { linkResolver } from "./__testutils__/linkResolver";
 import { crawlAndSort } from "../src";
 import { PrismicDocument } from "@prismicio/types";
 
-const repositoryName = "crawlAndSort.test.ts";
+const repositoryName = "crawlAndSort-test-ts";
 
 const server = mswNode.setupServer(
 	createMockRepositoryHandler(repositoryName),
@@ -29,7 +29,7 @@ const server = mswNode.setupServer(
 test.before(() => server.listen({ onUnhandledRequest: "error" }));
 test.after(() => server.close());
 
-const client = createClient(getEndpoint(repositoryName), {
+const client = createClient(repositoryName, {
 	fetch: nodeFetch,
 });
 

@@ -1,33 +1,22 @@
 import test from "ava";
 
-import { attributesToHtml } from "../src/lib/attributesToHTML";
+import { attributesToHTML } from "../src/lib/attributesToHTML";
 
-test("outputs a class if only one provided", (t) => {
-	t.is(attributesToHtml(["foo bar baz"]), ' class="foo bar baz"');
+test("outputs given attribute map as HTML", (t) => {
+	t.is(attributesToHTML({ foo: "bar", baz: "qux" }), ' foo="bar" baz="qux"');
 });
 
-test("outputs attributes if an even number is provided", (t) => {
-	t.is(attributesToHtml(["foo", "bar", "baz", "qux"]), ' foo="bar" baz="qux"');
+test("outputs an empty string when map is empty", (t) => {
+	t.is(attributesToHTML({}), "");
 });
 
-test("outputs attributes and ignore last value if an odd number is provided", (t) => {
+test("ignores nullish values", (t) => {
 	t.is(
-		attributesToHtml(["foo", "bar", "baz", "qux", "quux"]),
-		' foo="bar" baz="qux"',
+		attributesToHTML({ foo: "bar", baz: null, qux: undefined }),
+		' foo="bar"',
 	);
 });
 
-test("outputs nothing if nothing is provided", (t) => {
-	t.is(attributesToHtml([]), "");
-});
-
-test("appends provided object to attributes", (t) => {
-	t.is(
-		attributesToHtml(["foo", "bar"], { baz: "qux" }),
-		' baz="qux" foo="bar"',
-	);
-});
-
-test("ignores falsy values", (t) => {
-	t.is(attributesToHtml(["foo", ""], { baz: null }), "");
+test("doesn't consider `0` as a nullish value", (t) => {
+	t.is(attributesToHTML({ foo: "bar", baz: 0 }), ' foo="bar" baz="0"');
 });

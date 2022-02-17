@@ -3,7 +3,7 @@ import * as prismicH from "@prismicio/helpers";
 import { LinkField, PrismicDocument } from "@prismicio/types";
 import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
 import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
-import { attributesToHtml } from "./lib/attributesToHTML";
+import { attributesToHTML } from "./lib/attributesToHTML";
 import { dPrismicShortcodes } from "./lib/debug";
 import { isInternalURL } from "./lib/isInternalURL";
 import { EleventyPairedShortcodeFunction, PrismicPluginOptions } from "./types";
@@ -35,7 +35,7 @@ export const link = (
 		slot: string,
 		page: Record<string, string>,
 		linkFieldOrDocument: LinkField | PrismicDocument,
-		...classOrAttributes: string[]
+		options: Record<string, string | number | null | undefined> | string = {},
 	): string => {
 		let href: string = prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
 		if (isInternalURL(href)) {
@@ -59,11 +59,15 @@ export const link = (
 				? "page"
 				: null;
 
-		return `<a${attributesToHtml(classOrAttributes, {
+		const attributes =
+			typeof options === "string" ? { class: options } : options;
+
+		return `<a${attributesToHTML({
 			href,
 			target,
 			rel,
 			"aria-current": ariaCurrent,
+			...attributes,
 		})}>${slot}</a>`;
 	};
 };

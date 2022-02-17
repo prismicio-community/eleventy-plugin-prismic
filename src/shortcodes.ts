@@ -9,10 +9,11 @@ import {
 	TimestampField,
 } from "@prismicio/types";
 import dayjs from "dayjs";
+
 import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
 import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
 import { createClientFromOptions } from "./createClientFromOptions";
-import { attributesToHtml } from "./lib/attributesToHTML";
+import { attributesToHTML } from "./lib/attributesToHTML";
 import { dPrismicShortcodes } from "./lib/debug";
 import { isInternalURL } from "./lib/isInternalURL";
 import { EleventyShortcodeFunction, PrismicPluginOptions } from "./types";
@@ -129,19 +130,25 @@ const defaultEmbedWrapper = "div";
 export const embed = () => {
 	return (
 		embedField: EmbedField,
-		wrapper?: string,
-		...classOrAttributes: string[]
+		options:
+			| ({ wrapper?: string } & Record<
+					string,
+					string | number | null | undefined
+			  >)
+			| string = {},
 	): string => {
 		const { html, embed_url, type, provider_name } = embedField;
+		const { wrapper = defaultEmbedWrapper, ...attributes } =
+			typeof options === "string"
+				? { wrapper: undefined, class: options }
+				: options;
 
-		return `<${wrapper || defaultEmbedWrapper}${attributesToHtml(
-			classOrAttributes,
-			{
-				"data-oembed": embed_url,
-				"data-oembed-type": type,
-				"data-oembed-provider": provider_name,
-			},
-		)}>${html}</${wrapper || defaultEmbedWrapper}>`;
+		return `<${wrapper}${attributesToHTML({
+			"data-oembed": embed_url,
+			"data-oembed-type": type,
+			"data-oembed-provider": provider_name,
+			...attributes,
+		})}>${html}</${wrapper}>`;
 	};
 };
 
