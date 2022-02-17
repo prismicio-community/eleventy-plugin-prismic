@@ -1,3 +1,6 @@
+[dev]
+framework = "eleventy"
+
 [[redirects]]
 from = "/preview/index.html"
 to = "/.netlify/functions/preview"
@@ -6,7 +9,7 @@ force = true
 _generated_by_eleventy_serverless = "preview"
 
 [[redirects]]
-from = "/preview/blog/:slug"
+from = "/preview/blog/:slug/"
 to = "/.netlify/functions/preview"
 status = 200
 force = true
