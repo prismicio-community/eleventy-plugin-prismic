@@ -36,7 +36,7 @@ export const resolve = async (
 		documentID,
 		previewToken,
 		linkResolver: options.linkResolver,
-		defaultURL: `/${options.preview.name}`,
+		defaultURL: "/",
 	});
 
 	delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
