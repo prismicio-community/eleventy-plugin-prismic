@@ -75,6 +75,8 @@ Prismic previews are now available in Eleventy. To set them up, follow this proc
 
     > ⚠ From now on, because we named our preview `preview` we'll use `/preview` in the following. For example, if you named it `prismic-preview` instead, you'd have to use `/prismic-preview`.
 
+    > ⚠ Make sure you configure your Prismic plugin with either a [Route Resolver](https://prismic.io/docs/core-concepts/link-resolver-route-resolver#route-resolver) or a [Link Resolver](https://prismic.io/docs/core-concepts/link-resolver-route-resolver#link-resolver) (or both) to allow previews to redirect correctly.
+
 2.  Update your `.gitignore` to reflect your new 11ty Serverless function ([following 11ty documentation](https://www.11ty.dev/docs/plugins/serverless/#step-2-add-to-.gitignore)):
 
     ```ignore
