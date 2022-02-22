@@ -10,7 +10,15 @@ export const attributesToHTML = (
 ): string => {
 	const attributesArray = Object.entries(attributes)
 		// Keep attributes with a value of `0`
-		.filter(([_, value]) => !!value || typeof value === "number")
+		.filter(([key, value]) => {
+			switch (key) {
+				case "alt":
+					return value != null;
+
+				default:
+					return !!value || typeof value === "number";
+			}
+		})
 		.map(([key, value]) => `${key}="${value}"`);
 
 	return attributesArray.length ? ` ${attributesArray.join(" ")}` : "";

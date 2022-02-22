@@ -17,6 +17,13 @@ test("returns a valid image tag", (t) => {
 	t.is(image()(imageField), '<img alt="foo" src="https://example.com/" />');
 });
 
+test("returns a valid image tag with an accessible default alt value", (t) => {
+	t.is(
+		image()({ ...imageField, alt: null }),
+		'<img alt="" src="https://example.com/" />',
+	);
+});
+
 test("returns a valid image tag with class", (t) => {
 	t.is(
 		image()(imageField, "foo"),
@@ -120,5 +127,5 @@ test("returns a valid image tag with width-based over pixel-density-based `srcse
 });
 
 test("returns a valid image tag from a partial image field", (t) => {
-	t.is(image()({}), "<img />");
+	t.is(image()({}), '<img alt="" />');
 });
