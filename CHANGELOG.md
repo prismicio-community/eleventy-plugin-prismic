@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.2.1...v1.0.0-beta.0) (2022-02-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* enhance image shortcode with imgix capabilities
+* use object instead of array for attributes
+
+### Features
+
+* add new image helpers ([2070bde](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/2070bdea57739cbd9c6aefdc543ab0e9041d8af9))
+* enhance image shortcode with imgix capabilities ([c66401d](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/c66401d2bbdfc48666e9d6bfe586e2e175cfebbe))
+
+
+### Bug Fixes
+
+* don't append preview name on default resolved preview URL ([9f2b1ae](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/9f2b1aedf5c9116dbeb2898f04f0f392e8b58adf))
+* keep image tag accessible by defaulting alt value ([6ef0085](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/6ef0085bb8e175086eea2758ffc7495f762c95ac))
+
+
+### Refactor
+
+* use object instead of array for attributes ([b9890a2](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/b9890a2a6b4cdb082b7d05d2798ce2a6be8fe867))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([e337167](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/e337167dd66777cbbfc102174a87e2abeb336b93))
+* update playground ([3ed483a](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/3ed483adedba586b8f262340f85d9c04dae05444))
+* update release script ([211bb94](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/211bb9490d239a6260375ee13a74c59ddd0fc979))
+
+
+### Documentation
+
+* update doc for 1.0.0 ([1682241](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/1682241e558fea4e2f4afa924b5935839e7fdc59))
+* update documentation title ([f274c49](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/f274c49c84a236a33a884272df72d2718122600d))
+* warn about the need for a link resolving strategy to be provided for previews ([5d3910f](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/5d3910fc06d3aafd7ef8db7b939bff98bb96d469))
+
 ### [0.2.1](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.2.1-alpha.0...v0.2.1) (2022-01-10)
 
 

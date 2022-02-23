@@ -1,6 +1,6 @@
 {
 	"name": "eleventy-plugin-prismic",
-	"version": "0.2.1",
+	"version": "1.0.0-beta.0",
 	"description": "Eleventy plugin and shortcodes to fetch and present Prismic content",
 	"keywords": [
 		"eleventy",
