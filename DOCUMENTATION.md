@@ -3,6 +3,7 @@
 - [🚀 &nbsp;Installation](#installation)
 - [🛠 &nbsp;Usage](#usage)
 - [📚 &nbsp;Configuration References](#configuration-references)
+- [🚢 &nbsp;Migrating From `0.2.x`](#migrating-from-02x)
 - [⛵ &nbsp;Migrating From `0.1.x`](#migrating-from-01x)
 - [🛶 &nbsp;Migrating From `0.0.x`](#migrating-from-00x)
 
@@ -383,7 +384,7 @@ Displays a link field or document as link with the right attributes and accessib
   Width class
 {% endlink %}
 
-{% link page, document.data.link, "class", "no-underline", "data-foo", "bar" %}
+{% link page, document.data.link, { class: "no-underline", "data-foo": "bar" %}
   With any attribute
 {% endlink %}
 ```
@@ -418,27 +419,55 @@ Renders to:
 
 #### `image`
 
-Displays an image field:
+Displays an image field, image manipulation can be performed through the `imgixParams` option using [Imgix URL parameters](https://docs.imgix.com/apis/rendering):
 
 ```njk
 {% image document.data.image %}
 
 {% image document.data.image, "block p-5" %}
 
-{% image document.data.image, "class", "block p-5", "width", "200px", "loading", "lazy" %}
+{% image document.data.image, { class: "block p-5", width: "200px", loading: "lazy" %}
+
+{% image document.data.image, { imgixParams: { sat: 100 } } %}
+
+{% image document.data.image, { widths: "defaults" } %}
+
+{% image document.data.imageWithResponsiveViews, { widths: "auto" } %}
+
+{% image document.data.image, { widths: [500, 1000, 1500] } %}
+
+{% image document.data.image, { pixelDensities: "defaults" } %}
+
+{% image document.data.image, { pixelDensities: [3, 4] } %}
+
+{% image document.data.image, { imgixParams: { sat: 100 }, widths: "auto", class: "block p-5", loading: "lazy" } %}
 ```
 
 Renders to:
 
 <!-- prettier-ignore-start -->
 ```html
-<img src="https://images.prismic.io/..." />
+<img alt="..." src="https://images.prismic.io/..." />
 
-<img src="https://images.prismic.io/..." class="block p-5" />
+<img alt="..." src="https://images.prismic.io/..." class="block p-5" />
 
-<img src="https://images.prismic.io/..." class="block p-5" width="200px" loading="lazy" />
+<img alt="..." src="https://images.prismic.io/..." class="block p-5" width="200px" loading="lazy" />
+
+<img alt="..." src="https://images.prismic.io/...&sat=100" />
+
+<img alt="..." src="https://images.prismic.io/..." srcset="https://images.prismic.io/...&width=640 640w, ..., https://images.prismic.io/...&width=3840 3840w" />
+
+<img alt="..." src="https://images.prismic.io/..." srcset="https://images.prismic.io/...&width=640 600w, ..., https://images.prismic.io/...&width=1200 1200w" />
+
+<img alt="..." src="https://images.prismic.io/..." srcset="https://images.prismic.io/...&dpr=1 1x, ..., https://images.prismic.io/...&dpr=3 3x" />
+
+<img alt="..." src="https://images.prismic.io/..." srcset="https://images.prismic.io/...&dpr=3 3x, ..., https://images.prismic.io/...&dpr=4 4x" />
+
+<img alt="..." src="https://images.prismic.io/...&sat=100" srcset="https://images.prismic.io/...&sat=100&width=640 640w, ..., https://images.prismic.io/...&sat=100&width=3840 3840w" class="block p-5" loading="lazy" />
 ```
 <!-- prettier-ignore-end -->
+
+> This shortcode is heavily inspired by `@prismicio/vue`'s image component. Its documentation can help you understand this shortcode more if needed: https://prismic.io/docs/technical-reference/prismicio-vue?version=v3#prismicimage
 
 #### `embed`
 
@@ -447,9 +476,11 @@ Displays an embed field:
 ```njk
 {% embed document.data.embed %}
 
-{% embed document.data.embed, "blockquote", "block p-5" %}
+{% embed document.data.embed, "block p-5" %}
 
-{% embed document.data.embed, "blockquote", "class", "block p-5", "width", "200px" %}
+{% embed document.data.embed, { wrapper: "blockquote" } %}
+
+{% embed document.data.embed, { wrapper: "blockquote", class: "block p-5", width: "200px" } %}
 ```
 
 Renders to:
@@ -460,13 +491,17 @@ Renders to:
   <!-- Embed HTML snippet -->
 </div>
 
-<blockquote data-oembed="..." data-oembed-type="..." data-oembed-provider="..." class="block p-5">
+<div data-oembed="..." data-oembed-type="..." data-oembed-provider="..." class="block p-5">
+  <!-- Embed HTML snippet -->
+</div>
+
+<blockquote data-oembed="..." data-oembed-type="..." data-oembed-provider="...">
   <!-- Embed HTML snippet -->
 </blockquote>
 
-<div data-oembed="..." data-oembed-type="..." data-oembed-provider="..." class="block p-5" width="200px">
+<blockquote data-oembed="..." data-oembed-type="..." data-oembed-provider="..." class="block p-5" width="200px">
   <!-- Embed HTML snippet -->
-</div>
+</blockquote>
 ```
 <!-- prettier-ignore-end -->
 
@@ -486,7 +521,7 @@ Like Eleventy, this plugin makes use of the [debug](https://www.npmjs.com/packag
 # Installed globally
 DEBUG=Eleventy* eleventy
 # Installed locally
-DEBUG=Eleventy* npx @11ty/eleventy@canary # until 1.0.0 is released on latest
+DEBUG=Eleventy* npx @11ty/eleventy
 ```
 
 Or get just Prismic related logs:
@@ -495,7 +530,7 @@ Or get just Prismic related logs:
 # Installed globally
 DEBUG=Eleventy:Prismic* eleventy
 # Installed locally
-DEBUG=Eleventy:Prismic* npx @11ty/eleventy@canary # until 1.0.0 is released on latest
+DEBUG=Eleventy:Prismic* npx @11ty/eleventy
 ```
 
 ## Configuration References
@@ -539,6 +574,12 @@ type PrismicPluginOptions = {
 
 	// Value of the `rel` attribute on links with `target="_blank"` rendered by shortcodes, defaults to `noopener noreferrer`
 	linkBlankTargetRelAttribute?: string;
+
+	// Default widths to use when rendering an image with `{ widths: "defaults" }`, defaults to `@prismicio/helpers` defaults
+	imageWidthSrcSetDefaults?: number[];
+
+	// Default pixel densities to use when rendering an image with `{ pixelDensities: "defaults" }`, defaults to `@prismicio/helpers` defaults
+	imagePixelDensitySrcSetDefaults?: number[];
 };
 ```
 
@@ -554,7 +595,36 @@ type PrismicPluginOptions = {
 	shortcodesInjector: eleventyConfig.addShortcode,
 	shortcodesPairedInjector: eleventyConfig.addPairedShortcode,
 	linkBlankTargetRelAttribute: "noopener noreferrer",
+	imageWidthSrcSetDefaults: [640, 828, 1200, 2048, 3840], // From `@prismicio/helpers`
+	imagePixelDensitySrcSetDefaults: [1, 2, 3], // From `@prismicio/helpers`
 }
+```
+
+## Migrating From `0.2.x`
+
+Version `1.x.x` changes the way classes and attributes are passed to shortcodes to support props.
+
+Applying just a class remains the same:
+
+```njk
+{% shortcodeName document.data.field, "block p-5" %}
+```
+
+Applying attributes now requires passing an object instead of a tuple:
+
+```diff
+- {% shortcodeName document.data.field, "class", "block p-5", "data-foo", "bar" %}
++ {% shortcodeName document.data.field, { class: "block p-5", "data-foo": "bar" } %}
+```
+
+The `embed` shortcode's optional `wrapper` is now passed through the attribute object:
+
+```diff
+- {% embed document.data.embed, "blockquote" %}
++ {% embed document.data.embed, { wrapper: "blockquote" } %}
+
+- {% embed document.data.embed, "blockquote", "block p-5" %}
++ {% embed document.data.embed, { wrapper: "blockquote", class: "block p-5" } %}
 ```
 
 ## Migrating From `0.1.x`
@@ -565,7 +635,7 @@ Version `0.2.x` now relies on Eleventy `1.0.0` or above, upgrade from Eleventy B
 $ npm install @11ty/eleventy@^1.0.0
 ```
 
-I also recommend updating your `.eleventy.js` configuration file structure to export your `prismicPluginOptions` alongside your Eleventy config function. This helps to ensure setting up [previews](#previews-experimental) will be straightforward should you decide to set them up:
+It's also recommended to update your `.eleventy.js` configuration file structure to export your `prismicPluginOptions` alongside your Eleventy config function. This helps to ensure setting up [previews](#previews-experimental) will be straightforward should you decide to set them up:
 
 ```javascript
 const {
@@ -588,7 +658,7 @@ module.exports = config;
 
 ## Migrating From `0.0.x`
 
-Package exports have changed from `0.0.x` to `0.1.x`, `pluginPrismic` is not longer default exported:
+Version `0.1.x` changes package exports, `pluginPrismic` is no longer exported as `default`:
 
 ```diff
 -	const pluginPrismic = require("eleventy-plugin-prismic");
