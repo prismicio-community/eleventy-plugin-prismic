@@ -1,4 +1,4 @@
-# `eleventy-plugin-prismic@0.1.x` Documentation
+# `eleventy-plugin-prismic@1.x.x` Documentation
 
 - [🚀 &nbsp;Installation](#installation)
 - [🛠 &nbsp;Usage](#usage)
