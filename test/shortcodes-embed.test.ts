@@ -27,6 +27,13 @@ test("returns a valid embed tag", (t) => {
 	);
 });
 
+test("returns a valid embed tag with specified wrapper", (t) => {
+	t.is(
+		embed()(embedField, { wrapper: "blockquote" }),
+		`<blockquote data-oembed="foo" data-oembed-type="${OEmbedType.Link}" data-oembed-provider="bar">baz</blockquote>`,
+	);
+});
+
 test("returns a valid embed tag with class", (t) => {
 	t.is(
 		embed()(embedField, "foo"),
