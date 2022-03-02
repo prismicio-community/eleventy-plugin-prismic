@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.1](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.0...v1.0.0-beta.1) (2022-03-02)
+
+
+### Chore
+
+* **deps:** maintain dependencies ([6b2de87](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/6b2de876c625174490d10f8b1eb901c98cf48c6c))
+
+
+### Refactor
+
+* `@prismicio/client` now supports repository name ([d4ac98b](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/d4ac98b7a664d74214d6ca713ebb93725fa66f14))
+
 ## [1.0.0-beta.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v0.2.1...v1.0.0-beta.0) (2022-02-23)
 
 
