@@ -2,7 +2,7 @@ import * as prismicH from "@prismicio/helpers";
 import {
 	DateField,
 	EmbedField,
-	ImageField,
+	ImageFieldImage,
 	LinkField,
 	PrismicDocument,
 	RichTextField,
@@ -105,7 +105,7 @@ export const asDate = () => {
  */
 export const asImageSrc = () => {
 	return (
-		imageField: ImageField,
+		imageField: ImageFieldImage,
 		params?: Parameters<typeof prismicH.asImageSrc>[1],
 	): string => {
 		return prismicH.asImageSrc(imageField, params) ?? "";
@@ -121,7 +121,7 @@ export const asImageSrc = () => {
  */
 export const asImageWidthSrcSet = () => {
 	return (
-		imageField: ImageField,
+		imageField: ImageFieldImage,
 		params?: Parameters<typeof prismicH.asImageWidthSrcSet>[1],
 	): string => {
 		return prismicH.asImageWidthSrcSet(imageField, params)?.srcset ?? "";
@@ -137,7 +137,7 @@ export const asImageWidthSrcSet = () => {
  */
 export const asImagePixelDensitySrcSet = () => {
 	return (
-		imageField: ImageField,
+		imageField: ImageFieldImage,
 		params?: Parameters<typeof prismicH.asImagePixelDensitySrcSet>[1],
 	): string => {
 		return prismicH.asImagePixelDensitySrcSet(imageField, params)?.srcset ?? "";
@@ -156,7 +156,7 @@ export const image = (
 	pixelDensitySrcSetDefaults?: number[],
 ) => {
 	return (
-		imageField: ImageField,
+		imageField: ImageFieldImage,
 		options:
 			| ({
 					imgixParams?: Parameters<typeof prismicH.asImageSrc>[1];
