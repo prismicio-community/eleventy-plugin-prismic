@@ -226,7 +226,12 @@ export const image = (
 			}
 		})();
 
-		return `<img${attributesToHTML({ alt, src, srcset, ...attributes })} />`;
+		return `<img${attributesToHTML({
+			alt: alt ?? "",
+			src,
+			srcset,
+			...attributes,
+		})} />`;
 	};
 };
 
