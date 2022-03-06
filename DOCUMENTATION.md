@@ -81,8 +81,8 @@ Prismic previews are now available in Eleventy. To set them up, follow this proc
 2.  Update your `.gitignore` to reflect your new 11ty Serverless function ([following 11ty documentation](https://www.11ty.dev/docs/plugins/serverless/#step-2-add-to-.gitignore)):
 
     ```ignore
-    netlify/functions/possum/**
-    !netlify/functions/possum/index.js
+    netlify/functions/preview/**
+    !netlify/functions/preview/index.js
     ```
 
 3.  Update the generated serverless handler (in our example: `./netlify/functions/preview/index.js`):
@@ -262,7 +262,7 @@ pagination:
   data: prismic.post.__all
   size: 1
   alias: post
-	addAllPagesToCollections: true
+    addAllPagesToCollections: true
 permalink: "blog/{{post.lang}}/{{ post.uid }}/"
 ---
 
