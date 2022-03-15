@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.2](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2022-03-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* resolve link context page automatically
+
+### Refactor
+
+* resolve link context page automatically ([0bf2fa1](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/0bf2fa10eb669665c4da7b37ea759d840d11f168))
+
+
+### Documentation
+
+* add previous doc links ([5ad62e5](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/5ad62e5da4871d98473b691e0085047c6f317458))
+* typos ([fcf734b](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/fcf734bd23460a51a83e2f339e1bf63e7188ae5b))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([6db3370](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/6db33709c083e324321d7a237b8e08a2e0c9b1f0))
+
 ## [1.0.0-beta.1](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.0...v1.0.0-beta.1) (2022-03-02)
 
 
