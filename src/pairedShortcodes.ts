@@ -31,16 +31,28 @@ export const link = (
 	linkBlankTargetRelAttribute?: string,
 	internalPrefix = "",
 ) => {
-	return (
+	return function (
+		this:
+			| {
+					page?: Record<string, string>;
+			  }
+			| unknown,
 		slot: string,
-		page: Record<string, string>,
 		linkFieldOrDocument: LinkField | PrismicDocument,
-		options: Record<string, string | number | null | undefined> | string = {},
-	): string => {
+		options:
+			| ({ page?: Record<string, string> } & Record<
+					string,
+					string | number | null | undefined | unknown
+			  >)
+			| string = {},
+	): string {
+		// Resolve href
 		let href: string = prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
 		if (isInternalURL(href)) {
 			href = `${internalPrefix}${href}`;
 		}
+
+		// Resolve attributes
 		let target: string | null = null;
 		let rel: string | null = null;
 
@@ -51,16 +63,41 @@ export const link = (
 			}
 		}
 
-		// Determine if page is current page
-		const ariaCurrent =
-			page &&
-			page.url &&
-			href.replace(/\/$/, "") === page.url.replace(/\/$/, "")
-				? "page"
-				: null;
+		// Resolve aria-current
+		// eslint-disable-next-line prefer-const
+		let { page, ...attributes } =
+			typeof options === "string"
+				? {
+						page: undefined,
+						class: options,
+				  }
+				: options;
 
-		const attributes =
-			typeof options === "string" ? { class: options } : options;
+		// If page is not in options, then try to get it from context
+		if (!page) {
+			page =
+				this && typeof this === "object" && "page" in this
+					? (
+							this as {
+								page?: Record<string, string>;
+							}
+					  ).page
+					: undefined;
+		}
+
+		let ariaCurrent = null;
+		if (page && page.url) {
+			if (href.replace(/\/$/, "") === page.url.replace(/\/$/, "")) {
+				ariaCurrent = "page";
+			}
+		} else {
+			dPrismicShortcodes(
+				"Failed to resolve %o from context, %o attribute won't get computed\nYou can manually provide 11ty page object through the %o options",
+				"page",
+				"aria-current",
+				"page",
+			);
+		}
 
 		return `<a${attributesToHTML({
 			href,

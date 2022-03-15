@@ -6,11 +6,12 @@ import { linkResolver } from "./__testutils__/linkResolver";
 
 import { link } from "../src";
 
-const args = ["testSlots", { url: "/bar" }] as const;
+const args = ["testSlots"] as const;
+const context = { page: { url: "/bar" } };
 
 test("returns link field resolved anchor tag", (t) => {
 	t.is(
-		link()(...args, {
+		link().bind(context)(...args, {
 			link_type: "Web",
 			url: "https://google.com",
 		}),
@@ -20,7 +21,7 @@ test("returns link field resolved anchor tag", (t) => {
 
 test("returns link field resolved targetted anchor tag", (t) => {
 	t.is(
-		link()(...args, {
+		link().bind(context)(...args, {
 			link_type: "Web",
 			url: "https://google.com",
 			target: "_blank",
@@ -29,7 +30,7 @@ test("returns link field resolved targetted anchor tag", (t) => {
 	);
 
 	t.is(
-		link()(...args, {
+		link().bind(context)(...args, {
 			link_type: "Web",
 			url: "https://google.com",
 			target: "something",
@@ -40,7 +41,7 @@ test("returns link field resolved targetted anchor tag", (t) => {
 
 test("returns link field resolved anchor tag with class", (t) => {
 	t.is(
-		link()(
+		link().bind(context)(
 			...args,
 			{
 				link_type: "Web",
@@ -54,7 +55,7 @@ test("returns link field resolved anchor tag with class", (t) => {
 
 test("returns link field resolved anchor tag with attributes", (t) => {
 	t.is(
-		link()(
+		link().bind(context)(
 			...args,
 			{
 				link_type: "Web",
@@ -68,7 +69,7 @@ test("returns link field resolved anchor tag with attributes", (t) => {
 
 test("uses provided blank target rel attribute", (t) => {
 	t.is(
-		link(undefined, "noopener")(...args, {
+		link(undefined, "noopener").bind(context)(...args, {
 			link_type: "Web",
 			url: "https://google.com",
 			target: "_blank",
@@ -79,40 +80,38 @@ test("uses provided blank target rel attribute", (t) => {
 
 test("returns document resolved anchor tag", (t) => {
 	t.is(
-		link()(...args, createDocument({ url: "/foo" })),
+		link().bind(context)(...args, createDocument({ url: "/foo" })),
 		`<a href="/foo">${args[0]}</a>`,
 	);
 });
 
 test("returns document resolved anchor tag using link resolver", (t) => {
 	t.is(
-		link(linkResolver)(...args, createDocument({ uid: "foo", url: "/bar" })),
+		link(linkResolver).bind(context)(
+			...args,
+			createDocument({ uid: "foo", url: "/bar" }),
+		),
 		`<a href="/foo">${args[0]}</a>`,
 	);
 });
 
 test("returns an empty anchor tag when link resolver is required but not provided", (t) => {
-	t.is(link()(...args, createDocument()), `<a>${args[0]}</a>`);
+	t.is(link().bind(context)(...args, createDocument()), `<a>${args[0]}</a>`);
 });
 
 test("uses provided internal prefix for internal links", (t) => {
 	t.is(
-		link(
-			linkResolver,
-			undefined,
-			"/preview",
-		)(...args, createDocument({ uid: "foo", url: "/bar" })),
+		link(linkResolver, undefined, "/preview").bind(context)(
+			...args,
+			createDocument({ uid: "foo", url: "/bar" }),
+		),
 		`<a href="/preview/foo">${args[0]}</a>`,
 	);
 });
 
 test("doesn't use provided internal prefix for external links", (t) => {
 	t.is(
-		link(
-			linkResolver,
-			undefined,
-			"/preview",
-		)(...args, {
+		link(linkResolver, undefined, "/preview").bind(context)(...args, {
 			link_type: "Web",
 			url: "https://google.com",
 		}),
@@ -120,9 +119,25 @@ test("doesn't use provided internal prefix for external links", (t) => {
 	);
 });
 
-test("returns document resolved anchor tag for current page", (t) => {
+test("returns document resolved anchor tag for current page using function context", (t) => {
 	t.is(
-		link()(...args, createDocument({ url: "/bar" })),
+		link().bind(context)(...args, createDocument({ url: "/bar" })),
 		`<a href="/bar" aria-current="page">${args[0]}</a>`,
+	);
+});
+
+test("returns document resolved anchor tag for current page preferring page options", (t) => {
+	t.is(
+		link().bind(context)(...args, createDocument({ url: "/baz" }), {
+			page: { url: "/baz" },
+		}),
+		`<a href="/baz" aria-current="page">${args[0]}</a>`,
+	);
+});
+
+test("returns document resolved anchor tag ignoring current if context is not available", (t) => {
+	t.is(
+		link().bind(undefined)(...args, createDocument({ url: "/bar" })),
+		`<a href="/bar">${args[0]}</a>`,
 	);
 });

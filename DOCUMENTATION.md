@@ -368,23 +368,27 @@ April 2021
 Displays a link field or document as link with the right attributes and accessibility options:
 
 ```njk
-{% link page, document.data.link %}
+{% link document.data.link %}
   Example
 {% endlink %}
 
-{% link page, document.data.targetBlankLink %}
+{% link document.data.targetBlankLink %}
   Blank target
 {% endlink %}
 
-{% link page, document %}
+{% link document %}
   Current page
 {% endlink %}
 
-{% link page, document.data.link, "no-underline" %}
-  Width class
+{% link document, { page: page } %}
+  Current page, when 11ty context is not available you can provide its `page` object manually (debug mode will warn you when necessary)
 {% endlink %}
 
-{% link page, document.data.link, { class: "no-underline", "data-foo": "bar" %}
+{% link document.data.link, "no-underline" %}
+  With class
+{% endlink %}
+
+{% link document.data.link, { class: "no-underline", "data-foo": "bar" } %}
   With any attribute
 {% endlink %}
 ```
@@ -407,8 +411,12 @@ Renders to:
   Current page
 </a>
 
+<a href="/document" aria-current="page">
+  Current page, when 11ty context is not available you can provide its `page` object manually (debug mode will warn you when necessary)
+</a>
+
 <a href="https://example.com" class="no-underline">
-  Width class
+  With class
 </a>
 
 <a href="https://example.com" class="no-underline" data-foo="bar">
@@ -426,7 +434,7 @@ Displays an image field, image manipulation can be performed through the `imgixP
 
 {% image document.data.image, "block p-5" %}
 
-{% image document.data.image, { class: "block p-5", width: "200px", loading: "lazy" %}
+{% image document.data.image, { class: "block p-5", width: "200px", loading: "lazy" } %}
 
 {% image document.data.image, { imgixParams: { sat: 100 } } %}
 
@@ -617,7 +625,7 @@ Applying attributes now requires passing an object instead of a tuple:
 + {% shortcodeName document.data.field, { class: "block p-5", "data-foo": "bar" } %}
 ```
 
-The `embed` shortcode's optional `wrapper` is now passed through the attribute object:
+The `embed` shortcode's optional `wrapper` argument is now passed through the attribute object:
 
 ```diff
 - {% embed document.data.embed, "blockquote" %}
@@ -625,6 +633,17 @@ The `embed` shortcode's optional `wrapper` is now passed through the attribute o
 
 - {% embed document.data.embed, "blockquote", "block p-5" %}
 + {% embed document.data.embed, { wrapper: "blockquote", class: "block p-5" } %}
+```
+
+The `link` paired shorcode's `page` argument is removed. The plugin will try to resolve it automatically from 11ty context and warn you if it fails to do so (only when using [debug mode](#debug)). To mitigate such edge cases the `page` argument can still be passed through the attribute object:
+
+```diff
+- {% link page, document.data.link %}
++ {% link document.data.link %}
+
+# Edge cases only
+- {% link page, document.data.link %}
++ {% link document.data.link, { page: page } %}
 ```
 
 ## Migrating From `0.1.x`

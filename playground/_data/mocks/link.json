@@ -9,17 +9,17 @@
 		"target": "_blank"
 	},
 	"internal": {
-		"link_type": "Link.document",
-		"value": {
-			"document": {
-				"id": "Xo2E3REAAB8AUz6K",
-				"type": "post__blog",
-				"tags": [],
-				"lang": "en-us",
-				"slug": "one-link-component-to-rule-them-all",
-				"uid": "one-link-component-to-rule-them-all"
-			},
-			"isBroken": false
-		}
+		"link_type": "Document",
+		"id": "Xo2E3REAAB8AUz6K",
+		"type": "post",
+		"tags": [],
+		"lang": "en-us",
+		"slug": "one-link-component-to-rule-them-all",
+		"uid": "one-link-component-to-rule-them-all",
+		"isBroken": false
+	},
+	"current": {
+		"link_type": "Web",
+		"url": "/shortcodes/link"
 	}
 }

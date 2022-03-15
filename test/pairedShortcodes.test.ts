@@ -48,7 +48,6 @@ test.serial(
 				try {
 					return args[1](
 						"testSlots",
-						{ url: "/bar" },
 						createDocument({ uid: "foo", url: "/bar" }),
 					).includes(internalPrefix);
 				} catch (error) {
