@@ -1,3 +1,9 @@
+### Previous versions
+
+- [eleventy-plugin-prismic@0.2.x Documentation](https://github.com/prismicio-community/eleventy-plugin-prismic/blob/5d3910fc06d3aafd7ef8db7b939bff98bb96d469/DOCUMENTATION.md)
+- [eleventy-plugin-prismic@0.1.x Documentation](https://github.com/prismicio-community/eleventy-plugin-prismic/blob/22acf99ed8b99e3edc4a0b11ffd11de39317d010/DOCUMENTATION.md)
+- [eleventy-plugin-prismic@0.0.x Documentation](https://github.com/prismicio-community/eleventy-plugin-prismic/blob/04935fa2a83270b53da98bc96cc8b2876e41f114/README.md)
+
 # `eleventy-plugin-prismic@1.x.x` Documentation
 
 - [🚀 &nbsp;Installation](#installation)
