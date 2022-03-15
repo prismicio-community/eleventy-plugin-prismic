@@ -191,8 +191,17 @@ export const image = (
 			} else if (widths) {
 				if (pixelDensities) {
 					dPrismicShortcodes(
-						"`widths` and `pixelDensities` props should not be use alongside each others, only `widths` will be applied",
-						{ imageField, attributes, imgixParams, widths, pixelDensities },
+						"%o and %o props should not be use alongside each others, only %o will be applied: %o",
+						"widths",
+						"pixelDensities",
+						"widths",
+						{
+							imageField: "...",
+							attributes,
+							imgixParams,
+							widths,
+							pixelDensities,
+						},
 					);
 				}
 
