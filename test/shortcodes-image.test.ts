@@ -24,6 +24,13 @@ test("returns a valid image tag with an accessible default alt value", (t) => {
 	);
 });
 
+test("renders image field with provided alt value", (t) => {
+	t.is(
+		image()({ ...imageField, alt: "foo" }, { alt: "bar" }),
+		'<img alt="bar" src="https://example.com/" />',
+	);
+});
+
 test("returns a valid image tag with class", (t) => {
 	t.is(
 		image()(imageField, "foo"),
@@ -52,7 +59,7 @@ test("returns a valid image tag with width-based `srcset`", (t) => {
 	);
 });
 
-test("returns a valid image tag with auto width-based `srcset`", (t) => {
+test("returns a valid image tag with thumbnails width-based `srcset`", (t) => {
 	t.is(
 		image()(
 			{
@@ -65,7 +72,7 @@ test("returns a valid image tag with auto width-based `srcset`", (t) => {
 					},
 				},
 			} as ImageField<"foo">,
-			{ imgixParams: { sat: 100 }, widths: "auto" },
+			{ imgixParams: { sat: 100 }, widths: "thumbnails" },
 		),
 		'<img alt="foo" src="https://example.com/?sat=100" srcset="https://example.com/?sat=100&width=10 10w, https://example.com/?sat=100&width=100 100w" />',
 	);

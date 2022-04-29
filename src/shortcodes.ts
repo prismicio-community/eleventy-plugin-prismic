@@ -164,7 +164,7 @@ export const image = (
 						| NonNullable<
 								Parameters<typeof prismicH.asImageWidthSrcSet>[1]
 						  >["widths"]
-						| "auto"
+						| "thumbnails"
 						| "defaults";
 					pixelDensities?:
 						| NonNullable<
@@ -205,20 +205,10 @@ export const image = (
 					);
 				}
 
-				if (widths === "auto") {
-					return prismicH.asImageWidthSrcSet(imageField, imgixParams);
-				} else {
-					// Remove potential thumbnails when using manual widths
-					const { url, dimensions, alt, copyright } = imageField;
-
-					return prismicH.asImageWidthSrcSet(
-						{ url, dimensions, alt, copyright },
-						{
-							...imgixParams,
-							widths: widths === "defaults" ? widthSrcSetDefaults : widths,
-						},
-					);
-				}
+				return prismicH.asImageWidthSrcSet(imageField, {
+					...imgixParams,
+					widths: widths === "defaults" ? widthSrcSetDefaults : widths,
+				});
 			} else if (pixelDensities) {
 				return prismicH.asImagePixelDensitySrcSet(imageField, {
 					...imgixParams,

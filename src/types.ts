@@ -104,7 +104,7 @@ export type PrismicPluginOptionsBase = {
 	 *
 	 * @remarks
 	 * Consider configuring image widths within your content type definition and
-	 * using `widths="auto"` instead to give content writers the ability to crop
+	 * using `widths="thumbnails"` instead to give content writers the ability to crop
 	 * images in the editor.
 	 * @defaultValue `@prismicio/helpers` defaults
 	 */

@@ -446,7 +446,7 @@ Displays an image field, image manipulation can be performed through the `imgixP
 
 {% image document.data.image, { widths: "defaults" } %}
 
-{% image document.data.imageWithResponsiveViews, { widths: "auto" } %}
+{% image document.data.imageWithResponsiveViews, { widths: "thumbnails" } %}
 
 {% image document.data.image, { widths: [500, 1000, 1500] } %}
 
@@ -454,7 +454,7 @@ Displays an image field, image manipulation can be performed through the `imgixP
 
 {% image document.data.image, { pixelDensities: [3, 4] } %}
 
-{% image document.data.image, { imgixParams: { sat: 100 }, widths: "auto", class: "block p-5", loading: "lazy" } %}
+{% image document.data.image, { imgixParams: { sat: 100 }, widths: "thumbnails", class: "block p-5", loading: "lazy" } %}
 ```
 
 Renders to:
