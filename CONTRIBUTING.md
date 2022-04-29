@@ -87,7 +87,7 @@ The CI system will try to build the project on each commit targeting the `master
 
 ### Testing
 
-All projects have at least linting and unit tests. Linting is handled by [ESLint][eslint] with [Prettier][prettier] and unit tests are handled by [AVA][ava].
+All projects have at least linting and unit tests. Linting is handled by [ESLint][eslint] with [Prettier][prettier] and unit tests are handled by [Vitest][vitest].
 
 To run all tests:
 
@@ -110,7 +110,7 @@ npm run unit
 If you'd like to run only the unit tests in watch mode (re-runs tests each time a file is saved):
 
 ```bash
-npm run unit -- --watch
+npm run unit:watch
 ```
 
 When working on unit tests, you might want to update snapshots (be careful when doing so):
@@ -155,13 +155,39 @@ Those scripts will:
 - Publish a new version tag to GitHub;
 - Publish build artifacts to [npm][npm].
 
+Once a script has been run successfully, a new version of the package should have been published to npm. To complete the publishing process you only need to head to the repository's releases tab on GitHub to publish the new version tag that was created.
+
 If you ran any of those commands but happen not to have access to the related npm package, you can still ask a collaborator of the said package to publish it for you.
 
 Appending `:dry` (e.g. `release:dry`) to any of the above commands will dry-run the targeted release script and output the new changelog to the console.
 
-We consider [maintaining](#maintaining) project dependencies before publishing a new version a best practice.
+We consider maintaining project dependencies before publishing a new version a best practice.
 
 ### Maintaining
+
+Anyone can, and is welcome to, contribute to the project by opening bug reports and submitting feature requests. To remain focused and ensure we are able to respond to each contribution, we have adopted the following framework to maintain this package:
+
+**🚨 &nbsp;Bug reports**
+
+> **Note**: An automated reply is posted when a bug report is opened to explain our maintenance schedule.
+
+Every Wednesday is _bug squashing day_. During this day, we respond to and/or fix bug reports.
+
+At the end of each Wednesday (assuming there were issues to fix), or later during the week if reviews are required, a _patch_ version is [released](#publishing) containing any fixes that were needed. Releasing multiple patches during the same week should be avoided.
+
+Ideally, all opened bug reports are addressed each Wednesday. If a particular bug report is not able to be resolved in that timeframe, maintainers are free to continue working on the issue or to report back to it next Wednesday. Overall, while most issues should be closed within _7 days_, we consider up to _14 days_ to get back to and address an issue a reasonable delay. Beyond that threshold, an issue is considered problematic and will be given more attention.
+
+**🙋‍♀️ &nbsp;Feature requests**
+
+> **Note**: An automated message gets sent to people creating feature requests about this process.
+
+Every last week of a month is _feature week_. During this week, we implement new features. Discussing and coming up with implementation proposals can happen before that week, but implementations are targeted for the last week.
+
+At the end of the week (assuming there were features to implement), a _minor_ version is [released](#publishing) containing the new features. Releasing multiple minors during the same week should be avoided.
+
+Ideally, all opened feature requests are discussed each month and implemented if consensus was reached. Unlike bug reports, we do not consider delays to address feature requests as good or bad. Instead, those should essentially be driven by the community's demand on a per-request basis.
+
+**🏗 &nbsp;Updating the project structure**
 
 We actively maintain a [TypeScript template][template] with Prismic's latest open-source standards. Keeping every project in sync with this template is nearly impossible so we're not trying to immediately reflect changes to the template in every project. Instead we consider a best practice to manually pull changes from the template into the project whenever someone is doing project maintenance and has time for it, or wants to enjoy the latest standards from it.
 
@@ -300,7 +326,7 @@ This one is used to standardize the way pull requests are created on the reposit
 
 **CI configuration (`.github/workflows/ci.yml`)**
 
-Our CI workflow is configured to run against all commits and pull requests directed toward the `master` branch. It makes sure the project builds and passes all tests configured on it (lint, unit, e2e, etc.) Coverage is also collected by this workflow.
+Our CI workflow is configured to run against all commits and pull requests directed toward the `master` branch. It makes sure the project builds and passes all tests configured on it (lint, unit, e2e, etc.) Coverage and bundle size are also collected by this workflow.
 
 ### 📁 &nbsp;`dist`
 
@@ -336,15 +362,16 @@ This folder contains utility functions used to test the project.
 
 This folder contains snapshots generated by the test framework when using snapshot testing strategies. It should not be altered manually.
 
-### 📄 &nbsp;`.editorconfig`, `.eslintrc.cjs`, `.prettierrc`, `.versionrc`, `ava.config.js`, `siroc.config.ts`, `tsconfig.json`
+### 📄 &nbsp;`.editorconfig`, `.eslintrc.cjs`, `.prettierrc`, `.size-limit.json`, `.versionrc`, `vitest.config.ts`, `siroc.config.ts`, `tsconfig.json`
 
 These files contain configuration for their eponymous tools:
 
 - [EditorConfig][editor-config];
 - [ESLint][eslint];
 - [Prettier][prettier];
+- [Size Limit][size-limit];
 - [Standard Version][standard-version];
-- [AVA][ava];
+- [Vitest][vitest];
 - [`siroc`][siroc];
 - [TypeScript][typescript].
 
@@ -390,8 +417,10 @@ The project's package definition file.
 - `release:alpha`: creates and publishes a new alpha release of the package;
 - `release:alpha:dry`: dry-run of the `release:alpha` script;
 - `lint`: Runs ESLint on the project;
-- `unit`: Runs AVA on the project;
-- `test`: Runs the `lint` and `unit` scripts;
+- `unit`: Runs Vitest on the project;
+- `unit:watch`: Runs Vitest on the project in watch mode;
+- `size`: Runs Size Limit on the project;
+- `test`: Runs the `lint`, `unit`, `build`, and `size` scripts.
 
 **Minimum Node version supported (`engines.node`)**
 
@@ -407,8 +436,9 @@ The minimum Node version supported by the project is stated under the `engines` 
 [editor-config]: https://editorconfig.org
 [eslint]: https://eslint.org
 [prettier]: https://prettier.io
+[size-limit]: https://github.com/ai/size-limit
 [standard-version]: https://github.com/conventional-changelog/standard-version
-[ava]: https://github.com/avajs/ava
+[vitest]: https://vitest.dev/
 [siroc]: https://github.com/unjs/siroc
 [typescript]: https://www.typescriptlang.org
 [template]: https://github.com/prismicio/prismic-typescript-template
