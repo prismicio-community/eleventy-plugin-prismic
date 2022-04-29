@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.3](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2022-04-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* change `auto` to `thumbnails` for consistency
+
+### Chore
+
+* **deps:** maintain dependencies ([57db3e5](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/57db3e58dc6ab8cedeb93dcc73e01a01cd0ef5ac))
+* maintain template ([c3f11e1](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/c3f11e18fdd8b45de557a896bd01e1f96130590d))
+
+
+### Refactor
+
+* change `auto` to `thumbnails` for consistency ([4fef318](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/4fef318b9056fdbf6a6ea3005eaa2776af1134c7))
+
 ## [1.0.0-beta.2](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2022-03-15)
 
 
