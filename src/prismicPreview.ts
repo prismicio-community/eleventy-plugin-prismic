@@ -1,6 +1,6 @@
 // @ts-expect-error - 11ty does not provide any sort of type definition
 import { EleventyServerless } from "@11ty/eleventy";
-import { HandlerResponse } from "@netlify/functions";
+import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { cookie } from "@prismicio/client";
 
 import { createClientFromOptions } from "./createClientFromOptions";
@@ -20,10 +20,10 @@ import { PrismicPluginOptions, PrismicPluginOptionsWithPreview } from "./types";
  * @experimental
  */
 export const resolve = async (
-	query: Record<string, string>,
+	query: HandlerEvent["queryStringParameters"],
 	options: PrismicPluginOptionsWithPreview,
 ): Promise<HandlerResponse | null> => {
-	const { token: previewToken, documentId: documentID } = query;
+	const { token: previewToken, documentId: documentID } = query ?? {};
 
 	if (!previewToken || !documentID) {
 		return null;
@@ -75,8 +75,8 @@ export const resolve = async (
  */
 export const get = async (
 	path: string,
-	query: Record<string, string>,
-	headers: Record<string, string> | undefined,
+	query: HandlerEvent["queryStringParameters"],
+	headers: HandlerEvent["headers"],
 	options: PrismicPluginOptionsWithPreview,
 ): Promise<HandlerResponse> => {
 	const cookie = headers?.cookie ?? "";
@@ -181,8 +181,8 @@ export const get = async (
  */
 export const handle = async (
 	path: string,
-	query: Record<string, string>,
-	headers: Record<string, string> | undefined,
+	query: HandlerEvent["queryStringParameters"],
+	headers: HandlerEvent["headers"],
 	options: PrismicPluginOptions,
 ): Promise<HandlerResponse> => {
 	if (!canCreatePreviewFromOptions(options)) {
