@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.4](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2022-07-07)
+
+
+### Bug Fixes
+
+* also resolve document URLs when property is falsy ([690ebcf](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/690ebcfd71bbfafe7a8c21642a4385b24060ee11))
+
+
+### Refactor
+
+* base type on Netlify handler event ([8ac777c](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/8ac777cf4e992f4018f91566432636e455e86aa1))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([4d63513](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/4d635135377ba398653ef293e06c4d4c5cb9ea80))
+
 ## [1.0.0-beta.3](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2022-04-29)
 
 
