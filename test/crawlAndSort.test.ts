@@ -18,7 +18,7 @@ const server = mswNode.setupServer(
 	createMockRepositoryHandler(repositoryName),
 	createMockQueryHandler(repositoryName, [
 		createDocument({ type: "foo", uid: "foo1", lang: "en-us" }),
-		createDocument({ type: "foo", uid: "foo2", lang: "en-us" }),
+		createDocument({ type: "foo", url: null, uid: "foo2", lang: "en-us" }),
 		createDocument({ type: "foo", uid: "foo3", lang: "fr-fr" }),
 		createDocument({ type: "foo", uid: "foo4", lang: "fr-fr" }),
 		// order's on purpose
@@ -143,9 +143,10 @@ test("resolves document URL when a link resolver is provided", async (t) => {
 	});
 
 	t.true(Array.isArray(result.foo));
-	Array.isArray(result.foo) &&
-		t.is(result.foo[0].url, "/foo1") &&
+	if (Array.isArray(result.foo)) {
+		t.is(result.foo[0].url, "/foo1");
 		t.is(result.foo[1].url, "/foo2");
+	}
 
 	t.true(Array.isArray(result.bar));
 	Array.isArray(result.bar) && t.is(result.bar[0].url, "/bar1");

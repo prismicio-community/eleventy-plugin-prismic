@@ -45,7 +45,7 @@ export const crawlAndSort = async (
 			if (
 				"linkResolver" in options &&
 				typeof options.linkResolver === "function" &&
-				!("url" in current)
+				!("url" in current && current.url)
 			) {
 				current.url = asLink(current, options.linkResolver);
 			}
