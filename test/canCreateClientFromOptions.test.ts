@@ -1,4 +1,4 @@
-import test from "ava";
+import { it, expect } from "vitest";
 
 import nodeFetch from "node-fetch";
 import { createClient, getEndpoint } from "@prismicio/client";
@@ -7,16 +7,18 @@ import { canCreateClientFromOptions } from "../src";
 
 const repositoryName = "canCreateClientFromOptions-test-ts";
 
-test("returns true for a client capable options object", (t) => {
-	t.true(canCreateClientFromOptions({ endpoint: repositoryName }));
-	t.true(canCreateClientFromOptions({ endpoint: getEndpoint(repositoryName) }));
-	t.true(
+it("returns true for a client capable options object", () => {
+	expect(canCreateClientFromOptions({ endpoint: repositoryName })).toBe(true);
+	expect(
+		canCreateClientFromOptions({ endpoint: getEndpoint(repositoryName) }),
+	).toBe(true);
+	expect(
 		canCreateClientFromOptions({
-			client: createClient(getEndpoint(repositoryName), { fetch: nodeFetch }),
+			client: createClient(repositoryName, { fetch: nodeFetch }),
 		}),
-	);
+	).toBe(true);
 });
 
-test("returns false for a non client capable options object", (t) => {
-	t.false(canCreateClientFromOptions({}));
+it("returns false for a non client capable options object", () => {
+	expect(canCreateClientFromOptions({})).toBe(false);
 });

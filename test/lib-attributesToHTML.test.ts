@@ -1,22 +1,23 @@
-import test from "ava";
+import { it, expect } from "vitest";
 
 import { attributesToHTML } from "../src/lib/attributesToHTML";
 
-test("outputs given attribute map as HTML", (t) => {
-	t.is(attributesToHTML({ foo: "bar", baz: "qux" }), ' foo="bar" baz="qux"');
+it("outputs given attribute map as HTML", () => {
+	expect(attributesToHTML({ foo: "bar", baz: "qux" })).toBe(
+		' foo="bar" baz="qux"',
+	);
 });
 
-test("outputs an empty string when map is empty", (t) => {
-	t.is(attributesToHTML({}), "");
+it("outputs an empty string when map is empty", () => {
+	expect(attributesToHTML({})).toBe("");
 });
 
-test("ignores nullish values", (t) => {
-	t.is(
-		attributesToHTML({ foo: "bar", baz: null, qux: undefined }),
+it("ignores nullish values", () => {
+	expect(attributesToHTML({ foo: "bar", baz: null, qux: undefined })).toBe(
 		' foo="bar"',
 	);
 });
 
-test("doesn't consider `0` as a nullish value", (t) => {
-	t.is(attributesToHTML({ foo: "bar", baz: 0 }), ' foo="bar" baz="0"');
+it("doesn't consider `0` as a nullish value", () => {
+	expect(attributesToHTML({ foo: "bar", baz: 0 })).toBe(' foo="bar" baz="0"');
 });

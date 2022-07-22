@@ -1,5 +1,4 @@
-import test from "ava";
-import * as sinon from "sinon";
+import { it, expect, vi } from "vitest";
 
 import { createDocument } from "./__testutils__/createDocument";
 
@@ -7,55 +6,52 @@ import { injectPairedShortcodes } from "../src";
 
 const repositoryName = "pairedShortcodes-test-ts";
 
-test.afterEach.always(() => {
-	sinon.restore();
-});
-
-test.serial("injects paired shorcodes", (t) => {
-	const injector = sinon.spy();
+it("injects paired shorcodes", () => {
+	const injector = vi.fn();
 
 	injectPairedShortcodes(injector);
 
-	t.true(injector.called);
+	expect(injector).toHaveBeenCalled();
 });
 
-test.serial("injects paired shorcodes with namespace", (t) => {
+it("injects paired shorcodes with namespace", () => {
 	const namespace = "prismic";
 
-	const injector = sinon.spy();
+	const injector = vi.fn();
 
 	injectPairedShortcodes(injector, { shortcodesNamespace: namespace });
 
-	t.true(injector.args.every((args) => args[0].startsWith(namespace)));
+	// @ts-expect-error - type is broken
+	expect(injector.calls.every((args) => args[0].startsWith(namespace))).toBe(
+		true,
+	);
 });
 
-test.serial(
-	"injects link paired shorcodes with internal prefix on 11ty Serverless",
-	(t) => {
-		const internalPrefix = "/preview";
+it("injects link paired shorcodes with internal prefix on 11ty Serverless", () => {
+	const internalPrefix = "/preview";
 
-		const injector = sinon.spy();
+	const injector = vi.fn();
 
-		process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
+	process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
 
-		injectPairedShortcodes(injector, {
-			endpoint: repositoryName,
-			preview: { name: "preview" },
-		});
+	injectPairedShortcodes(injector, {
+		endpoint: repositoryName,
+		preview: { name: "preview" },
+	});
 
-		t.true(
-			injector.args.some((args) => {
-				try {
-					return args[1](
-						"testSlots",
-						createDocument({ uid: "foo", url: "/bar" }),
-					).includes(internalPrefix);
-				} catch (error) {
-					return false;
-				}
-			}),
-		);
+	expect(
+		// @ts-expect-error - type is broken
+		injector.calls.some((args) => {
+			try {
+				return args[1](
+					"testSlots",
+					createDocument({ uid: "foo", url: "/bar" }),
+				).includes(internalPrefix);
+			} catch (error) {
+				return false;
+			}
+		}),
+	).toBe(true);
 
-		delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
-	},
-);
+	delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
+});

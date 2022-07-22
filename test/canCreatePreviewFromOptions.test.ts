@@ -1,19 +1,19 @@
-import test from "ava";
+import { it, expect } from "vitest";
 
 import { canCreatePreviewFromOptions } from "../src";
 
 const repositoryName = "canCreatePreviewFromOptions-test-ts";
 
-test("returns true for a preview capable options object", (t) => {
-	t.true(
+it("returns true for a preview capable options object", () => {
+	expect(
 		canCreatePreviewFromOptions({
 			endpoint: repositoryName,
 			preview: { name: "preview" },
 		}),
-	);
+	).toBe(true);
 });
 
-test("returns false for a non preview capable options object", (t) => {
-	t.false(canCreatePreviewFromOptions({}));
-	t.false(canCreatePreviewFromOptions({ endpoint: repositoryName }));
+it("returns false for a non preview capable options object", () => {
+	expect(canCreatePreviewFromOptions({})).toBe(false);
+	expect(canCreatePreviewFromOptions({ endpoint: repositoryName })).toBe(false);
 });

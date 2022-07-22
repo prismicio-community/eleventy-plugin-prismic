@@ -1,9 +1,9 @@
-import test from "ava";
+import { it, expect } from "vitest";
 
 import { richTextFixture } from "./__fixtures__/richText";
 
 import { asText } from "../src";
 
-test("returns plain text value from rich text field", (t) => {
-	t.snapshot(asText()(richTextFixture.en));
+it("returns plain text value from rich text field", () => {
+	expect(asText()(richTextFixture.en)).toMatchSnapshot();
 });

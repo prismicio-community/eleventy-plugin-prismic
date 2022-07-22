@@ -1,11 +1,11 @@
-import test from "ava";
+import { it, expect } from "vitest";
 
 import { definePrismicPluginOptions } from "../src";
 
-test("returns the same object", (t) => {
+it("returns the same object", () => {
 	const options = {
 		endpoint: "my-repo",
 	};
 
-	t.deepEqual(definePrismicPluginOptions(options), options);
+	expect(definePrismicPluginOptions(options)).toStrictEqual(options);
 });

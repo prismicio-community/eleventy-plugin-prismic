@@ -1,4 +1,4 @@
-import test from "ava";
+import { it, expect, beforeAll, afterAll } from "vitest";
 import * as mswNode from "msw/node";
 
 import { cookie } from "@prismicio/client";
@@ -20,59 +20,46 @@ const server = mswNode.setupServer(
 		createDocument({ lang: "en-us", url: "/foo" }),
 	]),
 );
-test.before(() => server.listen({ onUnhandledRequest: "error" }));
-test.after(() => server.close());
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterAll(() => server.close());
 
-test("returns null when query strings are missing", async (t) => {
-	t.is(await prismicPreview.resolve({}, options), null);
+it("returns null when query strings are missing", async () => {
+	expect(await prismicPreview.resolve({}, options)).toBeNull();
+	expect(await prismicPreview.resolve(null, options)).toBeNull();
 });
 
-test.serial(
-	"returns redirect response when query strings are valid and set cookies",
-	async (t) => {
-		t.deepEqual(
-			await prismicPreview.resolve(
-				{ token: "foo", documentId: "bar" },
-				options,
-			),
-			{
-				statusCode: 302,
-				headers: {
-					location: "/preview/foo?preview=true",
-					"set-cookie": `${cookie.preview}=${encodeURIComponent(
-						JSON.stringify({
-							[`${options.endpoint}.prismic.io`]: { preview: "foo" },
-						}),
-					)}; Path=/`,
-				},
-			},
-		);
-	},
-);
+it("returns redirect response when query strings are valid and set cookies", async () => {
+	expect(
+		await prismicPreview.resolve({ token: "foo", documentId: "bar" }, options),
+	).toStrictEqual({
+		statusCode: 302,
+		headers: {
+			location: "/preview/foo?preview=true",
+			"set-cookie": `${cookie.preview}=${encodeURIComponent(
+				JSON.stringify({
+					[`${options.endpoint}.prismic.io`]: { preview: "foo" },
+				}),
+			)}; Path=/`,
+		},
+	});
+});
 
-test.serial(
-	"returns redirect response when query strings are valid and set secured cookies on Netlify",
-	async (t) => {
-		process.env.AWS_LAMBDA_FUNCTION_NAME = "true";
+it("returns redirect response when query strings are valid and set secured cookies on Netlify", async () => {
+	process.env.AWS_LAMBDA_FUNCTION_NAME = "true";
 
-		t.deepEqual(
-			await prismicPreview.resolve(
-				{ token: "foo", documentId: "bar" },
-				options,
-			),
-			{
-				statusCode: 302,
-				headers: {
-					location: "/preview/foo?preview=true",
-					"set-cookie": `${cookie.preview}=${encodeURIComponent(
-						JSON.stringify({
-							[`${options.endpoint}.prismic.io`]: { preview: "foo" },
-						}),
-					)}; Path=/; Secure`,
-				},
-			},
-		);
+	expect(
+		await prismicPreview.resolve({ token: "foo", documentId: "bar" }, options),
+	).toStrictEqual({
+		statusCode: 302,
+		headers: {
+			location: "/preview/foo?preview=true",
+			"set-cookie": `${cookie.preview}=${encodeURIComponent(
+				JSON.stringify({
+					[`${options.endpoint}.prismic.io`]: { preview: "foo" },
+				}),
+			)}; Path=/; Secure`,
+		},
+	});
 
-		delete process.env.AWS_LAMBDA_FUNCTION_NAME;
-	},
-);
+	delete process.env.AWS_LAMBDA_FUNCTION_NAME;
+});

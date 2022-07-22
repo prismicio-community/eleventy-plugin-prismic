@@ -1,4 +1,4 @@
-import test from "ava";
+import { it, expect, beforeAll, afterAll } from "vitest";
 import * as mswNode from "msw/node";
 
 import { cookie } from "@prismicio/client";
@@ -30,64 +30,64 @@ const server = mswNode.setupServer(
 		createDocument({ lang: "en-us", url: "/foo" }),
 	]),
 );
-test.before(() => server.listen({ onUnhandledRequest: "error" }));
-test.after(() => server.close());
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterAll(() => server.close());
 
-test("returns 500 when misconfigured", async (t) => {
-	t.deepEqual(await prismicPreview.handle("/preview/foo", {}, {}, {}), {
-		statusCode: 500,
-		body: JSON.stringify({
-			error: "`eleventy-prismic-plugin` preview is not configured",
-		}),
-	});
+it("returns 500 when misconfigured", async () => {
+	expect(await prismicPreview.handle("/preview/foo", {}, {}, {})).toStrictEqual(
+		{
+			statusCode: 500,
+			body: JSON.stringify({
+				error: "`eleventy-prismic-plugin` preview is not configured",
+			}),
+		},
+	);
 });
 
-test("resolves preview when query strings are valid", async (t) => {
-	t.deepEqual(
+it("resolves preview when query strings are valid", async () => {
+	expect(
 		await prismicPreview.handle(
 			"/preview/foo",
 			{ token: "foo", documentId: "bar" },
 			{},
 			options,
 		),
-		{
-			statusCode: 302,
-			headers: {
-				"X-Robots-Tag": "noindex, nofollow",
-				location: "/preview/foo?preview=true",
-				"set-cookie": `${cookie.preview}=${encodeURIComponent(
-					JSON.stringify({
-						[`${options.endpoint}.prismic.io`]: { preview: "foo" },
-					}),
-				)}; Path=/`,
-			},
+	).toStrictEqual({
+		statusCode: 302,
+		headers: {
+			"X-Robots-Tag": "noindex, nofollow",
+			location: "/preview/foo?preview=true",
+			"set-cookie": `${cookie.preview}=${encodeURIComponent(
+				JSON.stringify({
+					[`${options.endpoint}.prismic.io`]: { preview: "foo" },
+				}),
+			)}; Path=/`,
 		},
-	);
+	});
 });
 
-test("returns previewed page when in a preview session", async (t) => {
-	t.deepEqual(
+it("returns previewed page when in a preview session", async () => {
+	expect(
 		await prismicPreview.handle("/preview/foo", {}, headers, options),
-		{
-			statusCode: 200,
-			body: `<h1>foo</h1>
+	).toStrictEqual({
+		statusCode: 200,
+		body: `<h1>foo</h1>
 `,
-			headers: {
-				"X-Robots-Tag": "noindex, nofollow",
-				"Content-Type": "text/html; charset=UTF-8",
-			},
+		headers: {
+			"X-Robots-Tag": "noindex, nofollow",
+			"Content-Type": "text/html; charset=UTF-8",
 		},
-	);
+	});
 });
 
-test("returns fallback page when not in a preview session", async (t) => {
+it("returns fallback page when not in a preview session", async () => {
 	const response = await prismicPreview.handle("/preview/foo", {}, {}, options);
 
-	t.snapshot(response);
-	t.is(response.statusCode, 404);
+	expect(response).toMatchSnapshot();
+	expect(response.statusCode).toBe(404);
 });
 
-test("returns fallback page when previewed page is not found", async (t) => {
+it("returns fallback page when previewed page is not found", async () => {
 	const response = await prismicPreview.handle(
 		"/preview/404",
 		{},
@@ -95,18 +95,19 @@ test("returns fallback page when previewed page is not found", async (t) => {
 		options,
 	);
 
-	t.snapshot(response);
-	t.is(response.statusCode, 404);
+	expect(response).toMatchSnapshot();
+	expect(response.statusCode).toBe(404);
 });
 
-test("catches and handle thrown errors", async (t) => {
+it("catches and handle thrown errors", async () => {
 	// 11ty unknown route pattern
-	t.is(
+	expect(
 		(await prismicPreview.handle("/preview/foo/bar", {}, headers, options))
 			.statusCode,
-		404,
-	);
+	).toBe(404);
 
 	// 11ty 500
-	t.is((await prismicPreview.handle("", {}, headers, options)).statusCode, 500);
+	expect(
+		(await prismicPreview.handle("", {}, headers, options)).statusCode,
+	).toBe(500);
 });

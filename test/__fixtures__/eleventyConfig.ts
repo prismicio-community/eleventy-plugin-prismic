@@ -1,6 +1,9 @@
 import { EleventyConfig } from "../../src/types";
 
-export const eleventyConfig: EleventyConfig = {
+export const eleventyConfig: Pick<
+	EleventyConfig,
+	"addPlugin" | "addGlobalData" | "addShortcode" | "addPairedShortcode"
+> & { globalData: Record<string, unknown> } = {
 	addPlugin<TOptions>(
 		_plugin: (eleventyConfig: EleventyConfig, options?: TOptions) => void,
 		_options?: TOptions,
@@ -18,7 +21,7 @@ export const eleventyConfig: EleventyConfig = {
 			(this.globalData as Record<string, unknown>)[name] = data;
 		}
 
-		return this;
+		return this as unknown as EleventyConfig;
 	},
 	addShortcode(_name, _callback) {
 		return;

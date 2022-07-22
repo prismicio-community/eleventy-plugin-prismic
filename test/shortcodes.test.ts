@@ -1,5 +1,4 @@
-import test from "ava";
-import * as sinon from "sinon";
+import { it, expect, vi } from "vitest";
 
 import { createDocument } from "./__testutils__/createDocument";
 
@@ -7,54 +6,51 @@ import { injectShortcodes } from "../src";
 
 const repositoryName = "shortcodes-test-ts";
 
-test.afterEach.always(() => {
-	sinon.restore();
-});
-
-test.serial("injects shorcodes", (t) => {
-	const injector = sinon.spy();
+it("injects shorcodes", () => {
+	const injector = vi.fn();
 
 	injectShortcodes(injector);
 
-	t.true(injector.called);
+	expect(injector).toHaveBeenCalled();
 });
 
-test.serial("injects shorcodes with namespace", (t) => {
+it("injects shorcodes with namespace", () => {
 	const namespace = "prismic";
 
-	const injector = sinon.spy();
+	const injector = vi.fn();
 
 	injectShortcodes(injector, { shortcodesNamespace: namespace });
 
-	t.true(injector.args.every((args) => args[0].startsWith(namespace)));
+	// @ts-expect-error - type is broken
+	expect(injector.calls.every((args) => args[0].startsWith(namespace))).toBe(
+		true,
+	);
 });
 
-test.serial(
-	"injects asLink shorcodes with internal prefix on 11ty Serverless",
-	(t) => {
-		const internalPrefix = "/preview";
+it("injects asLink shorcodes with internal prefix on 11ty Serverless", () => {
+	const internalPrefix = "/preview";
 
-		const injector = sinon.spy();
+	const injector = vi.fn();
 
-		process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
+	process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
 
-		injectShortcodes(injector, {
-			endpoint: repositoryName,
-			preview: { name: "preview" },
-		});
+	injectShortcodes(injector, {
+		endpoint: repositoryName,
+		preview: { name: "preview" },
+	});
 
-		t.true(
-			injector.args.some((args) => {
-				try {
-					return args[1](
-						createDocument({ uid: "foo", url: "/bar" }),
-					).startsWith(internalPrefix);
-				} catch (error) {
-					return false;
-				}
-			}),
-		);
+	expect(
+		// @ts-expect-error - type is broken
+		injector.calls.some((args) => {
+			try {
+				return args[1](createDocument({ uid: "foo", url: "/bar" })).startsWith(
+					internalPrefix,
+				);
+			} catch (error) {
+				return false;
+			}
+		}),
+	).toBe(true);
 
-		delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
-	},
-);
+	delete process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW;
+});

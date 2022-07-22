@@ -1,18 +1,16 @@
-import test from "ava";
+import { it, expect, vi, beforeAll, afterAll } from "vitest";
 import * as mswNode from "msw/node";
-import * as sinon from "sinon";
 
 // @ts-expect-error - 11ty does not provide any sort of type definition
 import { EleventyServerlessBundlerPlugin } from "@11ty/eleventy";
 import nodeFetch from "node-fetch";
-import { createClient, getEndpoint } from "@prismicio/client";
+import { createClient } from "@prismicio/client";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
 import { createMockRepositoryHandler } from "./__testutils__/createMockRepositoryHandler";
 import { eleventyConfig } from "./__fixtures__/eleventyConfig";
 
 import { pluginPrismic } from "../src";
-import { EleventyConfig } from "../src/types";
 
 const repositoryName = "pluginPrismic-test-ts";
 
@@ -20,132 +18,138 @@ const server = mswNode.setupServer(
 	createMockRepositoryHandler(repositoryName),
 	createMockQueryHandler(repositoryName),
 );
-test.before(() => server.listen({ onUnhandledRequest: "error" }));
-test.after(() => server.close());
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterAll(() => server.close());
 
-let spiedEleventyConfig: sinon.SinonSpiedInstance<EleventyConfig> & {
-	addPlugin: EleventyConfig["addPlugin"];
-};
-test.beforeEach(() => {
-	spiedEleventyConfig = sinon.spy(
-		eleventyConfig,
-	) as sinon.SinonSpiedInstance<EleventyConfig> & {
-		addPlugin: EleventyConfig["addPlugin"];
-	};
-});
-test.afterEach.always(() => {
-	sinon.restore();
-});
+it("injects documents from repository name", () => {
+	const addGlobalDataSpy = vi.spyOn(eleventyConfig, "addGlobalData");
 
-test.serial("injects documents from repository name", (t) => {
-	pluginPrismic(spiedEleventyConfig, {
+	pluginPrismic(eleventyConfig, {
 		endpoint: repositoryName,
 	});
 
-	t.true(spiedEleventyConfig.addGlobalData.calledOnce);
+	expect(addGlobalDataSpy).toHaveBeenCalledOnce();
+
+	vi.restoreAllMocks();
 });
 
-test.serial("injects documents from API endpoint", (t) => {
-	pluginPrismic(spiedEleventyConfig, {
-		endpoint: getEndpoint(repositoryName),
+it("injects documents from API endpoint", () => {
+	const addGlobalDataSpy = vi.spyOn(eleventyConfig, "addGlobalData");
+
+	pluginPrismic(eleventyConfig, {
+		endpoint: repositoryName,
 	});
 
-	t.true(spiedEleventyConfig.addGlobalData.calledOnce);
+	expect(addGlobalDataSpy).toHaveBeenCalledOnce();
+
+	vi.restoreAllMocks();
 });
 
-test.serial("injects documents from client instance", async (t) => {
-	const client = createClient(getEndpoint(repositoryName), {
+it("injects documents from client instance", async () => {
+	const client = createClient(repositoryName, {
 		fetch: nodeFetch,
 	});
-	const spiedClient = sinon.spy(client);
+	const dangerouslyGetAllSpy = vi.spyOn(client, "dangerouslyGetAll");
+	const addGlobalDataSpy = vi.spyOn(eleventyConfig, "addGlobalData");
 
-	pluginPrismic(spiedEleventyConfig, {
+	pluginPrismic(eleventyConfig, {
 		client,
 	});
 
 	await new Promise((res) => {
 		setTimeout(() => {
-			t.true(spiedClient.dangerouslyGetAll.calledOnce);
-			t.true(spiedEleventyConfig.addGlobalData.calledOnce);
+			expect(dangerouslyGetAllSpy).toHaveBeenCalledOnce();
+			expect(addGlobalDataSpy).toHaveBeenCalledOnce();
 			res(null);
 		}, 200);
 	});
+
+	expect.assertions(2);
 });
 
-test.serial("sets up preview when enabled", async (t) => {
+it("sets up preview when enabled", async () => {
+	const addPluginSpy = vi.spyOn(eleventyConfig, "addPlugin");
+
 	const options = {
 		endpoint: repositoryName,
 		preview: {
 			name: "preview",
 		},
 	};
-	pluginPrismic(spiedEleventyConfig, options);
+	pluginPrismic(eleventyConfig, options);
 
-	t.true(spiedEleventyConfig.addPlugin.calledOnce);
-	t.true(
-		spiedEleventyConfig.addPlugin.calledWith(
-			EleventyServerlessBundlerPlugin,
-			options.preview,
-		),
+	expect(addPluginSpy).toHaveBeenCalled();
+	expect(addPluginSpy).toHaveBeenCalledWith(
+		EleventyServerlessBundlerPlugin,
+		options.preview,
 	);
 });
 
-test.serial("doesn't set up preview when not enabled", async (t) => {
+it("doesn't set up preview when not enabled", async () => {
+	const addPluginSpy = vi.spyOn(eleventyConfig, "addPlugin");
+
 	const options = {
 		endpoint: repositoryName,
 	};
-	pluginPrismic(spiedEleventyConfig, options);
+	pluginPrismic(eleventyConfig, options);
 
-	t.true(spiedEleventyConfig.addPlugin.notCalled);
+	expect(addPluginSpy).not.toHaveBeenCalled();
 });
 
-test.serial("injects shortcodes", (t) => {
-	pluginPrismic(spiedEleventyConfig);
+it("injects shortcodes", () => {
+	const addShortcodeSpy = vi.spyOn(eleventyConfig, "addShortcode");
+	const addPairedShortcodeSpy = vi.spyOn(eleventyConfig, "addPairedShortcode");
 
-	t.true(spiedEleventyConfig.addShortcode.called);
-	t.true(spiedEleventyConfig.addPairedShortcode.called);
+	pluginPrismic(eleventyConfig);
+
+	expect(addShortcodeSpy).toHaveBeenCalled();
+	expect(addPairedShortcodeSpy).toHaveBeenCalled();
 });
 
-test.serial("injects shortcodes with namespace", (t) => {
+it("injects shortcodes with namespace", () => {
+	const addShortcodeSpy = vi.spyOn(eleventyConfig, "addShortcode");
+	const addPairedShortcodeSpy = vi.spyOn(eleventyConfig, "addPairedShortcode");
+
 	const namespace = "prismic";
 
-	pluginPrismic(spiedEleventyConfig, {
+	pluginPrismic(eleventyConfig, {
 		shortcodesNamespace: namespace,
 	});
 
-	t.true(spiedEleventyConfig.addShortcode.called);
-	t.true(spiedEleventyConfig.addPairedShortcode.called);
+	expect(addShortcodeSpy).toHaveBeenCalled();
+	expect(addPairedShortcodeSpy).toHaveBeenCalled();
 
-	t.true(
-		spiedEleventyConfig.addShortcode.args.every((args) =>
-			args[0].startsWith(namespace),
-		),
-	);
-	t.true(
-		spiedEleventyConfig.addPairedShortcode.args.every((args) =>
-			args[0].startsWith(namespace),
-		),
-	);
+	expect(
+		// @ts-expect-error - type is broken
+		addShortcodeSpy.calls.every((args) => args[0].startsWith(namespace)),
+	).toBe(true);
+	expect(
+		// @ts-expect-error - type is broken
+		addPairedShortcodeSpy.calls.every((args) => args[0].startsWith(namespace)),
+	).toBe(true);
 });
 
-test.serial("injects shortcodes with provided injectors", (t) => {
-	const shortcodesInjector = sinon.spy();
-	const shortcodesPairedInjector = sinon.spy();
+it("injects shortcodes with provided injectors", () => {
+	const shortcodesInjector = vi.fn();
+	const shortcodesPairedInjector = vi.fn();
 
-	pluginPrismic(spiedEleventyConfig, {
+	pluginPrismic(eleventyConfig, {
 		shortcodesInjector,
 		shortcodesPairedInjector,
 	});
 
-	t.true(shortcodesInjector.called);
-	t.true(shortcodesPairedInjector.called);
+	expect(shortcodesInjector).toHaveBeenCalled();
+	expect(shortcodesPairedInjector).toHaveBeenCalled();
 });
 
-test.serial("doesn't inject shortcodes when disabled", (t) => {
-	pluginPrismic(spiedEleventyConfig, {
+it("doesn't inject shortcodes when disabled", () => {
+	const addShortcodeSpy = vi.spyOn(eleventyConfig, "addShortcode");
+	const addPairedShortcodeSpy = vi.spyOn(eleventyConfig, "addPairedShortcode");
+
+	pluginPrismic(eleventyConfig, {
 		injectShortcodes: false,
 	});
 
-	t.false(spiedEleventyConfig.addShortcode.called);
-	t.false(spiedEleventyConfig.addPairedShortcode.called);
+	expect(addShortcodeSpy).not.toHaveBeenCalled();
+	expect(addPairedShortcodeSpy).not.toHaveBeenCalled();
 });

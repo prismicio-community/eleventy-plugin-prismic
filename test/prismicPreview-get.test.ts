@@ -1,4 +1,4 @@
-import test from "ava";
+import { it, expect, beforeAll, afterAll } from "vitest";
 import * as mswNode from "msw/node";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
@@ -28,11 +28,13 @@ const server = mswNode.setupServer(
 		createDocument({ lang: "en-us", url: "/foo" }),
 	]),
 );
-test.before(() => server.listen({ onUnhandledRequest: "error" }));
-test.after(() => server.close());
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterAll(() => server.close());
 
-test("returns previewed page when in a preview session", async (t) => {
-	t.deepEqual(await prismicPreview.get("/preview/foo", {}, headers, options), {
+it("returns previewed page when in a preview session", async () => {
+	expect(
+		await prismicPreview.get("/preview/foo", {}, headers, options),
+	).toStrictEqual({
 		statusCode: 200,
 		body: `<h1>foo</h1>
 `,
@@ -42,21 +44,14 @@ test("returns previewed page when in a preview session", async (t) => {
 	});
 });
 
-test("returns fallback page when not in a preview session", async (t) => {
-	const response1 = await prismicPreview.get(
-		"/preview/404",
-		{},
-		undefined,
-		options,
-	);
-	const response2 = await prismicPreview.get("/preview/404", {}, {}, options);
+it("returns fallback page when not in a preview session", async () => {
+	const response = await prismicPreview.get("/preview/404", {}, {}, options);
 
-	t.deepEqual(response1, response2);
-	t.snapshot(response1);
-	t.is(response1.statusCode, 404);
+	expect(response).toMatchSnapshot();
+	expect(response.statusCode).toBe(404);
 });
 
-test("returns fallback page when previewed page is not found", async (t) => {
+it("returns fallback page when previewed page is not found", async () => {
 	const response = await prismicPreview.get(
 		"/preview/404",
 		{},
@@ -64,6 +59,6 @@ test("returns fallback page when previewed page is not found", async (t) => {
 		options,
 	);
 
-	t.snapshot(response);
-	t.is(response.statusCode, 404);
+	expect(response).toMatchSnapshot();
+	expect(response.statusCode).toBe(404);
 });

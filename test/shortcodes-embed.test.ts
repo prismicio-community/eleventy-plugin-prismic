@@ -1,4 +1,4 @@
-import test from "ava";
+import { it, expect } from "vitest";
 
 import { OEmbedType } from "@prismicio/types";
 
@@ -20,30 +20,26 @@ const embedField = {
 	html: "baz",
 };
 
-test("returns a valid embed tag", (t) => {
-	t.is(
-		embed()(embedField),
+it("returns a valid embed tag", () => {
+	expect(embed()(embedField)).toBe(
 		`<div data-oembed="foo" data-oembed-type="${OEmbedType.Link}" data-oembed-provider="bar">baz</div>`,
 	);
 });
 
-test("returns a valid embed tag with specified wrapper", (t) => {
-	t.is(
-		embed()(embedField, { wrapper: "blockquote" }),
+it("returns a valid embed tag with specified wrapper", () => {
+	expect(embed()(embedField, { wrapper: "blockquote" })).toBe(
 		`<blockquote data-oembed="foo" data-oembed-type="${OEmbedType.Link}" data-oembed-provider="bar">baz</blockquote>`,
 	);
 });
 
-test("returns a valid embed tag with class", (t) => {
-	t.is(
-		embed()(embedField, "foo"),
+it("returns a valid embed tag with class", () => {
+	expect(embed()(embedField, "foo")).toBe(
 		`<div data-oembed="foo" data-oembed-type="${OEmbedType.Link}" data-oembed-provider="bar" class="foo">baz</div>`,
 	);
 });
 
-test("returns a valid embed tag with attributes", (t) => {
-	t.is(
-		embed()(embedField, { foo: "bar", baz: "qux" }),
+it("returns a valid embed tag with attributes", () => {
+	expect(embed()(embedField, { foo: "bar", baz: "qux" })).toBe(
 		`<div data-oembed="foo" data-oembed-type="${OEmbedType.Link}" data-oembed-provider="bar" foo="bar" baz="qux">baz</div>`,
 	);
 });
