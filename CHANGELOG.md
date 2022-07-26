@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0-beta.5](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2022-07-26)
+
+
+### Features
+
+* add helper shortcodes (`isFilled`) ([f38061c](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/f38061c310e247b858f4cf27e8076e4ea5d299c7))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([b09f3f7](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/b09f3f743a5a006b5efce1762ca910bd1df3f1c4))
+
 ## [1.0.0-beta.4](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2022-07-07)
 
 
