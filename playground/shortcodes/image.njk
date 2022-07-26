@@ -2,6 +2,14 @@
 layout: default
 ---
 
+{{ prismic_isFilled.image(mocks.image.simple) }}
+
+{% if prismic_isFilled.image(mocks.image.simple) %}
+	true
+{% else %}
+	false
+{% endif %}
+
 {% prismic_asImageSrc mocks.image.simple %}
 {% prismic_asImageSrc mocks.image.simple, { sat: 100 } %}
 {% prismic_asImageWidthSrcSet mocks.image.simple, { sat: 100 } %}

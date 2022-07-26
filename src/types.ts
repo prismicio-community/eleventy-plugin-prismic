@@ -7,6 +7,16 @@ import {
 
 // Eleventy types
 
+export type EleventyAddPluginFunction = <TOptions>(
+	plugin: (eleventyConfig: EleventyConfig, options?: TOptions) => void,
+	options?: TOptions,
+) => void;
+
+export type EleventyAddGlobalDataFunction = <TData = unknown>(
+	name: string,
+	data: () => Promise<TData> | TData,
+) => EleventyConfig;
+
 export type EleventyShortcodeFunction = (
 	name: string,
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,14 +30,8 @@ export type EleventyPairedShortcodeFunction = (
 ) => void;
 
 export type EleventyConfig = {
-	addPlugin: <TOptions>(
-		plugin: (eleventyConfig: EleventyConfig, options?: TOptions) => void,
-		options?: TOptions,
-	) => void;
-	addGlobalData: (
-		name: string,
-		data: () => Promise<unknown> | unknown,
-	) => EleventyConfig;
+	addPlugin: EleventyAddPluginFunction;
+	addGlobalData: EleventyAddGlobalDataFunction;
 	addShortcode: EleventyShortcodeFunction;
 	addPairedShortcode: EleventyPairedShortcodeFunction;
 	[key: string]: unknown;
@@ -91,6 +95,13 @@ export type PrismicPluginOptionsBase = {
 	 * @defaultValue `eleventyConfig.addPairedShortcode`
 	 */
 	shortcodesPairedInjector?: EleventyPairedShortcodeFunction;
+
+	/**
+	 * Function used to inject helper shortcodes
+	 *
+	 * @defaultValue `eleventyConfig.addGlobalData`
+	 */
+	shortcodesHelperInjector?: EleventyAddGlobalDataFunction;
 
 	/**
 	 * Value of the `rel` attribute on links with `target="_blank"` rendered by shortcodes

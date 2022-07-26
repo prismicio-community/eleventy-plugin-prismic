@@ -25,4 +25,6 @@ export {
 
 export { link, injectPairedShortcodes } from "./pairedShortcodes";
 
+export { isFilled, injectHelperShortcodes } from "./helperShortcodes";
+
 export type { PrismicPluginOptions } from "./types";

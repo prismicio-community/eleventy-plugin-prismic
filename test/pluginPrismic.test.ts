@@ -28,7 +28,12 @@ it("injects documents from repository name", () => {
 		endpoint: repositoryName,
 	});
 
-	expect(addGlobalDataSpy).toHaveBeenCalledOnce();
+	expect(addGlobalDataSpy).toHaveBeenCalled();
+	expect(addGlobalDataSpy).toHaveBeenNthCalledWith(
+		1,
+		"prismic",
+		expect.any(Function),
+	);
 
 	vi.restoreAllMocks();
 });
@@ -40,7 +45,12 @@ it("injects documents from API endpoint", () => {
 		endpoint: repositoryName,
 	});
 
-	expect(addGlobalDataSpy).toHaveBeenCalledOnce();
+	expect(addGlobalDataSpy).toHaveBeenCalled();
+	expect(addGlobalDataSpy).toHaveBeenNthCalledWith(
+		1,
+		"prismic",
+		expect.any(Function),
+	);
 
 	vi.restoreAllMocks();
 });
@@ -59,12 +69,17 @@ it("injects documents from client instance", async () => {
 	await new Promise((res) => {
 		setTimeout(() => {
 			expect(dangerouslyGetAllSpy).toHaveBeenCalledOnce();
-			expect(addGlobalDataSpy).toHaveBeenCalledOnce();
+			expect(addGlobalDataSpy).toHaveBeenCalled();
+			expect(addGlobalDataSpy).toHaveBeenNthCalledWith(
+				1,
+				"prismic",
+				expect.any(Function),
+			);
 			res(null);
 		}, 200);
 	});
 
-	expect.assertions(2);
+	expect.assertions(3);
 });
 
 it("sets up preview when enabled", async () => {
@@ -109,6 +124,7 @@ it("injects shortcodes", () => {
 it("injects shortcodes with namespace", () => {
 	const addShortcodeSpy = vi.spyOn(eleventyConfig, "addShortcode");
 	const addPairedShortcodeSpy = vi.spyOn(eleventyConfig, "addPairedShortcode");
+	const addHelperShortcodeSpy = vi.spyOn(eleventyConfig, "addGlobalData");
 
 	const namespace = "prismic";
 
@@ -118,33 +134,43 @@ it("injects shortcodes with namespace", () => {
 
 	expect(addShortcodeSpy).toHaveBeenCalled();
 	expect(addPairedShortcodeSpy).toHaveBeenCalled();
+	expect(addHelperShortcodeSpy).toHaveBeenCalled();
 
 	expect(
-		// @ts-expect-error - type is broken
-		addShortcodeSpy.calls.every((args) => args[0].startsWith(namespace)),
+		addShortcodeSpy.mock.calls.every((args) => args[0].startsWith(namespace)),
 	).toBe(true);
 	expect(
-		// @ts-expect-error - type is broken
-		addPairedShortcodeSpy.calls.every((args) => args[0].startsWith(namespace)),
+		addPairedShortcodeSpy.mock.calls.every((args) =>
+			args[0].startsWith(namespace),
+		),
+	).toBe(true);
+	expect(
+		addHelperShortcodeSpy.mock.calls.every((args) =>
+			args[0].startsWith(namespace),
+		),
 	).toBe(true);
 });
 
 it("injects shortcodes with provided injectors", () => {
 	const shortcodesInjector = vi.fn();
 	const shortcodesPairedInjector = vi.fn();
+	const shortcodesHelperInjector = vi.fn();
 
 	pluginPrismic(eleventyConfig, {
 		shortcodesInjector,
 		shortcodesPairedInjector,
+		shortcodesHelperInjector,
 	});
 
 	expect(shortcodesInjector).toHaveBeenCalled();
 	expect(shortcodesPairedInjector).toHaveBeenCalled();
+	expect(shortcodesHelperInjector).toHaveBeenCalled();
 });
 
 it("doesn't inject shortcodes when disabled", () => {
 	const addShortcodeSpy = vi.spyOn(eleventyConfig, "addShortcode");
 	const addPairedShortcodeSpy = vi.spyOn(eleventyConfig, "addPairedShortcode");
+	const addHelperShortcodeSpy = vi.spyOn(eleventyConfig, "addGlobalData");
 
 	pluginPrismic(eleventyConfig, {
 		injectShortcodes: false,
@@ -152,4 +178,5 @@ it("doesn't inject shortcodes when disabled", () => {
 
 	expect(addShortcodeSpy).not.toHaveBeenCalled();
 	expect(addPairedShortcodeSpy).not.toHaveBeenCalled();
+	expect(addHelperShortcodeSpy).not.toHaveBeenCalled();
 });

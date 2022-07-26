@@ -15,6 +15,7 @@ import { createClientFromOptions } from "./createClientFromOptions";
 import { crawlAndSort } from "./crawlAndSort";
 import { injectShortcodes } from "./shortcodes";
 import { injectPairedShortcodes } from "./pairedShortcodes";
+import { injectHelperShortcodes } from "./helperShortcodes";
 
 /**
  * Prismic plugin for Eleventy, injects Prismic documents into Eleventy global data, enable preview, and provides useful shortcodes
@@ -79,7 +80,9 @@ export const pluginPrismic = (
 
 	// Shortcodes
 	if (options.injectShortcodes !== false) {
+		let prefix = "";
 		if (options.shortcodesNamespace && options.shortcodesNamespace !== "") {
+			prefix = `${options.shortcodesNamespace}_`;
 			dPrismicShortcodes(
 				"Injecting shortcodes under the %o namespace",
 				options.shortcodesNamespace,
@@ -90,6 +93,7 @@ export const pluginPrismic = (
 
 		// Injects basic shortcodes
 		injectShortcodes(
+			prefix,
 			options.shortcodesInjector?.bind(eleventyConfig) ||
 				eleventyConfig.addShortcode.bind(eleventyConfig),
 			options,
@@ -97,8 +101,17 @@ export const pluginPrismic = (
 
 		// Injects paired shortcodes
 		injectPairedShortcodes(
+			prefix,
 			options.shortcodesPairedInjector?.bind(eleventyConfig) ||
 				eleventyConfig.addPairedShortcode.bind(eleventyConfig),
+			options,
+		);
+
+		// Injects helper shortcodes
+		injectHelperShortcodes(
+			prefix,
+			options.shortcodesHelperInjector?.bind(eleventyConfig) ||
+				eleventyConfig.addGlobalData.bind(eleventyConfig),
 			options,
 		);
 	} else {

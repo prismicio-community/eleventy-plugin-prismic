@@ -112,20 +112,17 @@ export const link = (
 /**
  * Injects all paired shortcodes with given injector
  *
+ * @param prefix - The prefix to apply to shortcode names
  * @param injector - Injector function to use from `eleventyConfig`
  * @param options - Prismic plugin options
  *
  * @internal
  */
 export const injectPairedShortcodes = (
+	prefix: string,
 	injector: EleventyPairedShortcodeFunction,
 	options: PrismicPluginOptions = {},
 ): void => {
-	let prefix = "";
-	if (options.shortcodesNamespace && options.shortcodesNamespace !== "") {
-		prefix = `${options.shortcodesNamespace}_`;
-	}
-
 	const pairedShortcodes: string[] = [];
 
 	pairedShortcodes.push(`${prefix}link`);

@@ -296,20 +296,17 @@ export const toolbar = (repository: string, previewName: string) => {
 /**
  * Injects all shortcodes with given injector
  *
+ * @param prefix - The prefix to apply to shortcode names
  * @param injector - Injector function to use from `eleventyConfig`
  * @param options - Prismic plugin options
  *
  * @internal
  */
 export const injectShortcodes = (
+	prefix: string,
 	injector: EleventyShortcodeFunction,
 	options: PrismicPluginOptions = {},
 ): void => {
-	let prefix = "";
-	if (options.shortcodesNamespace && options.shortcodesNamespace !== "") {
-		prefix = `${options.shortcodesNamespace}_`;
-	}
-
 	const shortcodes: string[] = [];
 
 	shortcodes.push(`${prefix}asText`);

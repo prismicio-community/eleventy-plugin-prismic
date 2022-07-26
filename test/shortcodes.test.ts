@@ -9,7 +9,7 @@ const repositoryName = "shortcodes-test-ts";
 it("injects shorcodes", () => {
 	const injector = vi.fn();
 
-	injectShortcodes(injector);
+	injectShortcodes("", injector);
 
 	expect(injector).toHaveBeenCalled();
 });
@@ -19,12 +19,11 @@ it("injects shorcodes with namespace", () => {
 
 	const injector = vi.fn();
 
-	injectShortcodes(injector, { shortcodesNamespace: namespace });
+	injectShortcodes(namespace, injector, { shortcodesNamespace: namespace });
 
-	// @ts-expect-error - type is broken
-	expect(injector.calls.every((args) => args[0].startsWith(namespace))).toBe(
-		true,
-	);
+	expect(
+		injector.mock.calls.every((args) => args[0].startsWith(namespace)),
+	).toBe(true);
 });
 
 it("injects asLink shorcodes with internal prefix on 11ty Serverless", () => {
@@ -34,14 +33,13 @@ it("injects asLink shorcodes with internal prefix on 11ty Serverless", () => {
 
 	process.env.ELEVENTY_SERVERLESS_PRISMIC_PREVIEW = "true";
 
-	injectShortcodes(injector, {
+	injectShortcodes("", injector, {
 		endpoint: repositoryName,
 		preview: { name: "preview" },
 	});
 
 	expect(
-		// @ts-expect-error - type is broken
-		injector.calls.some((args) => {
+		injector.mock.calls.some((args) => {
 			try {
 				return args[1](createDocument({ uid: "foo", url: "/bar" })).startsWith(
 					internalPrefix,

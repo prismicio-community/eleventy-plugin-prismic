@@ -127,7 +127,7 @@ Prismic previews are now available in Eleventy. To set them up, follow this proc
     </html>
     ```
 
-    > This shortcode will inject Prismic toolbar script to your website only when running through 11ty Serverless. No worries, the script won't be injected outside of preview sessions on your website.
+    > 💡 This shortcode will inject Prismic toolbar script to your website only when running through 11ty Serverless. No worries, the script won't be injected outside of preview sessions on your website.
 
 5.  Update your permalinks to use your `preview.name` as path prefix for 11ty Serverless:
 
@@ -367,7 +367,7 @@ April 2021
 ```
 <!-- prettier-ignore-end -->
 
-> Under the hood the plugin makes use of day.js, [check their documentation](https://day.js.org/docs/en/display/format) for more format!
+> 💡 Under the hood the plugin makes use of day.js, [check their documentation](https://day.js.org/docs/en/display/format) for more format!
 
 #### `link` (paired shortcode)
 
@@ -398,8 +398,6 @@ Displays a link field or document as link with the right attributes and accessib
   With any attribute
 {% endlink %}
 ```
-
-> Always provide Eleventy's `page` object for the plugin to known if provided link is the current page or not!
 
 Renders to:
 
@@ -481,7 +479,7 @@ Renders to:
 ```
 <!-- prettier-ignore-end -->
 
-> This shortcode is heavily inspired by `@prismicio/vue`'s image component. Its documentation can help you understand this shortcode more if needed: https://prismic.io/docs/technical-reference/prismicio-vue?version=v3#prismicimage
+> 💡 This shortcode is heavily inspired by `@prismicio/vue`'s image component. Its documentation can help you understand this shortcode more if needed: https://prismic.io/docs/technical-reference/prismicio-vue?version=v3#prismicimage
 
 #### `embed`
 
@@ -526,6 +524,24 @@ Outputs Prismic toolbar script to the page only when running through 11ty Server
 ```njk
 {% toolbar %}
 ```
+
+#### `isFilled` (helper shortcode)
+
+Checks if a field is filled or empty:
+
+```njk
+{% if isFilled.richText(document.data.richtext) %}
+	Rich Text field is not empty...
+{% endif %}
+
+{% if isFilled.image(document.data.image) %}
+	Image field is not empty...
+{% endif %}
+
+{# ... #}
+```
+
+> 📖 See [@prismicio/helpers documentation](https://prismic.io/docs/technical-reference/prismicio-helpers#isfilled) for all `isFilled` methods.
 
 ### Debug
 
@@ -586,6 +602,9 @@ type PrismicPluginOptions = {
 	// `eleventyConfig` method to use to inject paired shortcodes, defaults to `eleventyConfig.addPairedShortcode`
 	shortcodesPairedInjector?: EleventyPairedShortcodeFunction;
 
+	// `eleventyConfig` method to use to inject helper shortcodes, defaults to `eleventyConfig.addGlobalData`
+	shortcodesHelperInjector?: EleventyAddGlobalDataFunction;
+
 	// Value of the `rel` attribute on links with `target="_blank"` rendered by shortcodes, defaults to `noopener noreferrer`
 	linkBlankTargetRelAttribute?: string;
 
@@ -608,6 +627,7 @@ type PrismicPluginOptions = {
 	shortcodesNamespace: "",
 	shortcodesInjector: eleventyConfig.addShortcode,
 	shortcodesPairedInjector: eleventyConfig.addPairedShortcode,
+	shortcodesHelperInjector: eleventyConfig.addGlobalData,
 	linkBlankTargetRelAttribute: "noopener noreferrer",
 	imageWidthSrcSetDefaults: [640, 828, 1200, 2048, 3840], // From `@prismicio/helpers`
 	imagePixelDensitySrcSetDefaults: [1, 2, 3], // From `@prismicio/helpers`
