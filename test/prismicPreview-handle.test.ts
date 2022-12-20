@@ -1,7 +1,7 @@
 import { it, expect, beforeAll, afterAll } from "vitest";
 import * as mswNode from "msw/node";
 
-import { cookie } from "@prismicio/client";
+import * as prismic from "@prismicio/client";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
 import { createMockRepositoryHandler } from "./__testutils__/createMockRepositoryHandler";
@@ -57,7 +57,7 @@ it("resolves preview when query strings are valid", async () => {
 		headers: {
 			"X-Robots-Tag": "noindex, nofollow",
 			location: "/preview/foo?preview=true",
-			"set-cookie": `${cookie.preview}=${encodeURIComponent(
+			"set-cookie": `${prismic.cookie.preview}=${encodeURIComponent(
 				JSON.stringify({
 					[`${options.endpoint}.prismic.io`]: { preview: "foo" },
 				}),

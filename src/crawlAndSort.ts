@@ -1,6 +1,4 @@
-import { Client } from "@prismicio/client";
-import { asLink } from "@prismicio/helpers";
-import { PrismicDocument } from "@prismicio/types";
+import * as prismic from "@prismicio/client";
 
 import {
 	PrismicPluginOptionsWithClient,
@@ -9,10 +7,16 @@ import {
 import { dPrismicClient } from "./lib/debug";
 
 // Helper types
-type SimpleDocuments = PrismicDocument | PrismicDocument[];
+type SimpleDocuments = prismic.PrismicDocument | prismic.PrismicDocument[];
 type I18nDocuments =
-	| ({ __all: PrismicDocument[] } & Record<string, PrismicDocument>)
-	| ({ __all: PrismicDocument[] } & Record<string, PrismicDocument[]>);
+	| ({ __all: prismic.PrismicDocument[] } & Record<
+			string,
+			prismic.PrismicDocument
+	  >)
+	| ({ __all: prismic.PrismicDocument[] } & Record<
+			string,
+			prismic.PrismicDocument[]
+	  >);
 
 /**
  * Get all documents from given client and sort them
@@ -25,7 +29,7 @@ type I18nDocuments =
  * @internal
  */
 export const crawlAndSort = async (
-	client: Client,
+	client: prismic.Client,
 	options: PrismicPluginOptionsWithClient | PrismicPluginOptionsWithEndpoint,
 ): Promise<Record<string, SimpleDocuments> | Record<string, I18nDocuments>> => {
 	const docs = await client.dangerouslyGetAll({
@@ -47,7 +51,7 @@ export const crawlAndSort = async (
 				typeof options.linkResolver === "function" &&
 				!("url" in current && current.url)
 			) {
-				current.url = asLink(current, options.linkResolver);
+				current.url = prismic.asLink(current, options.linkResolver);
 			}
 
 			let key: string | null = null;
@@ -74,7 +78,9 @@ export const crawlAndSort = async (
 					? (collections[current.type] as I18nDocuments)[key]
 					: collections[current.type];
 			// Set current collection
-			const set = (value: PrismicDocument | PrismicDocument[]) => {
+			const set = (
+				value: prismic.PrismicDocument | prismic.PrismicDocument[],
+			) => {
 				if (key) {
 					(collections[current.type] as I18nDocuments)[key] = value;
 					(collections[current.type] as I18nDocuments).__all.push(
@@ -85,8 +91,8 @@ export const crawlAndSort = async (
 				}
 			};
 			// Push to current collection
-			const push = (value: PrismicDocument) => {
-				(get() as PrismicDocument[]).push(value);
+			const push = (value: prismic.PrismicDocument) => {
+				(get() as prismic.PrismicDocument[]).push(value);
 				if (key) {
 					(collections[current.type] as I18nDocuments).__all.push(value);
 				}
@@ -116,11 +122,11 @@ export const crawlAndSort = async (
 							.filter(([key]) => key !== "__all")
 							.forEach(([locale, document]) => {
 								(collections[current.type] as I18nDocuments)[locale] = [
-									document as PrismicDocument,
+									document as prismic.PrismicDocument,
 								];
 							});
 					} else {
-						collections[current.type] = [get() as PrismicDocument];
+						collections[current.type] = [get() as prismic.PrismicDocument];
 					}
 				}
 

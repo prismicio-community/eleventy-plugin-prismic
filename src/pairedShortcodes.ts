@@ -1,6 +1,5 @@
-import * as prismicH from "@prismicio/helpers";
+import * as prismic from "@prismicio/client";
 
-import { LinkField, PrismicDocument } from "@prismicio/types";
 import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
 import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
 import { attributesToHTML } from "./lib/attributesToHTML";
@@ -27,7 +26,7 @@ const defaultBlankTargetRelAttribute = "noopener noreferrer";
  * @internal
  */
 export const link = (
-	linkResolver?: prismicH.LinkResolverFunction,
+	linkResolver?: prismic.LinkResolverFunction,
 	linkBlankTargetRelAttribute?: string,
 	internalPrefix = "",
 ) => {
@@ -38,7 +37,7 @@ export const link = (
 			  }
 			| unknown,
 		slot: string,
-		linkFieldOrDocument: LinkField | PrismicDocument,
+		linkFieldOrDocument: prismic.LinkField | prismic.PrismicDocument,
 		options:
 			| ({ page?: Record<string, string> } & Record<
 					string,
@@ -47,7 +46,7 @@ export const link = (
 			| string = {},
 	): string {
 		// Resolve href
-		let href: string = prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
+		let href: string = prismic.asLink(linkFieldOrDocument, linkResolver) ?? "";
 		if (isInternalURL(href)) {
 			href = `${internalPrefix}${href}`;
 		}

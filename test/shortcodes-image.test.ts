@@ -1,5 +1,6 @@
-import { ImageField } from "@prismicio/types";
 import { it, expect } from "vitest";
+
+import * as prismic from "@prismicio/client";
 
 import { image } from "../src";
 
@@ -69,7 +70,7 @@ it("returns a valid image tag with thumbnails width-based `srcset`", () => {
 						height: 100,
 					},
 				},
-			} as ImageField<"foo">,
+			} as prismic.ImageField<"foo">,
 			{ imgixParams: { sat: 100 }, widths: "thumbnails" },
 		),
 	).toBe(

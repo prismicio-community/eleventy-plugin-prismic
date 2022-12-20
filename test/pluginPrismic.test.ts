@@ -4,7 +4,7 @@ import * as mswNode from "msw/node";
 // @ts-expect-error - 11ty does not provide any sort of type definition
 import { EleventyServerlessBundlerPlugin } from "@11ty/eleventy";
 import nodeFetch from "node-fetch";
-import { createClient } from "@prismicio/client";
+import * as prismic from "@prismicio/client";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
 import { createMockRepositoryHandler } from "./__testutils__/createMockRepositoryHandler";
@@ -56,7 +56,7 @@ it("injects documents from API endpoint", () => {
 });
 
 it("injects documents from client instance", async () => {
-	const client = createClient(repositoryName, {
+	const client = prismic.createClient(repositoryName, {
 		fetch: nodeFetch,
 	});
 	const dangerouslyGetAllSpy = vi.spyOn(client, "dangerouslyGetAll");

@@ -1,7 +1,7 @@
 import { it, expect, beforeAll, afterAll } from "vitest";
 import * as mswNode from "msw/node";
 
-import { cookie } from "@prismicio/client";
+import * as prismic from "@prismicio/client";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
 import { createMockRepositoryHandler } from "./__testutils__/createMockRepositoryHandler";
@@ -35,7 +35,7 @@ it("returns redirect response when query strings are valid and set cookies", asy
 		statusCode: 302,
 		headers: {
 			location: "/preview/foo?preview=true",
-			"set-cookie": `${cookie.preview}=${encodeURIComponent(
+			"set-cookie": `${prismic.cookie.preview}=${encodeURIComponent(
 				JSON.stringify({
 					[`${options.endpoint}.prismic.io`]: { preview: "foo" },
 				}),
@@ -53,7 +53,7 @@ it("returns redirect response when query strings are valid and set secured cooki
 		statusCode: 302,
 		headers: {
 			location: "/preview/foo?preview=true",
-			"set-cookie": `${cookie.preview}=${encodeURIComponent(
+			"set-cookie": `${prismic.cookie.preview}=${encodeURIComponent(
 				JSON.stringify({
 					[`${options.endpoint}.prismic.io`]: { preview: "foo" },
 				}),

@@ -1,7 +1,7 @@
 import { it, expect } from "vitest";
 
 import nodeFetch from "node-fetch";
-import { createClient, getEndpoint } from "@prismicio/client";
+import * as prismic from "@prismicio/client";
 
 import { canCreateClientFromOptions } from "../src";
 
@@ -10,11 +10,13 @@ const repositoryName = "canCreateClientFromOptions-test-ts";
 it("returns true for a client capable options object", () => {
 	expect(canCreateClientFromOptions({ endpoint: repositoryName })).toBe(true);
 	expect(
-		canCreateClientFromOptions({ endpoint: getEndpoint(repositoryName) }),
+		canCreateClientFromOptions({
+			endpoint: prismic.getRepositoryEndpoint(repositoryName),
+		}),
 	).toBe(true);
 	expect(
 		canCreateClientFromOptions({
-			client: createClient(repositoryName, { fetch: nodeFetch }),
+			client: prismic.createClient(repositoryName, { fetch: nodeFetch }),
 		}),
 	).toBe(true);
 });

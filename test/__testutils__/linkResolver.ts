@@ -1,3 +1,4 @@
-import { LinkResolverFunction } from "@prismicio/helpers";
+import * as prismic from "@prismicio/client";
 
-export const linkResolver: LinkResolverFunction = (doc) => `/${doc.uid}`;
+export const linkResolver: prismic.LinkResolverFunction = (doc) =>
+	`/${doc.uid}`;

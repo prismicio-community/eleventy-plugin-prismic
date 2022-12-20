@@ -1,5 +1,5 @@
 import nodeFetch from "node-fetch";
-import { Client, createClient } from "@prismicio/client";
+import * as prismic from "@prismicio/client";
 
 import {
 	PrismicPluginOptionsWithClient,
@@ -25,10 +25,10 @@ import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
  */
 export const createClientFromOptions = (
 	options: PrismicPluginOptionsWithClient | PrismicPluginOptionsWithEndpoint,
-): Client => {
+): prismic.Client => {
 	return "client" in options
 		? options.client
-		: createClient(options.endpoint, {
+		: prismic.createClient(options.endpoint, {
 				fetch: nodeFetch,
 				...options.clientConfig,
 		  });

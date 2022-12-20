@@ -1,15 +1,15 @@
 import { SetRequired } from "type-fest";
 
-import * as prismicT from "@prismicio/types";
+import * as prismic from "@prismicio/client";
 
 import { createDocument } from "./createDocument";
 
 export const createQueryResponse = <
-	TDocument extends prismicT.PrismicDocument = prismicT.PrismicDocument,
+	TDocument extends prismic.PrismicDocument = prismic.PrismicDocument,
 >(
 	docs: SetRequired<TDocument, "uid">[] = [createDocument(), createDocument()],
-	overrides?: Partial<prismicT.Query<SetRequired<TDocument, "uid">>>,
-): prismicT.Query<SetRequired<TDocument, "uid">> => ({
+	overrides?: Partial<prismic.Query<SetRequired<TDocument, "uid">>>,
+): prismic.Query<SetRequired<TDocument, "uid">> => ({
 	page: 1,
 	results_per_page: docs.length,
 	results_size: docs.length,

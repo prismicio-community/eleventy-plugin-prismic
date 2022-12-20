@@ -1,7 +1,7 @@
-import * as prismicT from "@prismicio/types";
+import * as prismic from "@prismicio/client";
 
 export const createDocument = <
-	TDocument extends prismicT.PrismicDocument = prismicT.PrismicDocument,
+	TDocument extends prismic.PrismicDocument = prismic.PrismicDocument,
 >(
 	fields?: Partial<TDocument>,
 ): TDocument & { uid: string } => {

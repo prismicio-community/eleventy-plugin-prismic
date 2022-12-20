@@ -1,10 +1,10 @@
-import * as prismicH from "@prismicio/helpers";
+import * as prismic from "@prismicio/client";
 
 import { dPrismicShortcodes } from "./lib/debug";
 import { EleventyAddGlobalDataFunction, PrismicPluginOptions } from "./types";
 
 export const isFilled = () => {
-	return () => prismicH.isFilled;
+	return () => prismic.isFilled;
 };
 
 /**

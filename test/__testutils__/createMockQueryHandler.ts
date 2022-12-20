@@ -1,12 +1,12 @@
 import * as msw from "msw";
 
-import { PrismicDocument } from "@prismicio/types";
+import * as prismic from "@prismicio/client";
 
 import { createQueryResponse } from "./createQueryResponse";
 
 export const createMockQueryHandler = (
 	repositoryName: string,
-	docs: PrismicDocument[] = [],
+	docs: prismic.PrismicDocument[] = [],
 ): msw.RestHandler => {
 	const endpoint = `https://${repositoryName}.cdn.prismic.io/api/v2/documents/search`;
 

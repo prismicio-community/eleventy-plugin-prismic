@@ -1,13 +1,4 @@
-import * as prismicH from "@prismicio/helpers";
-import {
-	DateField,
-	EmbedField,
-	ImageFieldImage,
-	LinkField,
-	PrismicDocument,
-	RichTextField,
-	TimestampField,
-} from "@prismicio/types";
+import * as prismic from "@prismicio/client";
 import dayjs from "dayjs";
 
 import { canCreateClientFromOptions } from "./canCreateClientFromOptions";
@@ -25,7 +16,7 @@ import { EleventyShortcodeFunction, PrismicPluginOptions } from "./types";
  *
  * @internal
  */
-export const asText = (): typeof prismicH.asText => prismicH.asText;
+export const asText = (): typeof prismic.asText => prismic.asText;
 
 /**
  * `asHTML` shortcode factory
@@ -41,11 +32,13 @@ export const asText = (): typeof prismicH.asText => prismicH.asText;
  * @internal
  */
 export const asHTML = (
-	linkResolver?: prismicH.LinkResolverFunction,
-	htmlSerializer?: prismicH.HTMLFunctionSerializer | prismicH.HTMLMapSerializer,
+	linkResolver?: prismic.LinkResolverFunction,
+	htmlSerializer?: prismic.HTMLFunctionSerializer | prismic.HTMLMapSerializer,
 ) => {
-	return (richTextField: RichTextField): ReturnType<typeof prismicH.asHTML> =>
-		prismicH.asHTML(richTextField, linkResolver, htmlSerializer);
+	return (
+		richTextField: prismic.RichTextField,
+	): ReturnType<typeof prismic.asHTML> =>
+		prismic.asHTML(richTextField, linkResolver, htmlSerializer);
 };
 
 /**
@@ -61,12 +54,14 @@ export const asHTML = (
  * @internal
  */
 export const asLink = (
-	linkResolver?: prismicH.LinkResolverFunction,
+	linkResolver?: prismic.LinkResolverFunction,
 	internalPrefix = "",
 ) => {
-	return (linkFieldOrDocument: LinkField | PrismicDocument): string => {
+	return (
+		linkFieldOrDocument: prismic.LinkField | prismic.PrismicDocument,
+	): string => {
 		const href: string =
-			prismicH.asLink(linkFieldOrDocument, linkResolver) ?? "";
+			prismic.asLink(linkFieldOrDocument, linkResolver) ?? "";
 
 		return `${isInternalURL(href) ? internalPrefix : ""}${href}`;
 	};
@@ -85,8 +80,11 @@ const defaultDateFormat = "MM/DD/YYYY";
  * @internal
  */
 export const asDate = () => {
-	return (dateField: DateField | TimestampField, format?: string): string => {
-		const date = prismicH.asDate(dateField);
+	return (
+		dateField: prismic.DateField | prismic.TimestampField,
+		format?: string,
+	): string => {
+		const date = prismic.asDate(dateField);
 
 		if (date) {
 			return dayjs(date).format(format || defaultDateFormat);
@@ -105,10 +103,10 @@ export const asDate = () => {
  */
 export const asImageSrc = () => {
 	return (
-		imageField: ImageFieldImage,
-		params?: Parameters<typeof prismicH.asImageSrc>[1],
+		imageField: prismic.ImageFieldImage,
+		params?: Parameters<typeof prismic.asImageSrc>[1],
 	): string => {
-		return prismicH.asImageSrc(imageField, params) ?? "";
+		return prismic.asImageSrc(imageField, params) ?? "";
 	};
 };
 
@@ -121,10 +119,10 @@ export const asImageSrc = () => {
  */
 export const asImageWidthSrcSet = () => {
 	return (
-		imageField: ImageFieldImage,
-		params?: Parameters<typeof prismicH.asImageWidthSrcSet>[1],
+		imageField: prismic.ImageFieldImage,
+		params?: Parameters<typeof prismic.asImageWidthSrcSet>[1],
 	): string => {
-		return prismicH.asImageWidthSrcSet(imageField, params)?.srcset ?? "";
+		return prismic.asImageWidthSrcSet(imageField, params)?.srcset ?? "";
 	};
 };
 
@@ -137,10 +135,10 @@ export const asImageWidthSrcSet = () => {
  */
 export const asImagePixelDensitySrcSet = () => {
 	return (
-		imageField: ImageFieldImage,
-		params?: Parameters<typeof prismicH.asImagePixelDensitySrcSet>[1],
+		imageField: prismic.ImageFieldImage,
+		params?: Parameters<typeof prismic.asImagePixelDensitySrcSet>[1],
 	): string => {
-		return prismicH.asImagePixelDensitySrcSet(imageField, params)?.srcset ?? "";
+		return prismic.asImagePixelDensitySrcSet(imageField, params)?.srcset ?? "";
 	};
 };
 
@@ -156,19 +154,19 @@ export const image = (
 	pixelDensitySrcSetDefaults?: number[],
 ) => {
 	return (
-		imageField: ImageFieldImage,
+		imageField: prismic.ImageFieldImage,
 		options:
 			| ({
-					imgixParams?: Parameters<typeof prismicH.asImageSrc>[1];
+					imgixParams?: Parameters<typeof prismic.asImageSrc>[1];
 					widths?:
 						| NonNullable<
-								Parameters<typeof prismicH.asImageWidthSrcSet>[1]
+								Parameters<typeof prismic.asImageWidthSrcSet>[1]
 						  >["widths"]
 						| "thumbnails"
 						| "defaults";
 					pixelDensities?:
 						| NonNullable<
-								Parameters<typeof prismicH.asImagePixelDensitySrcSet>[1]
+								Parameters<typeof prismic.asImagePixelDensitySrcSet>[1]
 						  >["pixelDensities"]
 						| "defaults";
 			  } & Record<string, string | number | null | undefined | unknown>)
@@ -186,7 +184,7 @@ export const image = (
 				: options;
 
 		const { src, srcset } = (() => {
-			if (!prismicH.isFilled.imageThumbnail(imageField)) {
+			if (!prismic.isFilled.imageThumbnail(imageField)) {
 				return { src: null, srcset: null };
 			} else if (widths) {
 				if (pixelDensities) {
@@ -205,12 +203,12 @@ export const image = (
 					);
 				}
 
-				return prismicH.asImageWidthSrcSet(imageField, {
+				return prismic.asImageWidthSrcSet(imageField, {
 					...imgixParams,
 					widths: widths === "defaults" ? widthSrcSetDefaults : widths,
 				});
 			} else if (pixelDensities) {
-				return prismicH.asImagePixelDensitySrcSet(imageField, {
+				return prismic.asImagePixelDensitySrcSet(imageField, {
 					...imgixParams,
 					pixelDensities:
 						pixelDensities === "defaults"
@@ -219,7 +217,7 @@ export const image = (
 				});
 			} else {
 				return {
-					src: prismicH.asImageSrc(imageField, imgixParams),
+					src: prismic.asImageSrc(imageField, imgixParams),
 					srcset: null,
 				};
 			}
@@ -248,7 +246,7 @@ const defaultEmbedWrapper = "div";
  */
 export const embed = () => {
 	return (
-		embedField: EmbedField,
+		embedField: prismic.EmbedField,
 		options:
 			| ({ wrapper?: string } & Record<
 					string,

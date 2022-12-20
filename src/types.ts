@@ -1,9 +1,4 @@
-import { Client, ClientConfig } from "@prismicio/client";
-import {
-	HTMLFunctionSerializer,
-	HTMLMapSerializer,
-	LinkResolverFunction,
-} from "@prismicio/helpers";
+import * as prismic from "@prismicio/client";
 
 // Eleventy types
 
@@ -61,14 +56,14 @@ export type PrismicPluginOptionsBase = {
 	 *
 	 * @see Link resolver documentation {@link https://prismic.io/docs/core-concepts/link-resolver-route-resolver#link-resolver}
 	 */
-	linkResolver?: LinkResolverFunction;
+	linkResolver?: prismic.LinkResolverFunction;
 
 	/**
 	 * An optional HTML serializer to customize the way rich text fields are rendered
 	 *
 	 * @see HTML serializer documentation {@link https://prismic.io/docs/core-concepts/html-serializer}
 	 */
-	htmlSerializer?: HTMLFunctionSerializer | HTMLMapSerializer;
+	htmlSerializer?: prismic.HTMLFunctionSerializer | prismic.HTMLMapSerializer;
 
 	/**
 	 * Whether or not to inject shortcodes
@@ -167,7 +162,7 @@ export type PrismicPluginOptionsWithClient =
 		 *
 		 * @see Prismic client documentation {@link https://prismic.io/docs/technologies/javascript}
 		 */
-		client: Client;
+		client: prismic.Client;
 	};
 
 export type PrismicPluginOptionsWithEndpoint =
@@ -228,7 +223,7 @@ export type PrismicPluginOptionsWithEndpoint =
 		 * }
 		 * ```
 		 */
-		clientConfig?: ClientConfig;
+		clientConfig?: prismic.ClientConfig;
 	};
 
 /**

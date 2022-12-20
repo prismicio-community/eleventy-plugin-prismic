@@ -2,8 +2,7 @@ import { it, expect, beforeAll, afterAll } from "vitest";
 import * as mswNode from "msw/node";
 
 import nodeFetch from "node-fetch";
-import { createClient } from "@prismicio/client";
-import { PrismicDocument } from "@prismicio/types";
+import * as prismic from "@prismicio/client";
 
 import { createMockQueryHandler } from "./__testutils__/createMockQueryHandler";
 import { createMockRepositoryHandler } from "./__testutils__/createMockRepositoryHandler";
@@ -29,7 +28,7 @@ const server = mswNode.setupServer(
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterAll(() => server.close());
 
-const client = createClient(repositoryName, {
+const client = prismic.createClient(repositoryName, {
 	fetch: nodeFetch,
 });
 
@@ -46,7 +45,7 @@ it("gets documents and sort them", async () => {
 it("gets documents and sort them with i18n enabled", async () => {
 	const result = (await crawlAndSort(client, { client, i18n: true })) as Record<
 		string,
-		Record<string, PrismicDocument | PrismicDocument[]>
+		Record<string, prismic.PrismicDocument | prismic.PrismicDocument[]>
 	>;
 
 	expect(Array.isArray(result.foo["en-us"])).toBe(true);
@@ -59,7 +58,7 @@ it("gets documents and sort them with i18n enabled", async () => {
 it("creates a special `__all` collection when i18n is enabled", async () => {
 	const result = (await crawlAndSort(client, { client, i18n: true })) as Record<
 		string,
-		Record<string, PrismicDocument | PrismicDocument[]>
+		Record<string, prismic.PrismicDocument | prismic.PrismicDocument[]>
 	>;
 
 	expect(Array.isArray(result.foo.__all)).toBe(true);
@@ -84,7 +83,10 @@ it("does not wrap singletons with i18n enabled", async () => {
 		client,
 		singletons: ["bar"],
 		i18n: true,
-	})) as Record<string, Record<string, PrismicDocument | PrismicDocument[]>>;
+	})) as Record<
+		string,
+		Record<string, prismic.PrismicDocument | prismic.PrismicDocument[]>
+	>;
 
 	expect(Array.isArray(result.foo["en-us"])).toBe(true);
 	expect((result.foo["en-us"] as unknown[]).length).toBe(2);
@@ -108,7 +110,10 @@ it("unwraps singletons that obviously are not with i18n enabled", async () => {
 		client,
 		singletons: ["foo"],
 		i18n: true,
-	})) as Record<string, Record<string, PrismicDocument | PrismicDocument[]>>;
+	})) as Record<
+		string,
+		Record<string, prismic.PrismicDocument | prismic.PrismicDocument[]>
+	>;
 
 	expect(Array.isArray(result.foo["en-us"])).toBe(true);
 	expect((result.foo["en-us"] as unknown[]).length).toBe(2);
@@ -128,7 +133,10 @@ it("uses provided language shortcuts instead of languages codes when available",
 		client,
 		singletons: ["foo"],
 		i18n: { "en-us": "en" },
-	})) as Record<string, Record<string, PrismicDocument | PrismicDocument[]>>;
+	})) as Record<
+		string,
+		Record<string, prismic.PrismicDocument | prismic.PrismicDocument[]>
+	>;
 
 	expect(Array.isArray(result.foo.en)).toBe(true);
 	expect((result.foo.en as unknown[]).length).toBe(2);

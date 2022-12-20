@@ -1,7 +1,7 @@
 // @ts-expect-error - 11ty does not provide any sort of type definition
 import { EleventyServerless } from "@11ty/eleventy";
 import { HandlerEvent, HandlerResponse } from "@netlify/functions";
-import { cookie } from "@prismicio/client";
+import * as prismic from "@prismicio/client";
 
 import { createClientFromOptions } from "./createClientFromOptions";
 import { canCreatePreviewFromOptions } from "./canCreatePreviewFromOptions";
@@ -51,7 +51,7 @@ export const resolve = async (
 		statusCode: 302,
 		headers: {
 			location: `/${options.preview.name}${href}?preview=true`,
-			"set-cookie": `${cookie.preview}=${encodeURIComponent(
+			"set-cookie": `${prismic.cookie.preview}=${encodeURIComponent(
 				JSON.stringify(previewCookie),
 				// TODO: Need improvement, see: https://github.com/11ty/eleventy/issues/1957
 			)}; Path=/${process.env.AWS_LAMBDA_FUNCTION_NAME ? "; Secure" : ""}`,
