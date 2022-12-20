@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.5...v1.0.0) (2022-12-20)
+
+
+### Features
+
+* allow querying only documents of a certain type ([2b883d0](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/2b883d06b253060c221f259d83531811f8d16a19))
+
+
+### Bug Fixes
+
+* log error for debugging purpose on serverless ([f7e25d5](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/f7e25d5337c87d51073caefbaa72d69c1896b117))
+
+
+### Chore
+
+* **deps:** maintain dependencies ([1af9e7c](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/1af9e7c76dfbe2f99c70f1afaafdb4503362fd86))
+
 ## [1.0.0-beta.5](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2022-07-26)
 
 
