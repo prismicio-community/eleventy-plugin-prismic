@@ -207,6 +207,8 @@ export const handle = async (
 			},
 		};
 	} catch (error) {
+		console.error(error);
+
 		return {
 			statusCode:
 				error instanceof Error && "httpStatusCode" in error
