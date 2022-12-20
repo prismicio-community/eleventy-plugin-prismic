@@ -32,7 +32,7 @@ const client = prismic.createClient(repositoryName, {
 	fetch: nodeFetch,
 });
 
-it("gets documents and sort them", async () => {
+it("gets documents and sorts them", async () => {
 	const result = await crawlAndSort(client, { client });
 
 	expect(Array.isArray(result.foo)).toBe(true);
@@ -42,7 +42,16 @@ it("gets documents and sort them", async () => {
 	expect((result.bar as unknown[]).length).toBe(1);
 });
 
-it("gets documents and sort them with i18n enabled", async () => {
+it("gets only documents of types when provided and sorts them", async () => {
+	const result = await crawlAndSort(client, { client, documentTypes: ["foo"] });
+
+	expect(Array.isArray(result.foo)).toBe(true);
+	expect((result.foo as unknown[]).length).toBe(2);
+
+	expect(result.bar).toBeUndefined();
+});
+
+it("gets documents and sorts them with i18n enabled", async () => {
 	const result = (await crawlAndSort(client, { client, i18n: true })) as Record<
 		string,
 		Record<string, prismic.PrismicDocument | prismic.PrismicDocument[]>

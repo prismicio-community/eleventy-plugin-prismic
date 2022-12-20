@@ -581,6 +581,9 @@ type PrismicPluginOptions = {
 	// Optional list of custom types defined as singletons
 	singletons?: string[];
 
+	// An optional list of documents types to fetch, defaults to all
+	documentTypes?: string[];
+
 	// Indicates that the website will handle multiple locales, see the `i18n` section above
 	i18n?: boolean | Record<string, string>;
 

@@ -135,6 +135,12 @@ export type PrismicPluginOptionsWithClientOrEndpointBase =
 		singletons?: string[];
 
 		/**
+		 * An optional list of documents types to fetch. Not providing this list (`undefined`)
+		 * will result in all documents being fetched.
+		 */
+		documentTypes?: string[];
+
+		/**
 		 * @experimental
 		 *
 		 * Indicates to the 11ty plugin that the site is a multi-language site, when used, the plugin will nest documents under their language code (`prismic.settings.data` becomes `prismic.settings["en-us"].data`)

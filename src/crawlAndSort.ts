@@ -35,6 +35,9 @@ export const crawlAndSort = async (
 	const docs = await client.dangerouslyGetAll({
 		// If the website is i18n, fetch for all languages
 		lang: options.i18n ? "*" : undefined,
+		predicates: options.documentTypes
+			? prismic.predicate.any("document.type", options.documentTypes)
+			: undefined,
 	});
 
 	const fakeSingletons: string[] = [];

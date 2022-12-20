@@ -11,14 +11,22 @@ export const createMockQueryHandler = (
 	const endpoint = `https://${repositoryName}.cdn.prismic.io/api/v2/documents/search`;
 
 	return msw.rest.get(endpoint, (req, res, ctx) => {
-		const lang = req.url.searchParams.get("lang") || "en-us";
+		let responseDocs = docs;
 
-		return res(
-			ctx.json(
-				createQueryResponse(
-					lang === "*" ? docs : docs.filter((doc) => doc.lang === lang),
-				),
-			),
-		);
+		const lang = req.url.searchParams.get("lang") || "en-us";
+		if (lang !== "*") {
+			responseDocs = responseDocs.filter((doc) => doc.lang === lang);
+		}
+
+		const q = req.url.searchParams.get("q");
+		if (q?.startsWith("[[any(document.type")) {
+			const types: string[] = JSON.parse(
+				q.replace("[[any(document.type, ", "").replace(")]]", ""),
+			);
+
+			responseDocs = responseDocs.filter((doc) => types.includes(doc.type));
+		}
+
+		return res(ctx.json(createQueryResponse(responseDocs)));
 	});
 };
