@@ -15,13 +15,7 @@
 
 ## Installation
 
-> ⚠ This plugin relies on the new `eleventyConfig.addGlobalData` method that comes with Eleventy `1.0.0`, [see documentation](https://www.11ty.dev/docs/data-global-custom) for more.
->
-> To use it, make sure you use Eleventy `1.0.0` or above:
->
-> - With npm: `npm install --save-dev @11ty/eleventy@^1.0.0`;
-> - Yarn: `yarn add --dev @11ty/eleventy@^1.0.0`;
-> - Or npx: `npx @11ty/eleventy@^1.0.0`.
+> ⚠ This plugin relies on the new `eleventyConfig.addGlobalData` method that cmae with Eleventy `1.0.0`, [see documentation](https://www.11ty.dev/docs/data-global-custom) for more.
 
 Add `eleventy-plugin-prismic` dependency to your project:
 
@@ -32,6 +26,42 @@ $ yarn add --dev eleventy-plugin-prismic
 ```
 
 Then open up your Eleventy config file (probably `.eleventy.js`) and use the `addPlugin` method:
+
+<details>
+
+<summary>11ty 3+ ESM Version</summary>
+
+```javascript
+import {
+	pluginPrismic,
+	definePrismicPluginOptions,
+} from "eleventy-plugin-prismic";
+
+// This is a sugar function that gives you intellisense and
+// documentation in your IDE while defining plugin options.
+const prismicPluginOptions = definePrismicPluginOptions({
+	endpoint: "your-repo-name",
+
+	// Optional, additional parameters to pass to the client
+	clientConfig: {
+		accessToken: "abc",
+	},
+
+	/* see configuration references for more */
+});
+
+const config = function (eleventyConfig) {
+	eleventyConfig.addPlugin(pluginPrismic, prismicPluginOptions);
+};
+// This format is important if you want to setup previews
+// with the plugin.
+config.prismicPluginOptions = prismicPluginOptions;
+
+export default config;
+```
+
+</details>
+<br>
 
 ```javascript
 const {
