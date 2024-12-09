@@ -81,7 +81,7 @@
 		"vitest": "^0.26.1"
 	},
 	"peerDependencies": {
-		"@11ty/eleventy": "^1.0.0 || ^2.0.0"
+		"@11ty/eleventy": ">=1.0.0"
 	},
 	"engines": {
 		"node": ">=14.15.0"
