@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0...v1.0.1) (2024-12-09)
+
+
+### Chore
+
+* **deps:** allow future 11ty versions ([7b0efb5](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/7b0efb520301133f0b46d00ac2be6cbc64028239))
+* **deps:** maintain lock file ([b48551b](https://github.com/prismicio-community/eleventy-plugin-prismic/commit/b48551b9c6ea6953778c60c3b32690b91caabeba))
+
 ## [1.0.0](https://github.com/prismicio-community/eleventy-plugin-prismic/compare/v1.0.0-beta.5...v1.0.0) (2022-12-20)
 
 
