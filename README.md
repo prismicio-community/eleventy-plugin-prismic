@@ -10,6 +10,9 @@ Replace all on all files (README.md, CONTRIBUTING.md, bug_report.md, package.jso
 
 # eleventy-plugin-prismic
 
+> [!NOTE]
+> This plugin is archived and no longer updated. To fetch Prismic content in a JavaScript project, see the [Prismic documentation](https://prismic.io/docs).
+
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
 [![Github Actions CI][github-actions-ci-src]][github-actions-ci-href]
